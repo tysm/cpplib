@@ -20,6 +20,9 @@ using ii = pair<int, int>;
 using vi = vector<int>;
 using vii = vector<ii>;
 
+using u64 = uint64_t;
+using u128 = __uint128_t;
+
 #define ff first
 #define ss second
 #define pb push_back
@@ -44,27 +47,35 @@ int gcd(int a, int b){
     return gcd(b%a, a);
 }
 
-/// Binary Exponentiation.
-int bexp(int a, int b){
+/**
+ * Binary Exponentiation.
+ *
+ * Time Complexity: O(log(e)).
+ */
+int bexp(int b, int e){
     int res = 1;
-    while(b > 0){
-        if(b & 1)
-            res *= a;
-        a *= a;
-        b >>= 1;
+    while(e > 0){
+        if(e & 1)
+            res *= b;
+        b *= b;
+        e >>= 1;
     }
     return res;
 }
 
-/// Binary Exponatiation with module.
-int bexpm(int a, int b, int m = M){
-    a %= m;
+/**
+ * Binary Exponentiation with mod.
+ *
+ * Time Complexity: O(log(e)).
+ */
+int bexpm(int b, int e, int m = M){
+    b %= m;
     int res = 1;
-    while(b > 0){
-        if(b & 1)
-            res = (res*a)%m;
-        a = (a*a)%m;
-        b >>= 1;
+    while(e > 0){
+        if(e & 1)
+            res = (res*b)%m;
+        b = (b*b)%m;
+        e >>= 1;
     }
     return res;
 }
