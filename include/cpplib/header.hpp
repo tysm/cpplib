@@ -28,9 +28,9 @@ using u128 = __uint128_t;
 #define pb push_back
 
 #define EPS 1e-9
-#define INF int32_t(1e9)+1
-#define MAX int32_t(1e6)+1
-#define M int32_t(1e9)+7
+#define INF (int32_t(1e9)+1)
+#define MAX (int32_t(1e6)+1)
+#define M (int32_t(1e9)+7)
 
 #define endl "\n"
 #define debug(x) (cerr << #x << " = " << (x) << endl)
