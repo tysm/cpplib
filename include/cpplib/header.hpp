@@ -59,7 +59,7 @@ int gcd(int a, int b){
  */
 int lcm(int a, int b){
     // same as a*b/gcd(a, b) but avoiding overflow.
-    return a/gcd(a, b)*b;
+    return (a/gcd(a, b))*b;
 }
 
 /**
