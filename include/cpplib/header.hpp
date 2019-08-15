@@ -42,9 +42,24 @@ inline int mod(int n, int m){
     return ret;
 }
 
+/**
+ * Euclidian GCD.
+ *
+ * Time Complexity: O(log(min(a, b))).
+ */
 int gcd(int a, int b){
     if(a == 0) return b;
     return gcd(b%a, a);
+}
+
+/**
+ * Euclidian derivated LCM.
+ *
+ * Time Complexity: O(log(min(a, b))).
+ */
+int lcm(int a, int b){
+    // same as a*b/gcd(a, b) but avoiding overflow.
+    return a/gcd(a, b)*b;
 }
 
 /**
