@@ -1,4 +1,3 @@
-#pragma once
 #include <cpplib/math/primality-tests>
 
 u64 ubexpm(u64 b, u64 e, u64 m){
