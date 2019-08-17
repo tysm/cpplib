@@ -12,20 +12,20 @@
  * Time Complexity: O(m*log(n)).
  * Where n is the size of the graph and m is the quantity of edges.
  */
-vi dijkstra(int s, vector<vii> &adj, vector<bool> &vis){
+vi dijkstra(int s, vector<vii> &adj){
     vi dis(adj.size(), INF); dis[s] = 0; // distance from s to s is 0.
     priority_queue<ii, vii, greater<ii> > pq; pq.push({dis[s], s});
 
-    while(!q.empty()){
-        ii front = pq.top(); pq.pop();
+    while(!pq.empty()){
+        ii top = pq.top(); pq.pop();
 
-        int d = front.ff, u = front.ss;
+        int d = top.ff, u = top.ss;
         if(d > dis[u])
             continue;
 
         for(ii p : adj[u]){
             int v = p.ff, w = p.ss;
-            if(dis[u] + w >= dis[v]){
+            if(dis[u] + w < dis[v]){
                 dis[v] = dis[u] + w;
                 pq.push({dis[v], v});
             }
