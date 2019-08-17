@@ -5,6 +5,10 @@
  * Breadth First Search
  * TODO validate.
  *
+ * Note: in orther to retrieve the shortest path
+ * we can store the predecessor of any vertex when
+ * a successful relaxation occurs.
+ *
  * Time Complexity: O(n + m).
  * Where n is the size of the graph and m is the quantity of edges.
  */
@@ -13,13 +17,13 @@ vi bfs(int s, vector<vi> &adj){
     queue<int> q; q.push(s);
 
     while(!q.empty()){
-        int v = q.front(); q.pop();
+        int u = q.front(); q.pop();
 
-        for(int u : adj[v]){
-            if(dis[u] != INF)
+        for(int v : adj[u]){
+            if(dis[v] != INF)
                 continue;
-            dis[u] = dis[v] + 1;
-            q.push(u);
+            dis[v] = dis[u] + 1;
+            q.push(v);
         }
     }
     return dis;
