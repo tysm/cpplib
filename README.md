@@ -19,6 +19,10 @@ C++ Competitive Programming Personal Library
 
 - [Roteiros](wiki.maratona.dcc.ufmg.br/index.php/Roteiros)
 
+### Specific
+
+- [Theory of Impartial Games](https://web.mit.edu/sp.268/www/nim.pdf)
+
 ## Practice
 
 - [AtCoder](https://atcoder.jp)
@@ -34,3 +38,7 @@ C++ Competitive Programming Personal Library
 - [URI](https://www.urionlinejudge.com.br)
 
 - [UVa](https://uva.onlinejudge.org)
+
+### Specific
+
+- [A-Z DP Tasks](https://atcoder.jp/contests/dp/tasks)
