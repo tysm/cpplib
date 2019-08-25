@@ -13,10 +13,11 @@
  */
 ii lde(int a, int b, int c){
     pair<int, ii> _gcd = gcd(abs(a), abs(b));
-    int x = _gcd.ss.ff, y = _gcd.ss.ss, g = _gcd.ff;
 
+    int x = _gcd.ss.ff, y = _gcd.ss.ss, g = _gcd.ff;
     x *= c/g;
     y *= c/g;
+
     if(a < 0)
         x = -x;
     if(b < 0)
