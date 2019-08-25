@@ -33,6 +33,8 @@ C++ Competitive Programming Personal Library
 
 - [CS Academy](https://csacademy.com)
 
+- [CSES](https://cses.fi)
+
 - [SPOJ](https://www.spoj.com)
 
 - [URI](https://www.urionlinejudge.com.br)
