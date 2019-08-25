@@ -43,13 +43,15 @@ inline int mod(int n, int m){
 }
 
 /**
- * Euclidian GCD.
+ * Extended Euclidian GCD.
  *
  * Time Complexity: O(log(min(a, b))).
  */
-int gcd(int a, int b){
-    if(a == 0) return b;
-    return gcd(b%a, a);
+pair<int, ii> gcd(int a, int b){
+    if(a == 0) return {b, {0, 1}};
+    pair<int, ii> res = gcd(b%a, a);
+    int x1 = res.ss.ff, y1 = res.ss.ss;
+    return {res.ff, {y1 - b/a*x1, x1}};
 }
 
 /**
@@ -59,7 +61,7 @@ int gcd(int a, int b){
  */
 int lcm(int a, int b){
     // same as a*b/gcd(a, b) but avoiding overflow.
-    return (a/gcd(a, b))*b;
+    return a/gcd(a, b).ff*b;
 }
 
 /**
