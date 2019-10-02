@@ -7,6 +7,7 @@ using namespace std;
 
 using ii = pair<int, int>;
 using vi = vector<int>;
+using vd = vector<double>;
 using vii = vector<ii>;
 
 #define ff first

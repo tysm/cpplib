@@ -1,13 +1,13 @@
 #pragma once
-#include <cpplib/header>
+#include <cpplib/header.hpp>
 
 /**
  * Dijkstra.
  * TODO validate.
  *
- * Note: in orther to retrieve the shortest path
- * we can store the predecessor of any vertex when
- * a successful relaxation occurs.
+ * Note: in orther to retrieve the shortest
+ * path we can store the predecessor of each
+ * vertex when a successful relaxation occurs.
  *
  * Time Complexity: O(m*log(n)).
  * Where n is the size of the graph and m is the quantity of edges.
