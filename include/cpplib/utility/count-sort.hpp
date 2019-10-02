@@ -14,7 +14,7 @@
  * Time Complexity: O(MAX+n).
  * Where n is the size of the graph.
  */
-inline void count_sort(vi &v, bool inc = true){
+void count_sort(vi &v, bool inc = true){
     int n = v.size(), cnt[MAX] = {};
     for(int i=0; i<n; ++i)
         cnt[v[i]]++;
