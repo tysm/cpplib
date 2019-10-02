@@ -47,6 +47,11 @@ cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
+_deps
+
+### CMake Patch ###
+# External projects
+*-prefix/
 
 ### Vim ###
 # Swap
@@ -58,6 +63,7 @@ CTestTestfile.cmake
 
 # Session
 Session.vim
+Sessionx.vim
 
 # Temporary
 .netrwhist
@@ -69,3 +75,9 @@ tags
 
 # End of https://www.gitignore.io/api/vim,c++,cmake
 
+### VisualStudioCode ###
+.vscode
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
