@@ -1,9 +1,11 @@
 #pragma once
-#include <cpplib/header>
+#include <cpplib/header.hpp>
 
 /**
  * Depth First Search.
- * TODO validate.
+ *
+ * Performs a Depth First Search in a
+ * graph given its vertex adjacencies.
  *
  * Time Complexity: O(n + m).
  * Where n is the size of the graph and m is the quantity of edges.
@@ -13,6 +15,6 @@ void dfs(int u, vector<vi> &adj, vector<bool> &vis){
     for(int v : adj[u]){
         if(vis[v])
             continue;
-        dfs(v);
+        dfs(v, adj, vis);
     }
 }

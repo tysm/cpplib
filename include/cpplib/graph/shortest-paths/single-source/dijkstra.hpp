@@ -3,7 +3,10 @@
 
 /**
  * Dijkstra.
- * TODO validate.
+ *
+ * Computes the shortest path from a source
+ * to all other vertices in a weighted graph
+ * given its weighted vertex adjacencies.
  *
  * Note: in orther to retrieve the shortest
  * path we can store the predecessor of each
