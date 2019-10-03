@@ -1,6 +1,6 @@
 #pragma once
 #include <cpplib/header.hpp>
-#include <cpplib/utility/count-sort.hpp>
+#include <cpplib/utility/sort.hpp>
 
 /**
  * Erdos Gallai.

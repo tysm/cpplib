@@ -1,5 +1,15 @@
-#include <cpplib/math/primality-tests>
+#include <cpplib/math/number-theory/primality-tests.hpp>
 
+/**
+ * Binary Exponentiation with mod.
+ *
+ * Note: this is the same algorithm as the
+ * one codded in the lib, but it should be
+ * used when the values are too large so
+ * that some operations may cause overflow.
+ *
+ * Time Complexity: O(log(e)).
+ */
 u64 ubexpm(u64 b, u64 e, u64 m){
     b %= m;
     u64 res = 1;

@@ -1,5 +1,5 @@
 #pragma once
-#include <cpplib/header>
+#include <cpplib/header.hpp>
 
 /**
  * Linear Diophantine Equation Solution.
