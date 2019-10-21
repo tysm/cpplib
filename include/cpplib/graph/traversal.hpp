@@ -14,7 +14,7 @@
  * Time Complexity: O(n + m).
  * Where n is the size of the graph and m is the quantity of edges.
  */
-vi bfs(int s, vector<vi> &adj){
+vi bfs(int s, vvi &adj){
     vi dis(adj.size(), INF); dis[s] = 0; // distance from s to s is 0.
     queue<int> q; q.push(s);
 
@@ -40,7 +40,7 @@ vi bfs(int s, vector<vi> &adj){
  * Time Complexity: O(n + m).
  * Where n is the size of the graph and m is the quantity of edges.
  */
-void dfs(int u, vector<vi> &adj, vector<bool> &vis){
+void dfs(int u, vvi &adj, vb &vis){
     vis[u] = true;
     for(int v : adj[u]){
         if(vis[v])

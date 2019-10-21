@@ -15,7 +15,7 @@
  * Time Complexity: O(m*log(n)).
  * Where n is the size of the graph and m is the quantity of edges.
  */
-vi dijkstra(int s, vector<vii> &adj){
+vi dijkstra(int s, vvii &adj){
     vi dis(adj.size(), INF); dis[s] = 0; // distance from s to s is 0.
     priority_queue<ii, vii, greater<ii> > pq; pq.push({dis[s], s});
 

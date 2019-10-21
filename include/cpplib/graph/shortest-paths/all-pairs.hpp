@@ -22,7 +22,7 @@
  * Time Complexity: O(exp(n, 3)).
  * Where n is the size of the graph.
  */
-vector<vi> floyd(vector<vi> dis){
+vvi floyd(vvi dis){
     int n = dis.size();
     for(int k=0; k<n; ++k){
         for(int i=0; i<n; ++i){
@@ -45,7 +45,7 @@ vector<vi> floyd(vector<vi> dis){
  * Time Complexity: O(exp(n, 3)).
  * Where n is the size of the graph.
  */
-vector<vd> floydd(vector<vd> dis){
+vvd floydd(vvd dis){
     int n = dis.size();
     for(int k=0; k<n; ++k){
         for(int i=0; i<n; ++i){

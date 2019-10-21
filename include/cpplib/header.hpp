@@ -8,7 +8,12 @@ using namespace std;
 using ii = pair<int, int>;
 using vi = vector<int>;
 using vd = vector<double>;
+using vb = vector<bool>;
 using vii = vector<ii>;
+using vvi = vector<vi>;
+using vvd = vector<vd>;
+using vvb = vector<vb>;
+using vvii = vector<vii>;
 
 #define ff first
 #define ss second
