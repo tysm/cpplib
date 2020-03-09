@@ -45,7 +45,7 @@ vvi floyd(vvi dis){
  * Time Complexity: O(exp(n, 3)).
  * Where n is the size of the graph.
  */
-vvd floydd(vvd dis){
+vvd floyd(vvd dis){
     int n = dis.size();
     for(int k=0; k<n; ++k){
         for(int i=0; i<n; ++i){

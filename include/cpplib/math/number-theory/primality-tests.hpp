@@ -28,4 +28,4 @@ bool isprime(int n){
  *
  * Time Complexity: O(log(n)).
  */
-bool isprimel(u64 n);
+bool isprime(u64 n);

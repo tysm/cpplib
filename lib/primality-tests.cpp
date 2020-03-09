@@ -30,7 +30,7 @@ u64 ubexpm(u64 b, u64 e, u64 m){
  *
  * Time Complexity: O(log(n)).
  */
-bool isprimel(u64 n){
+bool isprime(u64 n){
     if(n < 2)
         return false;
 
