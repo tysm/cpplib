@@ -22,8 +22,8 @@ enum class SegTreeKind
  * - Range Sum Query;
  * - Range Xor Query.
  *
- * Note: when the Tree is constructed by
- * inserting each value on by one using set
+ * Note: when the tree is constructed by
+ * inserting each value one by one using set
  * and/or update, the time complexity is
  * actually O(n*log(n)).
  *
