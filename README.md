@@ -1,29 +1,28 @@
 # cpplib
 
-C++ Competitive Programming Personal Library
+This is a **C++ Competitive Programming Personal Library** that includes several algorithms and data structures to solve well known problems of computer science during contests and competitions such as [ICPC](https://icpc.baylor.edu/).
 
-# Useful Links
+## Useful Links
 
-## Books
+### Books
 
 - [Competitive Programming](https://cpbook.net)
 
 - [Competitive programming books](https://cses.fi/book)
 
+### Guides
 
-## Guides
-
-- [Competitive Programming Study Guide for C++ Users](https://github.com/bira37/cp-guide)
+- [Competitive Programming Study Guide for C++ Users](https://bira37.github.io/cp-guide/)
 
 - [MAXimal](http://e-maxx.ru) ([en](https://cp-algorithms.com))
 
-- [Roteiros](wiki.maratona.dcc.ufmg.br/index.php/Roteiros)
+- [Roteiros](http://wiki.maratona.dcc.ufmg.br/index.php/Roteiros)
 
-### Specific
+#### Specific Content
 
 - [Theory of Impartial Games](https://web.mit.edu/sp.268/www/nim.pdf)
 
-## Practice
+### Practice
 
 - [AtCoder](https://atcoder.jp)
 
@@ -43,6 +42,7 @@ C++ Competitive Programming Personal Library
 
 - [UVa](https://uva.onlinejudge.org)
 
-### Specific
+#### Specific
 
 - [A-Z DP Tasks](https://atcoder.jp/contests/dp/tasks)
+
