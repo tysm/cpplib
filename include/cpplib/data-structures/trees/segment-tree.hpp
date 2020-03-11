@@ -9,9 +9,38 @@ enum class SegTreeKind
     RXorQ,
 };
 
+/**
+ * Segment Tree.
+ *
+ * Arranges data in a binary tree so that it
+ * is possible to perform range queries and
+ * modifications over an array effectively.
+ *
+ * Common kinds of use:
+ * - Range Max Query;
+ * - Range Min Query;
+ * - Range Sum Query;
+ * - Range Xor Query.
+ *
+ * Note: when the Tree is constructed by
+ * inserting each value on by one using set
+ * and/or update, the time complexity is
+ * actually O(n*log(n)).
+ *
+ * Time Complexity: O(n).
+ * Space Complexity: O(n).
+ * Where n is the size of the array.
+ */
 class SegTree
 {
 public:
+    /**
+     * Segment Tree Node.
+     *
+     * Helps to hold range data dynamically so
+     * that only a small number of nodes are
+     * visited per query.
+     */
     struct Node {
         SegTreeKind kind;
         int value, lazy;
@@ -38,6 +67,10 @@ public:
         Node(const SegTreeKind kind, const int value, const int lazy = 0) :
             kind(kind), value(value), lazy(lazy), set(0, false) {}
 
+        /**
+         * Checks if a value matches with this->value
+         * according to the kind of the Segment Tree.
+         */
         bool match(const int value) const
         {
             switch(kind){
@@ -54,6 +87,10 @@ public:
             }
         }
 
+        /**
+         * Merges two nodes into a new one according
+         * to the kind of the Segment Tree.
+         */
         static Node merge(const SegTreeKind kind, const Node lhs, const Node rhs)
         {
             assert(lhs.lazy == 0 and rhs.lazy == 0);
@@ -82,41 +119,92 @@ public:
         build(0, arr_size-1, 0, arr);
     }
 
+    /**
+     * Finds the index of the first element over
+     * the array that matches with value.
+     *
+     * It returns the size of the array when the
+     * value doesn't match with any array value.
+     *
+     * Time Complexity: O(log(n)).
+     * Where n is the size of the array.
+     */
     int find(const int value)
     {
         return find(0, arr_size-1, 0, value);
     }
 
+    /**
+     * Computes the ith array value.
+     *
+     * Time Complexity: O(log(n)).
+     * Where n is the size of the array.
+     */
     int query(const int i)
     {
         assert(0 <= i and i < arr_size);
         return query(i, i);
     }
 
+    /**
+     * Computes the value corresponding to the
+     * range [l, r] of the array.
+     *
+     * Time Complexity: O(log(n)).
+     * Where n is the size of the array.
+     */
     int query(const int l, const int r)
     {
         assert(0 <= l and l <= r and r < arr_size);
         return query(0, arr_size-1, l, r, 0).value;
     }
 
+    /**
+     * Sets the ith array value to value.
+     *
+     * Time Complexity: O(log(n)).
+     * Where n is the size of the array.
+     */
     void set(const int i, const int value)
     {
         assert(0 <= i and i < arr_size);
         set(i, i, value);
     }
 
+    /**
+     * Sets the array values in the range [l, r]
+     * to value.
+     *
+     * Time Complexity: O(log(n)).
+     * Where n is the size of the array.
+     */
     void set(const int l, const int r, const int value)
     {
         assert(0 <= l and l <= r and r < arr_size);
         set(0, arr_size-1, l, r, 0, value);
     }
 
+    /**
+     * Updates the ith array value according to
+     * the kind of the Segment Tree.
+     *
+     * Time Complexity: O(log(n)).
+     * Where n is the size of the array.
+     */
     void update(const int i, const int delta)
     {
         assert(0 <= i and i < arr_size);
         update(i, i, delta);
     }
 
+    /**
+     * Updates the array values in the range
+     * [l, r] according to the kind of the
+     * Segment Tree.
+     *
+     * Time Complexity: O(log(n)).
+     * Where n is the size of the array.
+     */
     void update(const int l, const int r, const int delta)
     {
         assert(0 <= l and l <= r and r < arr_size);
