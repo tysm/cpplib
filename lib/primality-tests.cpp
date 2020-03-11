@@ -1,4 +1,4 @@
-#include <cpplib/math/number-theory/primality-tests.hpp>
+#include <cpplib/math/number-theory/primality-tests/miller-rabin.hpp>
 
 /**
  * Binary Exponentiation with mod.
