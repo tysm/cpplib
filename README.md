@@ -1,5 +1,7 @@
 # cpplib
 
+[![Build Status](https://travis-ci.com/tysm/cpplib.svg?token=ts8Qqqwv3iXo6FpzmnD4&branch=master)](https://travis-ci.com/tysm/cpplib)
+
 This is a **C++ Competitive Programming Personal Library** that includes several algorithms and data structures to solve well known problems of computer science during contests and competitions such as [ICPC](https://icpc.baylor.edu/).
 
 ## Useful Links
@@ -45,4 +47,3 @@ This is a **C++ Competitive Programming Personal Library** that includes several
 #### Specific
 
 - [A-Z DP Tasks](https://atcoder.jp/contests/dp/tasks)
-
