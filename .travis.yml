@@ -6,13 +6,21 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'python3-defaults']
-          packages: ['libstdc++-7-dev', 'python3.6']
+          sources:
+            - ubuntu-toolchain-r-test
+            - python3-defaults
+          packages:
+            - libstdc++-7-dev
+            - python3.6
     - os: linux
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'python3-defaults']
-          packages: ['g++-7', 'python3.6']
+          sources:
+            - ubuntu-toolchain-r-test
+            - python3-defaults
+          packages:
+            - g++-7
+            - python3.6
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 before_install:
