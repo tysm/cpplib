@@ -6,16 +6,17 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test']
-          packages: ['libstdc++-7-dev']
+          sources: ['ubuntu-toolchain-r-test', 'python3-defaults']
+          packages: ['libstdc++-7-dev', 'python3.6']
     - os: linux
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-7']
+          sources: ['ubuntu-toolchain-r-test', 'python3-defaults']
+          packages: ['g++-7', 'python3.6']
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 before_install:
   - eval "${MATRIX_EVAL}"
 script:
-  - ./bin/libtest && ./bin/cpplibtex
+  - ./bin/libtest
+  - ./bin/cpplibtex
