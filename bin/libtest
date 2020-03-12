@@ -19,7 +19,7 @@ function dfs {
         [[ exit_code ]] || break
         [[ -f $sample ]] || continue
 
-        $CXX $CXXFLAGS $CPPFLAGS $sample -o "${sample%.*}"
+        $CXX $CXXFLAGS $CPPFLAGS $sample -o "${sample%.*}.out"
 
         for stdin_file in ${sample%.*}*.stdin; do
             [[ exit_code ]] || break
@@ -27,7 +27,7 @@ function dfs {
             stdout_file="${stdin_file%.*}.stdout"
 
             printf "Testing ${stdin_file%.*}... "
-            if "./${sample%.*}" < "$stdin_file" | diff - "$stdout_file" > "$tempfile"; then
+            if "./${sample%.*}.out" < "$stdin_file" | diff - "$stdout_file" > "$tempfile"; then
                 printf "\033[0;32mOK\033[0m\n"
             else
                 printf "\033[0;31mFAILED\033[0m\n"
