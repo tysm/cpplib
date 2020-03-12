@@ -59,6 +59,8 @@ def main():
     os.symlink(cpplib_dir, os.path.join(latex_dir, "codes"), True)
     os.chdir(latex_dir)
     subprocess.run(["pdflatex", "cpplib.tex"])
+    #: running twice to generate the table of contents.
+    subprocess.run(["pdflatex", "cpplib.tex"])
     os.chdir(cwdir)
     os.unlink(os.path.join(latex_dir, "codes"))
 
