@@ -12,16 +12,16 @@ Just run the automated test script:
 ./bin/libtest
 ```
 
-<pre>
+```
 Testing cpplib...
 Testing cpplib/data-structures...
 Testing cpplib/data-structures/trees...
 Testing cpplib/data-structures/trees/segment-tree...
-Testing range-sum-queries_0... <font color="#4E9A06">OK</font>
-Testing range-sum-queries_1... <font color="#4E9A06">OK</font>
-Testing range-sum-queries_2... <font color="#4E9A06">OK</font>
+Testing range-sum-queries_0... OK
+Testing range-sum-queries_1... OK
+Testing range-sum-queries_2... OK
 ...
-</pre>
+```
 
 ## LaTeX PDF
 
