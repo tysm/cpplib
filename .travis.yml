@@ -23,4 +23,3 @@ before_install:
   - eval "${MATRIX_EVAL}"
 script:
   - ./bin/libtest
-  - ./bin/cpplibtex
