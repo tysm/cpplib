@@ -4,6 +4,33 @@
 
 This is a **C++ Competitive Programming Personal Library** that includes several algorithms and data structures to solve well known problems of computer science during contests and competitions such as [ICPC](https://icpc.baylor.edu/).
 
+## Testing
+
+Just run the automated test script:
+
+```bash
+./bin/libtest
+```
+
+<pre>
+Testing cpplib...
+Testing cpplib/data-structures...
+Testing cpplib/data-structures/trees...
+Testing cpplib/data-structures/trees/segment-tree...
+Testing range-sum-queries_0... <font color="#4E9A06">OK</font>
+Testing range-sum-queries_1... <font color="#4E9A06">OK</font>
+Testing range-sum-queries_2... <font color="#4E9A06">OK</font>
+...
+</pre>
+
+## LaTeX PDF
+
+The corresponding PDF of this lib can be generated running:
+
+```bash
+./bin/cpplibtex
+```
+
 ## Useful Links
 
 ### Books
