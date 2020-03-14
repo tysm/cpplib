@@ -35,6 +35,8 @@ function dfs {
                 exit_code=1
             fi
         done
+
+        rm -f "${sample%.*}.out"
     done
 
     for file in *; do
