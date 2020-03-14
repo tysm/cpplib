@@ -4,7 +4,7 @@ cd "$(dirname "${BASH_SOURCE[0]#./}")/.."
 
 LIB_DIR="$PWD"
 
-CXX="g++"
+CXX="${CXX:-"g++-7"}"
 CXXFLAGS="-std=c++17 -pedantic -Wall -Wextra -O3"
 DEFINE=""
 INCLUDE="-I $LIB_DIR/include"
