@@ -11,7 +11,7 @@ int32_t main(){
     for(int &i:arr)
         cin >> i;
 
-    SegTree st(SegTreeKind::RSumQ, arr);
+    SegTree<SegTreeKind::RSumQ, int> st(arr);
     while(q--){
         int a, b;
         cin >> a >> b;
@@ -20,4 +20,3 @@ int32_t main(){
     }
     return 0;
 }
-

@@ -27,10 +27,17 @@ enum class SegTreeKind
  * and/or update, the time complexity is
  * actually O(n*log(n)).
  *
+ * Note: it's recommended to remove the
+ * pair<T, bool> set from SegTree<K, T>::Node
+ * when it's not being used since it costs
+ * a bunch of memory when many Segment Trees
+ * are constructed (e.g., Segment Tree 2D).
+ *
  * Time Complexity: O(n).
  * Space Complexity: O(n).
  * Where n is the size of the array.
  */
+template<SegTreeKind K, typename T>
 class SegTree
 {
 public:
@@ -42,14 +49,13 @@ public:
      * visited per query.
      */
     struct Node {
-        SegTreeKind kind;
-        int value, lazy;
-        pair<int, bool> set;
+        T value, lazy;
+        pair<T, bool> set;
 
-        Node(const SegTreeKind kind) :
-            kind(kind), lazy(0), set(0, false)
+        Node() :
+            lazy(0), set(0, false)
         {
-            switch(kind){
+            switch(K){
                 case SegTreeKind::RMaxQ:
                     value = -INF;
                     break;
@@ -64,16 +70,16 @@ public:
             }
         }
 
-        Node(const SegTreeKind kind, const int value, const int lazy = 0) :
-            kind(kind), value(value), lazy(lazy), set(0, false) {}
+        Node(const T value, const T lazy = 0) :
+            value(value), lazy(lazy), set(0, false) {}
 
         /**
          * Checks if a value matches with this->value
          * according to the kind of the Segment Tree.
          */
-        bool match(const int value) const
+        bool match(const T value) const
         {
-            switch(kind){
+            switch(K){
                 case SegTreeKind::RMaxQ:
                     return this->value >= value;
                     // return this->value > value;
@@ -87,34 +93,73 @@ public:
             }
         }
 
+        void update(const size_t range)
+        {
+            if(set.ss){
+                switch (K){
+                    case SegTreeKind::RMaxQ:
+                    case SegTreeKind::RMinQ:
+                        value = set.ff;
+                        break;
+                    case SegTreeKind::RSumQ:
+                        value = range*set.ff;
+                        break;
+                    case SegTreeKind::RXorQ:
+                        value = (range%2)*set.ff;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            switch (K){
+                case SegTreeKind::RMaxQ:
+                case SegTreeKind::RMinQ:
+                    value += lazy;
+                    break;
+                case SegTreeKind::RSumQ:
+                    value += range*lazy;
+                    break;
+                case SegTreeKind::RXorQ:
+                default:
+                    break;
+            }
+
+            lazy = 0;
+            set = {0, false};
+        }
+
         /**
          * Merges two nodes into a new one according
          * to the kind of the Segment Tree.
          */
-        static Node merge(const SegTreeKind kind, const Node lhs, const Node rhs)
+        static Node merge(const Node lhs, const Node rhs)
         {
             assert(lhs.lazy == 0 and rhs.lazy == 0);
             assert(!lhs.set.ss and !rhs.set.ss);
-            switch(kind){
+            switch(K){
                 case SegTreeKind::RMaxQ:
-                    return Node(kind, max(lhs.value, rhs.value));
+                    return Node(max(lhs.value, rhs.value));
                 case SegTreeKind::RMinQ:
-                    return Node(kind, min(lhs.value, rhs.value));
+                    return Node(min(lhs.value, rhs.value));
                 case SegTreeKind::RSumQ:
-                    return Node(kind, lhs.value + rhs.value);
+                    return Node(lhs.value + rhs.value);
                 case SegTreeKind::RXorQ:
-                    return Node(kind, lhs.value ^ rhs.value);
+                    return Node(lhs.value ^ rhs.value);
                 default:
                     assert(false);
             }
         }
     };
 
-    SegTree(const SegTreeKind kind, const int arr_size) :
-        kind(kind), tree(4*arr_size, Node(kind)), arr_size(arr_size) {}
+    SegTree(const size_t arr_size) :
+        tree(4*arr_size), arr_size(arr_size) {}
 
-    SegTree(const SegTreeKind kind, const vi &arr) :
-        kind(kind), tree(4*arr.size(), Node(kind)), arr_size(arr.size())
+    SegTree(const vector<T> &arr) :
+        SegTree(arr.size(), arr) {}
+
+    SegTree(const size_t arr_size, const vector<T> &arr) :
+        tree(4*arr_size), arr_size(arr_size)
     {
         build(0, arr_size-1, 0, arr);
     }
@@ -129,7 +174,7 @@ public:
      * Time Complexity: O(log(n)).
      * Where n is the size of the array.
      */
-    int find(const int value)
+    size_t find(const T value)
     {
         return find(0, arr_size-1, 0, value);
     }
@@ -140,9 +185,9 @@ public:
      * Time Complexity: O(log(n)).
      * Where n is the size of the array.
      */
-    int query(const int i)
+    T query(const size_t i)
     {
-        assert(0 <= i and i < arr_size);
+        assert(i and i < arr_size);
         return query(i, i);
     }
 
@@ -153,9 +198,9 @@ public:
      * Time Complexity: O(log(n)).
      * Where n is the size of the array.
      */
-    int query(const int l, const int r)
+    T query(const size_t l, const size_t r)
     {
-        assert(0 <= l and l <= r and r < arr_size);
+        assert(l <= r and r < arr_size);
         return query(0, arr_size-1, l, r, 0).value;
     }
 
@@ -165,9 +210,9 @@ public:
      * Time Complexity: O(log(n)).
      * Where n is the size of the array.
      */
-    void set(const int i, const int value)
+    void set(const size_t i, const T value)
     {
-        assert(0 <= i and i < arr_size);
+        assert(i < arr_size);
         set(i, i, value);
     }
 
@@ -178,9 +223,9 @@ public:
      * Time Complexity: O(log(n)).
      * Where n is the size of the array.
      */
-    void set(const int l, const int r, const int value)
+    void set(const size_t l, const size_t r, const T value)
     {
-        assert(0 <= l and l <= r and r < arr_size);
+        assert(l <= r and r < arr_size);
         set(0, arr_size-1, l, r, 0, value);
     }
 
@@ -191,9 +236,9 @@ public:
      * Time Complexity: O(log(n)).
      * Where n is the size of the array.
      */
-    void update(const int i, const int delta)
+    void update(const size_t i, const T delta)
     {
-        assert(0 <= i and i < arr_size);
+        assert(i < arr_size);
         update(i, i, delta);
     }
 
@@ -205,23 +250,37 @@ public:
      * Time Complexity: O(log(n)).
      * Where n is the size of the array.
      */
-    void update(const int l, const int r, const int delta)
+    void update(const size_t l, const size_t r, const T delta)
     {
-        assert(0 <= l and l <= r and r < arr_size);
+        assert(l <= r and r < arr_size);
         update(0, arr_size-1, l, r, 0, delta);
     }
 
-private:
-    Node build(const int l, const int r, const int pos, const vi &arr)
+    /**
+     * Merges two trees into a new one according
+     * to the kind of the Segment Tree.
+     */
+    static SegTree merge(const SegTree &lhs, const SegTree &rhs)
     {
-        if(l == r)
-            return tree[pos] = Node(kind, arr[l]);
+        assert(lhs.arr_size == rhs.arr_size);
 
-        int mid = (l + r)/2;
-        return tree[pos] = Node::merge(kind, build(l, mid, 2*pos+1, arr), build(mid+1, r, 2*pos+2, arr));
+        SegTree result(lhs.arr_size);
+        for(size_t i=0; i<4*lhs.arr_size; ++i)
+            result.tree[i] = Node::merge(lhs.tree[i], rhs.tree[i]);
+        return result;
     }
 
-    int find(const int l, const int r, const int pos, const int value)
+private:
+    Node build(const size_t l, const size_t r, const size_t pos, const vector<T> &arr)
+    {
+        if(l == r)
+            return tree[pos] = Node(arr[l]);
+
+        size_t mid = (l + r)/2;
+        return tree[pos] = Node::merge(build(l, mid, 2*pos+1, arr), build(mid+1, r, 2*pos+2, arr));
+    }
+
+    size_t find(const size_t l, const size_t r, const size_t pos, const T value)
     {
         propagate(l, r, pos);
 
@@ -230,26 +289,26 @@ private:
         else if(l == r)
             return l;
 
-        int mid = (l + r)/2;
-        int ans = find(l, mid, 2*pos+1, value);
+        size_t mid = (l + r)/2;
+        size_t ans = find(l, mid, 2*pos+1, value);
         return ans != arr_size? ans : find(mid+1, r, 2*pos+2, value);
     }
 
-    Node query(const int l, const int r, const int i, const int j, const int pos)
+    Node query(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos)
     {
         propagate(l, r, pos);
 
         if(l > r or l > j or r < i)
-            return Node(kind);
+            return Node();
 
         if(l >= i and r <= j)
             return tree[pos];
 
-        int mid = (l + r)/2;
-        return Node::merge(kind, query(l, mid, i, j, 2*pos+1), query(mid+1, r, i, j, 2*pos+2));
+        size_t mid = (l + r)/2;
+        return Node::merge(query(l, mid, i, j, 2*pos+1), query(mid+1, r, i, j, 2*pos+2));
     }
 
-    Node set(const int l, const int r, const int i, const int j, const int pos, const int value)
+    Node set(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos, const T value)
     {
         propagate(l, r, pos);
 
@@ -263,11 +322,11 @@ private:
             return tree[pos];
         }
 
-        int mid = (l + r)/2;
-        return tree[pos] = Node::merge(kind, set(l, mid, i, j, 2*pos+1, value), set(mid+1, r, i, j, 2*pos+2, value));
+        size_t mid = (l + r)/2;
+        return tree[pos] = Node::merge(set(l, mid, i, j, 2*pos+1, value), set(mid+1, r, i, j, 2*pos+2, value));
     }
 
-    Node update(const int l, const int r, const int i, const int j, const int pos, const int delta)
+    Node update(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos, const T delta)
     {
         propagate(l, r, pos);
 
@@ -281,47 +340,19 @@ private:
             return tree[pos];
         }
 
-        int mid = (l + r)/2;
-        return tree[pos] = Node::merge(kind, update(l, mid, i, j, 2*pos+1, delta), update(mid+1, r, i, j, 2*pos+2, delta));
+        size_t mid = (l + r)/2;
+        return tree[pos] = Node::merge(update(l, mid, i, j, 2*pos+1, delta), update(mid+1, r, i, j, 2*pos+2, delta));
     }
 
-    void propagate(int l, int r, int pos)
+    void propagate(const size_t l, const size_t r, const size_t pos)
     {
-        int lazy = tree[pos].lazy;
-        pair<int, bool> set = tree[pos].set;
+        T lazy = tree[pos].lazy;
+        pair<T, bool> set = tree[pos].set;
 
         if(lazy == 0 and !set.ss)
             return;
 
-        if(set.ss){
-            switch (kind){
-                case SegTreeKind::RMaxQ:
-                case SegTreeKind::RMinQ:
-                    tree[pos].value = set.ff;
-                    break;
-                case SegTreeKind::RSumQ:
-                    tree[pos].value = (r - l + 1)*set.ff;
-                    break;
-                case SegTreeKind::RXorQ:
-                    tree[pos].value = ((r - l + 1)%2)*set.ff;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        switch (kind){
-            case SegTreeKind::RMaxQ:
-            case SegTreeKind::RMinQ:
-                tree[pos].value += lazy;
-                break;
-            case SegTreeKind::RSumQ:
-                tree[pos].value += (r - l + 1)*lazy;
-                break;
-            case SegTreeKind::RXorQ:
-            default:
-                break;
-        }
+        tree[pos].update((r - l + 1));
 
         if(l != r){
             if(set.ss){
@@ -334,12 +365,8 @@ private:
             tree[2*pos+1].lazy += lazy;
             tree[2*pos+2].lazy += lazy;
         }
-
-        tree[pos].lazy = 0;
-        tree[pos].set = {0, false};
     }
 
-    SegTreeKind kind;
     vector<Node> tree;
-    int arr_size;
+    size_t arr_size;
 };
