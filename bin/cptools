@@ -42,7 +42,6 @@ def create_environment(args):
         "    return 0;\n"
         "}\n"
     )
-    print(content)
 
     if args.contest is ContestKind.CODEFORCES:
         with open(os.path.join(env_dir, "a.cpp"), "w") as f:
