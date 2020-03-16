@@ -31,8 +31,6 @@ def dfs(abspath, path, texfile, indent = 0):
         texfile.write(f'{" " * indent}}}\n\n')
 
 def main():
-    cwdir = os.getcwd()
-
     lib_dir = os.path.dirname(
         os.path.dirname(
             os.path.abspath(__file__)
@@ -61,7 +59,7 @@ def main():
     subprocess.run(["pdflatex", "cpplib.tex"])
     #: running twice to generate the table of contents.
     subprocess.run(["pdflatex", "cpplib.tex"])
-    os.chdir(cwdir)
+    os.chdir(os.getcwd())
     os.unlink(os.path.join(latex_dir, "codes"))
 
     shutil.copy(os.path.join(latex_dir, "cpplib.pdf"), lib_dir)
