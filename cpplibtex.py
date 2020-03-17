@@ -31,11 +31,7 @@ def dfs(abspath, path, texfile, indent = 0):
         texfile.write(f'{" " * indent}}}\n\n')
 
 def main():
-    lib_dir = os.path.dirname(
-        os.path.dirname(
-            os.path.abspath(__file__)
-        )
-    )
+    lib_dir = os.path.dirname(os.path.abspath(__file__))
     latex_dir = os.path.join(lib_dir, ".latex")
     cpplib_dir = os.path.join(lib_dir, "include", "cpplib")
 
