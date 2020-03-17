@@ -1,0 +1,5 @@
+#!/bin/bash
+
+LIB_DIR="$(dirname "${BASH_SOURCE[0]#./}")/.."
+
+exec cpp -Dsystem_include="#include" -nostdinc -I "$LIB_DIR/include" -I "$LIB_DIR/stdlib" -C -traditional-cpp $@

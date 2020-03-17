@@ -1,0 +1,11 @@
+#!/bin/bash
+
+input="$1"
+shift
+[[ $input == -* ]] || [ -z "$input" ] && {
+    echo "usage: $(basename "$0") file [options]"
+    exit 1
+}
+
+CXX=${CXX:-g++}
+exec "$(dirname "${BASH_SOURCE[0]#./}")/cp-expand" "$input" | $CXX -x c++ - $@

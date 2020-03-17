@@ -56,7 +56,7 @@ def create_environment(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        prog="cptools",
+        prog="cp-tools",
         description="facilitates the use of the c++ competitive programming personal library"
     )
     subparsers = parser.add_subparsers(title="commands")
