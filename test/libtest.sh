@@ -21,13 +21,13 @@ function dfs {
 
         $CXX $CXXFLAGS $CPPFLAGS $sample -o "${sample%.*}.out"
 
-        for stdin_file in ${sample%.*}*.stdin; do
+        for stdin_file in ${sample%.*}_*.stdin; do
             [[ exit_code ]] || break
 
             stdout_file="${stdin_file%.*}.stdout"
 
             printf "Testing ${stdin_file%.*}... "
-            if "./${sample%.*}.out" < "$stdin_file" | diff - "$stdout_file" > "$tempfile"; then
+            if "./${sample%.*}.out" < "$stdin_file" | diff - "$stdout_file" -Z > "$tempfile"; then
                 printf "\033[0;32mOK\033[0m\n"
             else
                 printf "\033[0;31mFAILED\033[0m\n"

@@ -1,21 +1,19 @@
 #include <cpplib/header.hpp>
+#include <cpplib/data-structures/trees/segment-tree.hpp>
 #include <cpplib/data-structures/trees/segment-tree-2d.hpp>
 
-// https://cses.fi/problemset/task/1652
 int32_t main(){
     desync();
     int n, q;
     cin >> n >> q;
-
+    vector<string> s(n);
+    for(auto &i:s)
+        cin >> i;
     vvi mat(n, vi(n));
-    for(vi &i:mat){
-        for(int &j:i){
-            char c;
-            cin >> c;
-            j = (c == '*');
-        }
+    for(int i=0; i<n; ++i){
+        for(int j=0; j<n; ++j)
+            mat[i][j] = (s[i][j] == '*');
     }
-
     SegTree2D<SegTreeKind::RSumQ, int> st(mat);
     while(q--){
         int y1, x1, y2, x2;
