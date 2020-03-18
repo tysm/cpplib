@@ -1,5 +1,6 @@
 #pragma once
 #include <cpplib/header.hpp>
+#include <cpplib/data-structures/trees/heap.hpp>
 
 /**
  * Bellman Ford.
@@ -20,7 +21,7 @@
  */
 vi bellman(int s, vvii &adj){
     vi dis(adj.size(), INF); dis[s] = 0; // distance from s to s is 0.
-    priority_queue<ii, vii, greater<ii> > pq; pq.push({dis[s], s});
+    min_heap<ii> pq; pq.push({dis[s], s});
 
     while(!pq.empty()){
         ii top = pq.top(); pq.pop();

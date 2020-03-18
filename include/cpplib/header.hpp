@@ -31,11 +31,6 @@ using vvd = vector<vd>;
 using vvb = vector<vb>;
 using vvii = vector<vii>;
 
-template<typename T>
-using max_heap = priority_queue<T>;
-template<typename T>
-using min_heap = priority_queue<T, vector<T>, greater<T> >;
-
 #define ff first
 #define ss second
 #define pb push_back
