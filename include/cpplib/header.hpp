@@ -1,10 +1,12 @@
 #pragma once
 #ifndef int
 #   define INT_LL
+#else
 #   undef int
 #endif
 #ifndef double
 #   define DOUBLE_LD
+#else
 #   undef double
 #endif
 #include <bits/stdc++.h>
