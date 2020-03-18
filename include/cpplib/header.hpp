@@ -1,12 +1,23 @@
 #pragma once
+#ifndef int
+#   define INT_LL
+#   undef int
+#endif
+#ifndef double
+#   define DOUBLE_LD
+#   undef double
+#endif
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
+#ifdef INT_LL
+#   define int long long
+#endif
+#ifdef DOUBLE_LD
+#   define double long double
+#endif
 using namespace std;
 using namespace __gnu_pbds;
-
-#define int long long
-#define double long double
 
 using ii = pair<int, int>;
 using vi = vector<int>;
