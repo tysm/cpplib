@@ -31,7 +31,7 @@ function dfs {
                 printf "\033[0;32mOK\033[0m\n"
             else
                 printf "\033[0;31mFAILED\033[0m\n"
-                cat "$tempfile"
+                # cat "$tempfile"
                 exit_code=1
             fi
         done
