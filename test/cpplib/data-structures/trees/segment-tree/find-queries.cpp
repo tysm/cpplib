@@ -2,6 +2,7 @@
 #include <cpplib/data-structures/trees/segment-tree.hpp>
 
 int32_t main(){
+    // https://cses.fi/problemset/task/1143
     desync();
     int n, m;
     cin >> n >> m;
