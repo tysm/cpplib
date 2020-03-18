@@ -187,7 +187,7 @@ public:
      */
     T query(const size_t i)
     {
-        assert(i and i < arr_size);
+        assert(i < arr_size);
         return query(i, i);
     }
 
