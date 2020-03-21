@@ -54,7 +54,7 @@ public:
      * Computes the matrix value in the ith row
      * and jth column.
      *
-     * Time Complexity: O(log(n + m)).
+     * Time Complexity: O(log(n) + log(m)).
      * Where n is the height and m is the width of the matrix.
      */
     T query(const size_t i, const size_t j)
@@ -69,7 +69,7 @@ public:
      * row range [l1, r1] and column range
      * [l2, r2] of the matrix.
      *
-     * Time Complexity: O(log(n + m)).
+     * Time Complexity: O(log(n) + log(m)).
      * Where n is the height and m is the width of the matrix.
      */
     T query(const size_t l1, const size_t r1, const size_t l2, const size_t r2)
@@ -84,7 +84,7 @@ public:
      * row and jth column according to the kind
      * of the Segment Tree.
      *
-     * Time Complexity: O(log(n + m)).
+     * Time Complexity: O(log(n)*log(m)).
      * Where n is the height and m is the width of the matrix.
      */
     void update(const size_t i, const size_t j, const T value)
@@ -106,7 +106,7 @@ private:
 
     typename SegTree<K, T>::Node query(const size_t l, const size_t r, const size_t i1, const size_t i2, const size_t pos, const size_t j1, const size_t j2)
     {
-        if(l > r or l > i2 or r < i1)
+        if(l > i2 or r < i1)
             return typename SegTree<K, T>::Node();
 
         if(l >= i1 and r <= i2)
@@ -118,7 +118,7 @@ private:
 
     void update(const size_t l, const size_t r, const size_t i, const size_t pos, const size_t j, const T delta)
     {
-        if(l > r or l > i or r < i)
+        if(l > i or r < i)
             return;
 
         tree[pos].update(j, delta);

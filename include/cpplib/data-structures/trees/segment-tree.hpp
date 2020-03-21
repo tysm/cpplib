@@ -298,7 +298,7 @@ private:
     {
         propagate(l, r, pos);
 
-        if(l > r or l > j or r < i)
+        if(l > j or r < i)
             return Node();
 
         if(l >= i and r <= j)
@@ -312,7 +312,7 @@ private:
     {
         propagate(l, r, pos);
 
-        if(l > r or l > j or r < i)
+        if(l > j or r < i)
             return tree[pos];
 
         if(l >= i and r <= j){
@@ -330,7 +330,7 @@ private:
     {
         propagate(l, r, pos);
 
-        if(l > r or l > j or r < i)
+        if(l > j or r < i)
             return tree[pos];
 
         if(l >= i and r <= j){
