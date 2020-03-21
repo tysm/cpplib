@@ -30,8 +30,9 @@ enum class SegTreeKind
  * Note: it's recommended to remove the
  * pair<T, bool> set from SegTree<K, T>::Node
  * when it's not being used since it costs
- * a bunch of memory when many Segment Trees
- * are constructed (e.g., Segment Tree 2D).
+ * a bunch of time and memory when many
+ * Segment Trees are constructed
+ * (e.g., Segment Tree 2D).
  *
  * Time Complexity: O(n).
  * Space Complexity: O(n).

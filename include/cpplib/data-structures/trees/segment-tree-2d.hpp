@@ -16,15 +16,15 @@
  * - Range Xor Query.
  *
  * Note: when the tree is constructed by
- * inserting each value one by one using set
- * and/or update, the time complexity is
- * actually O(n*m*log(n + m)).
+ * inserting each value one by one using
+ * update, the time complexity is actually
+ * O(n*m*log(n)*log(m)).
  *
  * Note: it's recommended to remove the
  * pair<T, bool> set from SegTree<K, T>::Node
  * when it's not being used since it costs
- * a bunch of memory when many Segment Trees
- * are constructed.
+ * a bunch of time and memory when many
+ * Segment Trees are constructed.
  *
  * Time Complexity: O(n*m).
  * Space Complexity: O(n*m).
