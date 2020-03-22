@@ -1,8 +1,8 @@
 #include <cpplib/header.hpp>
-#include <cpplib/data-structures/trees/segment-tree.hpp>
 #include <cpplib/data-structures/trees/segment-tree-2d.hpp>
 
 int32_t main(){
+    // https://cses.fi/problemset/task/1652
     desync();
     int n, q;
     cin >> n >> q;

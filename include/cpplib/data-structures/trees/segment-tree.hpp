@@ -30,8 +30,8 @@ enum class SegTreeKind
  * Note: it's recommended to remove the
  * pair<T, bool> set from SegTree<K, T>::Node
  * when it's not being used since it costs
- * a bunch of time and memory when many
- * Segment Trees are constructed
+ * a bunch of time and memory mainly when
+ * many Segment Trees are constructed
  * (e.g., Segment Tree 2D).
  *
  * Time Complexity: O(n).
@@ -50,11 +50,10 @@ public:
      * visited per query.
      */
     struct Node {
-        T value, lazy;
-        pair<T, bool> set;
+        T value, lazy = 0;
+        pair<T, bool> set = {0, false};
 
-        Node() :
-            lazy(0), set(0, false)
+        Node()
         {
             switch(K){
                 case SegTreeKind::RMaxQ:
@@ -71,12 +70,38 @@ public:
             }
         }
 
-        Node(const T value, const T lazy = 0) :
-            value(value), lazy(lazy), set(0, false) {}
+        Node(const T value) :
+            value(value) {}
+
+        /**
+         * Merges two nodes into a new one according
+         * to the SegmentTreeKind.
+         */
+        Node(const Node &lhs, const Node &rhs)
+        {
+            assert(lhs.lazy == 0 and rhs.lazy == 0);
+            assert(!lhs.set.ss and !rhs.set.ss);
+            switch(K){
+                case SegTreeKind::RMaxQ:
+                    value = max(lhs.value, rhs.value);
+                    break;
+                case SegTreeKind::RMinQ:
+                    value = min(lhs.value, rhs.value);
+                    break;
+                case SegTreeKind::RSumQ:
+                    value = lhs.value + rhs.value;
+                    break;
+                case SegTreeKind::RXorQ:
+                    value = lhs.value ^ rhs.value;
+                    break;
+                default:
+                    assert(false);
+            }
+        }
 
         /**
          * Checks if a value matches with this->value
-         * according to the kind of the Segment Tree.
+         * according to the SegmentTreeKind.
          */
         bool match(const T value) const
         {
@@ -129,28 +154,6 @@ public:
             lazy = 0;
             set = {0, false};
         }
-
-        /**
-         * Merges two nodes into a new one according
-         * to the kind of the Segment Tree.
-         */
-        static Node merge(const Node lhs, const Node rhs)
-        {
-            assert(lhs.lazy == 0 and rhs.lazy == 0);
-            assert(!lhs.set.ss and !rhs.set.ss);
-            switch(K){
-                case SegTreeKind::RMaxQ:
-                    return Node(max(lhs.value, rhs.value));
-                case SegTreeKind::RMinQ:
-                    return Node(min(lhs.value, rhs.value));
-                case SegTreeKind::RSumQ:
-                    return Node(lhs.value + rhs.value);
-                case SegTreeKind::RXorQ:
-                    return Node(lhs.value ^ rhs.value);
-                default:
-                    assert(false);
-            }
-        }
     };
 
     SegTree(const size_t arr_size) :
@@ -163,6 +166,18 @@ public:
         tree(4*arr_size), arr_size(arr_size)
     {
         build(0, arr_size-1, 0, arr);
+    }
+
+    /**
+     * Merges two trees into a new one according
+     * to the SegmentTreeKind.
+     */
+    SegTree(const SegTree &lhs, const SegTree &rhs) :
+        SegTree(lhs.arr_size)
+    {
+        assert(lhs.arr_size == rhs.arr_size);
+        for(size_t i=0; i<4*arr_size; ++i)
+            tree[i] = Node(lhs.tree[i], rhs.tree[i]);
     }
 
     /**
@@ -232,7 +247,7 @@ public:
 
     /**
      * Updates the ith array value according to
-     * the kind of the Segment Tree.
+     * the SegmentTreeKind.
      *
      * Time Complexity: O(log(n)).
      * Where n is the size of the array.
@@ -245,8 +260,7 @@ public:
 
     /**
      * Updates the array values in the range
-     * [l, r] according to the kind of the
-     * Segment Tree.
+     * [l, r] according to the SegmentTreeKind.
      *
      * Time Complexity: O(log(n)).
      * Where n is the size of the array.
@@ -257,20 +271,6 @@ public:
         update(0, arr_size-1, l, r, 0, delta);
     }
 
-    /**
-     * Merges two trees into a new one according
-     * to the kind of the Segment Tree.
-     */
-    static SegTree merge(const SegTree &lhs, const SegTree &rhs)
-    {
-        assert(lhs.arr_size == rhs.arr_size);
-
-        SegTree result(lhs.arr_size);
-        for(size_t i=0; i<4*lhs.arr_size; ++i)
-            result.tree[i] = Node::merge(lhs.tree[i], rhs.tree[i]);
-        return result;
-    }
-
 private:
     Node build(const size_t l, const size_t r, const size_t pos, const vector<T> &arr)
     {
@@ -278,7 +278,7 @@ private:
             return tree[pos] = Node(arr[l]);
 
         size_t mid = (l + r)/2;
-        return tree[pos] = Node::merge(build(l, mid, 2*pos+1, arr), build(mid+1, r, 2*pos+2, arr));
+        return tree[pos] = Node(build(l, mid, 2*pos+1, arr), build(mid+1, r, 2*pos+2, arr));
     }
 
     size_t find(const size_t l, const size_t r, const size_t pos, const T value)
@@ -306,7 +306,7 @@ private:
             return tree[pos];
 
         size_t mid = (l + r)/2;
-        return Node::merge(query(l, mid, i, j, 2*pos+1), query(mid+1, r, i, j, 2*pos+2));
+        return Node(query(l, mid, i, j, 2*pos+1), query(mid+1, r, i, j, 2*pos+2));
     }
 
     Node set(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos, const T value)
@@ -318,13 +318,13 @@ private:
 
         if(l >= i and r <= j){
             tree[pos].set = {value, true};
-            // it's important to propagate before returning and Node::merge.
+            // it's important to propagate before returning and merge nodes.
             propagate(l, r, pos);
             return tree[pos];
         }
 
         size_t mid = (l + r)/2;
-        return tree[pos] = Node::merge(set(l, mid, i, j, 2*pos+1, value), set(mid+1, r, i, j, 2*pos+2, value));
+        return tree[pos] = Node(set(l, mid, i, j, 2*pos+1, value), set(mid+1, r, i, j, 2*pos+2, value));
     }
 
     Node update(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos, const T delta)
@@ -336,13 +336,13 @@ private:
 
         if(l >= i and r <= j){
             tree[pos].lazy = delta;
-            // it's important to propagate before returning and Node::merge.
+            // it's important to propagate before returning and merge nodes.
             propagate(l, r, pos);
             return tree[pos];
         }
 
         size_t mid = (l + r)/2;
-        return tree[pos] = Node::merge(update(l, mid, i, j, 2*pos+1, delta), update(mid+1, r, i, j, 2*pos+2, delta));
+        return tree[pos] = Node(update(l, mid, i, j, 2*pos+1, delta), update(mid+1, r, i, j, 2*pos+2, delta));
     }
 
     void propagate(const size_t l, const size_t r, const size_t pos)

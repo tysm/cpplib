@@ -23,8 +23,8 @@
  * Note: it's recommended to remove the
  * pair<T, bool> set from SegTree<K, T>::Node
  * when it's not being used since it costs
- * a bunch of time and memory when many
- * Segment Trees are constructed.
+ * a bunch of time and memory mainly when
+ * many Segment Trees are constructed.
  *
  * Time Complexity: O(n*m).
  * Space Complexity: O(n*m).
@@ -81,8 +81,8 @@ public:
 
     /**
      * Updates the the matrix value in the ith
-     * row and jth column according to the kind
-     * of the Segment Tree.
+     * row and jth column according to the
+     * SegmentTreeKind.
      *
      * Time Complexity: O(log(n)*log(m)).
      * Where n is the height and m is the width of the matrix.
@@ -101,7 +101,7 @@ private:
             return tree[pos] = SegTree<K, T>(mat[l]);
 
         size_t mid = (l + r)/2;
-        return tree[pos] = SegTree<K, T>::merge(build(l, mid, 2*pos+1, mat), build(mid+1, r, 2*pos+2, mat));
+        return tree[pos] = SegTree<K, T>(build(l, mid, 2*pos+1, mat), build(mid+1, r, 2*pos+2, mat));
     }
 
     typename SegTree<K, T>::Node query(const size_t l, const size_t r, const size_t i1, const size_t i2, const size_t pos, const size_t j1, const size_t j2)
@@ -113,7 +113,7 @@ private:
             return typename SegTree<K, T>::Node(tree[pos].query(j1, j2));
 
         size_t mid = (l + r)/2;
-        return SegTree<K, T>::Node::merge(query(l, mid, i1, i2, 2*pos+1, j1, j2), query(mid+1, r, i1, i2, 2*pos+2, j1, j2));
+        return typename SegTree<K, T>::Node(query(l, mid, i1, i2, 2*pos+1, j1, j2), query(mid+1, r, i1, i2, 2*pos+2, j1, j2));
     }
 
     void update(const size_t l, const size_t r, const size_t i, const size_t pos, const size_t j, const T delta)
