@@ -53,22 +53,8 @@ public:
         T value, lazy = 0;
         pair<T, bool> set = {0, false};
 
-        Node()
-        {
-            switch(K){
-                case SegTreeKind::RMaxQ:
-                    value = -INF;
-                    break;
-                case SegTreeKind::RMinQ:
-                    value = INF;
-                    break;
-                case SegTreeKind::RSumQ:
-                case SegTreeKind::RXorQ:
-                default:
-                    value = 0;
-                    break;
-            }
-        }
+        Node() :
+            value(Node::default_value()) {}
 
         Node(const T value) :
             value(value) {}
@@ -81,22 +67,7 @@ public:
         {
             assert(lhs.lazy == 0 and rhs.lazy == 0);
             assert(!lhs.set.ss and !rhs.set.ss);
-            switch(K){
-                case SegTreeKind::RMaxQ:
-                    value = max(lhs.value, rhs.value);
-                    break;
-                case SegTreeKind::RMinQ:
-                    value = min(lhs.value, rhs.value);
-                    break;
-                case SegTreeKind::RSumQ:
-                    value = lhs.value + rhs.value;
-                    break;
-                case SegTreeKind::RXorQ:
-                    value = lhs.value ^ rhs.value;
-                    break;
-                default:
-                    assert(false);
-            }
+            value = Node::merge_values(lhs.value, rhs.value);
         }
 
         /**
@@ -134,7 +105,7 @@ public:
                         value = (range%2)*set.ff;
                         break;
                     default:
-                        break;
+                        assert(false);
                 }
             }
 
@@ -147,14 +118,49 @@ public:
                     value += range*lazy;
                     break;
                 case SegTreeKind::RXorQ:
-                default:
                     break;
+                default:
+                    assert(false);
             }
 
             lazy = 0;
             set = {0, false};
         }
+
+        static T default_value()
+        {
+            switch(K){
+                case SegTreeKind::RMaxQ:
+                    return -INF;
+                case SegTreeKind::RMinQ:
+                    return INF;
+                case SegTreeKind::RSumQ:
+                    return 0;
+                case SegTreeKind::RXorQ:
+                    return 0;
+                default:
+                    assert(false);
+            }
+        }
+
+        static T merge_values(const T lhs, const T rhs)
+        {
+            switch(K){
+                case SegTreeKind::RMaxQ:
+                    return max(lhs, rhs);
+                case SegTreeKind::RMinQ:
+                    return min(lhs, rhs);
+                case SegTreeKind::RSumQ:
+                    return lhs + rhs;
+                case SegTreeKind::RXorQ:
+                    return lhs ^ rhs;
+                default:
+                    assert(false);
+            }
+        }
     };
+
+    SegTree() = delete;
 
     SegTree(const size_t arr_size) :
         tree(4*arr_size), arr_size(arr_size) {}
@@ -217,7 +223,7 @@ public:
     T query(const size_t l, const size_t r)
     {
         assert(l <= r and r < arr_size);
-        return query(0, arr_size-1, l, r, 0).value;
+        return query(0, arr_size-1, l, r, 0);
     }
 
     /**
@@ -295,18 +301,18 @@ private:
         return ans != arr_size? ans : find(mid+1, r, 2*pos+2, value);
     }
 
-    Node query(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos)
+    T query(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos)
     {
         propagate(l, r, pos);
 
         if(l > j or r < i)
-            return Node();
+            return Node::default_value();
 
         if(l >= i and r <= j)
-            return tree[pos];
+            return tree[pos].value;
 
         size_t mid = (l + r)/2;
-        return Node(query(l, mid, i, j, 2*pos+1), query(mid+1, r, i, j, 2*pos+2));
+        return Node::merge_values(query(l, mid, i, j, 2*pos+1), query(mid+1, r, i, j, 2*pos+2));
     }
 
     Node set(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos, const T value)

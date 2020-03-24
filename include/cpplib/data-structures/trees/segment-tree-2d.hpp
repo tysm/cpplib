@@ -34,6 +34,8 @@ template<SegTreeKind K, typename T>
 class SegTree2D
 {
 public:
+    SegTree2D() = delete;
+
     SegTree2D(const size_t mat_height, const size_t mat_width) :
         tree(4*mat_height, SegTree<K, T>(mat_width)),
         mat_height(mat_height), mat_width(mat_width) {}
