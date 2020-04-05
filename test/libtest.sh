@@ -27,7 +27,7 @@ function dfs {
             stdout_file="${stdin_file%.*}.stdout"
 
             printf "Testing ${stdin_file%.*}... "
-            if "./${sample%.*}.out" < "$stdin_file" | diff - "$stdout_file" -Z > "$tempfile"; then
+            if "./${sample%.*}.out" < "$stdin_file" | diff - "$stdout_file" -BZ > "$tempfile"; then
                 printf "\033[0;32mOK\033[0m\n"
             else
                 printf "\033[0;31mFAILED\033[0m\n"

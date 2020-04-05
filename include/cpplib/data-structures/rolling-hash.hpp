@@ -39,7 +39,7 @@ public:
      */
     void push_back(const uint value)
     {
-        assert(value >= 0 and value < base);
+        assert(value < base);
         if(base_pows.size() == hash_table.size()-1){
             if(base_pows.size() == 0)
                 base_pows.pb({1, 1});
