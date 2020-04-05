@@ -5,7 +5,8 @@
  * Manacher.
  *
  * Computes the bounds of the longest
- * palindromic substring given a string.
+ * palindromic substring of the given
+ * string.
  *
  * Time Complexity: O(n).
  * Space Complexity: O(n).

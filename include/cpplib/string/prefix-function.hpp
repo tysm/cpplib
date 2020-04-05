@@ -6,7 +6,7 @@
  *
  * Computes the length of the longest
  * proper prefix which is also a suffix for
- * each prefix of a given string.
+ * each prefix of the given string.
  *
  * Time Complexity: O(n).
  * Space Complexity: O(n).
