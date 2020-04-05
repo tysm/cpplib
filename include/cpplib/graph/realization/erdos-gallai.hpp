@@ -1,14 +1,15 @@
 #pragma once
-#include <cpplib/header.hpp>
+#include <cpplib/stdinc.hpp>
 #include <cpplib/utility/sort/count-sort.hpp>
 
 /**
  * Erdos Gallai.
  *
- * Provides a graph realization check
- * given its vertices degrees.
+ * Provides a graph realization check given
+ * its vertices degrees.
  *
  * Time Complexity: O(n).
+ * Space Complexity: O(max(n, MAX)).
  * Where n is the size of the graph.
  */
 bool erdos(vi dgrs){

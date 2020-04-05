@@ -1,5 +1,5 @@
 #pragma once
-#include <cpplib/header.hpp>
+#include <cpplib/stdinc.hpp>
 
 template<typename T>
 using max_heap = priority_queue<T>;

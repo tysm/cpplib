@@ -1,22 +1,28 @@
 #pragma once
-#include <cpplib/header.hpp>
+#include <cpplib/stdinc.hpp>
 #include <cpplib/data-structures/trees/heap.hpp>
 
 /**
- * Dijkstra.
+ * Bellman Ford.
  *
  * Computes the shortest path from a source
- * to all other vertices in a weighted graph
- * given its weighted vertex adjacencies.
+ * to all other vertices in a weighted
+ * graph given its weighted vertex
+ * adjacencies.
+ *
+ * Note: It also supports negative weights
+ * and detects negative cycles.
  *
  * Note: in orther to retrieve the shortest
- * path we can store the predecessor of each
- * vertex when a successful relaxation occurs.
+ * path we can store the predecessor of
+ * each vertex when a successful relaxation
+ * occurs.
  *
  * Time Complexity: O(m*log(n)).
+ * Space Complexity: O(n).
  * Where n is the size of the graph and m is the quantity of edges.
  */
-vi dijkstra(int s, vvii &adj){
+vi bellman(const int s, const vvii &adj){
     vi dis(adj.size(), INF); dis[s] = 0; // distance from s to s is 0.
     min_heap<ii> pq; pq.push({dis[s], s});
 

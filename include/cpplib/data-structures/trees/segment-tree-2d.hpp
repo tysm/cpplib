@@ -1,13 +1,14 @@
 #pragma once
-#include <cpplib/header.hpp>
+#include <cpplib/stdinc.hpp>
 #include <cpplib/data-structures/trees/segment-tree.hpp>
 
 /**
  * Segment Tree 2D.
  *
- * Arranges data in a binary tree so that it
- * is possible to perform range queries and
- * point updates over a matrix effectively.
+ * Arranges data in a binary tree so that
+ * it is possible to perform range queries
+ * and point updates over a matrix
+ * effectively.
  *
  * Common kinds of use:
  * - Range Max Query;
@@ -21,10 +22,11 @@
  * O(n*m*log(n)*log(m)).
  *
  * Note: it's recommended to remove the
- * pair<T, bool> set from SegTree<K, T>::Node
- * when it's not being used since it costs
- * a bunch of time and memory mainly when
- * many Segment Trees are constructed.
+ * pair<T, bool> set from
+ * SegTree<K, T>::Node when it's not being
+ * used since it costs a bunch of time and
+ * memory mainly when many Segment Trees
+ * are constructed.
  *
  * Time Complexity: O(n*m).
  * Space Complexity: O(n*m).
@@ -57,6 +59,7 @@ public:
      * and jth column.
      *
      * Time Complexity: O(log(n) + log(m)).
+     * Space Complexity: O(log(n) + log(m)).
      * Where n is the height and m is the width of the matrix.
      */
     T query(const size_t i, const size_t j)
@@ -72,6 +75,7 @@ public:
      * [l2, r2] of the matrix.
      *
      * Time Complexity: O(log(n) + log(m)).
+     * Space Complexity: O(log(n) + log(m)).
      * Where n is the height and m is the width of the matrix.
      */
     T query(const size_t l1, const size_t r1, const size_t l2, const size_t r2)
@@ -87,6 +91,7 @@ public:
      * SegmentTreeKind.
      *
      * Time Complexity: O(log(n)*log(m)).
+     * Space Complexity: O(log(n) + log(m)).
      * Where n is the height and m is the width of the matrix.
      */
     void update(const size_t i, const size_t j, const T value)

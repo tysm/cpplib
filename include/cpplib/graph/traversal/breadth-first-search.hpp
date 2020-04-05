@@ -1,5 +1,5 @@
 #pragma once
-#include <cpplib/header.hpp>
+#include <cpplib/stdinc.hpp>
 
 /**
  * Breadth First Search
@@ -8,13 +8,15 @@
  * graph given its vertex adjacencies.
  *
  * Note: in orther to retrieve the shortest
- * path we can store the predecessor of each
- * vertex when a successful relaxation occurs.
+ * path we can store the predecessor of
+ * each vertex when a successful relaxation
+ * occurs.
  *
  * Time Complexity: O(n + m).
+ * Space Complexity: O(n).
  * Where n is the size of the graph and m is the quantity of edges.
  */
-vi bfs(int s, vvi &adj){
+vi bfs(const int s, const vvi &adj){
     vi dis(adj.size(), INF); dis[s] = 0; // distance from s to s is 0.
     queue<int> q; q.push(s);
 

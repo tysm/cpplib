@@ -1,5 +1,5 @@
 #pragma once
-#include <cpplib/header.hpp>
+#include <cpplib/stdinc.hpp>
 
 using u64 = uint64_t;
 using u128 = __uint128_t;
@@ -13,8 +13,9 @@ using u128 = __uint128_t;
  * that some operations may cause overflow.
  *
  * Time Complexity: O(log(e)).
+ * Space Complexity: O(log(e)).
  */
-u64 ubexpm(u64 b, u64 e, u64 m){
+u64 ubexpm(u64 b, u64 e, const u64 m){
     b %= m;
     u64 res = 1;
     while(e > 0){
@@ -29,12 +30,13 @@ u64 ubexpm(u64 b, u64 e, u64 m){
 /**
  * Miller-Rabin Deterministic Test.
  *
- * Returns true when n is prime,
- * false otherwise.
+ * Returns true when n is prime, false
+ * otherwise.
  *
  * Time Complexity: O(log(n)).
+ * Space Complexity: O(1).
  */
-bool isprime(u64 n){
+bool isprime(const u64 n){
     if(n < 2)
         return false;
 

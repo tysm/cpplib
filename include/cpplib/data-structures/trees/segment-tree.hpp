@@ -1,5 +1,5 @@
 #pragma once
-#include <cpplib/header.hpp>
+#include <cpplib/stdinc.hpp>
 
 enum class SegTreeKind
 {
@@ -12,9 +12,10 @@ enum class SegTreeKind
 /**
  * Segment Tree.
  *
- * Arranges data in a binary tree so that it
- * is possible to perform range queries and
- * modifications over an array effectively.
+ * Arranges data in a binary tree so that
+ * it is possible to perform range queries
+ * and modifications over an array
+ * effectively.
  *
  * Common kinds of use:
  * - Range Max Query;
@@ -23,16 +24,16 @@ enum class SegTreeKind
  * - Range Xor Query.
  *
  * Note: when the tree is constructed by
- * inserting each value one by one using set
- * and/or update, the time complexity is
- * actually O(n*log(n)).
+ * inserting each value one by one using
+ * set and/or update, the time complexity
+ * is actually O(n*log(n)).
  *
  * Note: it's recommended to remove the
- * pair<T, bool> set from SegTree<K, T>::Node
- * when it's not being used since it costs
- * a bunch of time and memory mainly when
- * many Segment Trees are constructed
- * (e.g., Segment Tree 2D).
+ * pair<T, bool> set from
+ * SegTree<K, T>::Node when it's not being
+ * used since it costs a bunch of time and
+ * memory mainly when many Segment Trees
+ * are constructed (e.g., Segment Tree 2D).
  *
  * Time Complexity: O(n).
  * Space Complexity: O(n).
@@ -48,6 +49,9 @@ public:
      * Helps to hold range data dynamically so
      * that only a small number of nodes are
      * visited per query.
+     *
+     * Time Complexity: O(1).
+     * Space Complexity: O(1).
      */
     struct Node {
         T value, lazy = 0;
@@ -59,10 +63,6 @@ public:
         Node(const T value) :
             value(value) {}
 
-        /**
-         * Merges two nodes into a new one according
-         * to the SegmentTreeKind.
-         */
         Node(const Node &lhs, const Node &rhs)
         {
             assert(lhs.lazy == 0 and rhs.lazy == 0);
@@ -71,8 +71,12 @@ public:
         }
 
         /**
-         * Checks if a value matches with this->value
-         * according to the SegmentTreeKind.
+         * Checks if a value matches with
+         * this->value according to the
+         * SegmentTreeKind.
+         *
+         * Time Complexity: O(1).
+         * Space Complexity: O(1).
          */
         bool match(const T value) const
         {
@@ -90,6 +94,13 @@ public:
             }
         }
 
+        /**
+         * Updates the current node according to
+         * the SegmentTreeKind.
+         *
+         * Time Complexity: O(1).
+         * Space Complexity: O(1).
+         */
         void update(const size_t range)
         {
             if(set.ss){
@@ -127,6 +138,13 @@ public:
             set = {0, false};
         }
 
+        /**
+         * Returns the default value according to
+         * the SegmentTreeKind.
+         *
+         * Time Complexity: O(1).
+         * Space Complexity: O(1).
+         */
         static T default_value()
         {
             switch(K){
@@ -143,6 +161,13 @@ public:
             }
         }
 
+        /**
+         * Merges two values into a new one
+         * according to the SegmentTreeKind.
+         *
+         * Time Complexity: O(1).
+         * Space Complexity: O(1).
+         */
         static T merge_values(const T lhs, const T rhs)
         {
             switch(K){
@@ -174,10 +199,6 @@ public:
         build(0, arr_size-1, 0, arr);
     }
 
-    /**
-     * Merges two trees into a new one according
-     * to the SegmentTreeKind.
-     */
     SegTree(const SegTree &lhs, const SegTree &rhs) :
         SegTree(lhs.arr_size)
     {
@@ -187,13 +208,15 @@ public:
     }
 
     /**
-     * Finds the index of the first element over
-     * the array that matches with value.
+     * Finds the index of the first element
+     * over the array that matches with value.
      *
-     * It returns the size of the array when the
-     * value doesn't match with any array value.
+     * It returns the size of the array when
+     * the value doesn't match with any array
+     * value.
      *
      * Time Complexity: O(log(n)).
+     * Space Complexity: O(log(n)).
      * Where n is the size of the array.
      */
     size_t find(const T value)
@@ -205,6 +228,7 @@ public:
      * Computes the ith array value.
      *
      * Time Complexity: O(log(n)).
+     * Space Complexity: O(log(n)).
      * Where n is the size of the array.
      */
     T query(const size_t i)
@@ -218,6 +242,7 @@ public:
      * range [l, r] of the array.
      *
      * Time Complexity: O(log(n)).
+     * Space Complexity: O(log(n)).
      * Where n is the size of the array.
      */
     T query(const size_t l, const size_t r)
@@ -230,6 +255,7 @@ public:
      * Sets the ith array value to value.
      *
      * Time Complexity: O(log(n)).
+     * Space Complexity: O(log(n)).
      * Where n is the size of the array.
      */
     void set(const size_t i, const T value)
@@ -239,10 +265,11 @@ public:
     }
 
     /**
-     * Sets the array values in the range [l, r]
-     * to value.
+     * Sets the array values in the range
+     * [l, r] to value.
      *
      * Time Complexity: O(log(n)).
+     * Space Complexity: O(log(n)).
      * Where n is the size of the array.
      */
     void set(const size_t l, const size_t r, const T value)
@@ -256,6 +283,7 @@ public:
      * the SegmentTreeKind.
      *
      * Time Complexity: O(log(n)).
+     * Space Complexity: O(log(n)).
      * Where n is the size of the array.
      */
     void update(const size_t i, const T delta)
@@ -269,6 +297,7 @@ public:
      * [l, r] according to the SegmentTreeKind.
      *
      * Time Complexity: O(log(n)).
+     * Space Complexity: O(log(n)).
      * Where n is the size of the array.
      */
     void update(const size_t l, const size_t r, const T delta)

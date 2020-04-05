@@ -14,6 +14,7 @@
 #include <ext/pb_ds/tree_policy.hpp>
 #ifdef INT_LL
 #   define int long long
+#   define uint unsigned long long
 #endif
 #ifdef DOUBLE_LD
 #   define double long double

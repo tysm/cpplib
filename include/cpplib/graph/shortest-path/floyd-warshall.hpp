@@ -1,5 +1,5 @@
 #pragma once
-#include <cpplib/header.hpp>
+#include <cpplib/stdinc.hpp>
 
 /**
  * Floyd Warshall.
@@ -16,10 +16,12 @@
  * - dis[i][i] = 0 for i,j in [0,n[.
  *
  * Note: in orther to retrieve the shortest
- * path we can store the predecessor of each
- * vertex when a successful relaxation occurs.
+ * path we can store the predecessor of
+ * each vertex when a successful relaxation
+ * occurs.
  *
  * Time Complexity: O(exp(n, 3)).
+ * Space Complexity: O(exp(n, 2)).
  * Where n is the size of the graph.
  */
 vvi floyd(vvi dis){
@@ -43,6 +45,7 @@ vvi floyd(vvi dis){
  * weights of the edges are real numbers.
  *
  * Time Complexity: O(exp(n, 3)).
+ * Space Complexity: O(exp(n, 2)).
  * Where n is the size of the graph.
  */
 vvd floyd(vvd dis){

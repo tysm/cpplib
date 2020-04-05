@@ -32,7 +32,7 @@ def create_environment(args):
     else:
         assert os.path.isdir(env_dir)
 
-    with open(os.path.join(cpplib_dir, "header.hpp"), "r") as f:
+    with open(os.path.join(cpplib_dir, "stdinc.hpp"), "r") as f:
         content = "".join(f.readlines()[1:])
 
     content += (

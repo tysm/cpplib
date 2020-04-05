@@ -1,5 +1,5 @@
 #pragma once
-#include <cpplib/header.hpp>
+#include <cpplib/stdinc.hpp>
 
 /**
  * Count Sort.
@@ -7,14 +7,15 @@
  * Sorts a vector using a counting
  * approach.
  *
- * It can only applied in vectors
- * which integers are non-negative
+ * Note: It can only applied in vectors
+ * which values are non-negative integers
  * up to MAX.
  *
- * Time Complexity: O(MAX+n).
- * Where n is the size of the graph.
+ * Time Complexity: O(MAX + n).
+ * Space Complexity: O(MAX).
+ * Where n is the size of the vector.
  */
-void count_sort(vi &v, bool inc = true){
+void count_sort(vi &v, const bool inc = true){
     int n = v.size(), cnt[MAX] = {};
     for(int i=0; i<n; ++i)
         cnt[v[i]]++;
