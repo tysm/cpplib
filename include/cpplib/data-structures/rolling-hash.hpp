@@ -32,7 +32,7 @@ public:
     }
 
     /**
-     * Adds another sequence value to the hash.
+     * Adds a sequence value to the hash.
      *
      * Time Complexity: O(1).
      * Space Complexity: O(1).

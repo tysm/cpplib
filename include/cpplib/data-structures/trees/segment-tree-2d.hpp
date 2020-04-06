@@ -39,14 +39,14 @@ public:
     SegTree2D() = delete;
 
     SegTree2D(const size_t mat_height, const size_t mat_width) :
-        tree(4*mat_height, SegTree<K, T>(mat_width)),
+        tree(4*mat_height, internal_type(mat_width)),
         mat_height(mat_height), mat_width(mat_width) {}
 
     SegTree2D(const vector<vector<T> > &mat) :
         SegTree2D(mat.size(), mat[0].size(), mat) {}
 
     SegTree2D(const size_t mat_height, const size_t mat_width, const vector<vector<T> > &mat) :
-        tree(4*mat_height, SegTree<K, T>(mat_width)),
+        tree(4*mat_height, internal_type(mat_width)),
         mat_height(mat_height), mat_width(mat_width)
     {
         for(const vector<T> &arr : mat)
@@ -102,25 +102,28 @@ public:
     }
 
 private:
-    SegTree<K, T> build(const size_t l, const size_t r, const size_t pos, const vector<vector<T> > &mat)
+    using internal_type = SegTree<K, T>;
+    using node_type = typename internal_type::Node;
+
+    internal_type build(const size_t l, const size_t r, const size_t pos, const vector<vector<T> > &mat)
     {
         if(l == r)
-            return tree[pos] = SegTree<K, T>(mat[l]);
+            return tree[pos] = internal_type(mat[l]);
 
         size_t mid = (l + r)/2;
-        return tree[pos] = SegTree<K, T>(build(l, mid, 2*pos+1, mat), build(mid+1, r, 2*pos+2, mat));
+        return tree[pos] = internal_type(build(l, mid, 2*pos+1, mat), build(mid+1, r, 2*pos+2, mat));
     }
 
-    typename SegTree<K, T>::Node query(const size_t l, const size_t r, const size_t i1, const size_t i2, const size_t pos, const size_t j1, const size_t j2)
+    node_type query(const size_t l, const size_t r, const size_t i1, const size_t i2, const size_t pos, const size_t j1, const size_t j2)
     {
         if(l > i2 or r < i1)
-            return typename SegTree<K, T>::Node();
+            return node_type();
 
         if(l >= i1 and r <= i2)
-            return typename SegTree<K, T>::Node(tree[pos].query(j1, j2));
+            return node_type(tree[pos].query(j1, j2));
 
         size_t mid = (l + r)/2;
-        return typename SegTree<K, T>::Node(query(l, mid, i1, i2, 2*pos+1, j1, j2), query(mid+1, r, i1, i2, 2*pos+2, j1, j2));
+        return node_type(query(l, mid, i1, i2, 2*pos+1, j1, j2), query(mid+1, r, i1, i2, 2*pos+2, j1, j2));
     }
 
     void update(const size_t l, const size_t r, const size_t i, const size_t pos, const size_t j, const T delta)
@@ -138,6 +141,6 @@ private:
         update(mid+1, r, i, 2*pos+2, j, delta);
     }
 
-    vector<SegTree<K, T> > tree;
+    vector<internal_type> tree;
     size_t mat_height, mat_width;
 };
