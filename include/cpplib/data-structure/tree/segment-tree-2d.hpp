@@ -1,6 +1,6 @@
 #pragma once
 #include <cpplib/stdinc.hpp>
-#include <cpplib/data-structures/trees/segment-tree.hpp>
+#include <cpplib/data-structure/tree/segment-tree.hpp>
 
 /**
  * Segment Tree 2D.

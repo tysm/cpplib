@@ -1,6 +1,6 @@
 #pragma once
 #include <cpplib/stdinc.hpp>
-#include <cpplib/data-structures/rolling-hash.hpp>
+#include <cpplib/data-structure/rolling-hash.hpp>
 
 /**
  * Rabin Karp.

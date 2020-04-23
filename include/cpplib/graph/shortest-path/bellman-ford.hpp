@@ -1,6 +1,6 @@
 #pragma once
 #include <cpplib/stdinc.hpp>
-#include <cpplib/data-structures/trees/heap.hpp>
+#include <cpplib/data-structure/tree/heap.hpp>
 
 /**
  * Bellman Ford.
