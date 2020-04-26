@@ -16,9 +16,10 @@
  * Space Complexity: O(n).
  * Where n is the size of the graph and m is the quantity of edges.
  */
-vi bfs(const int s, const vvi &adj){
-    vi dis(adj.size(), INF); dis[s] = 0; // distance from s to s is 0.
+pair<vi, vi> bfs(const int s, const vvi &adj){
+    vi dis(adj.size(), INF), p(adj.size(), -1);
     queue<int> q; q.push(s);
+    dis[s] = 0; // distance from s to s is 0.
 
     while(!q.empty()){
         int u = q.front(); q.pop();
@@ -27,8 +28,9 @@ vi bfs(const int s, const vvi &adj){
             if(dis[v] != INF)
                 continue;
             dis[v] = dis[u] + 1;
+            p[v] = u;
             q.push(v);
         }
     }
-    return dis;
+    return {dis, p};
 }
