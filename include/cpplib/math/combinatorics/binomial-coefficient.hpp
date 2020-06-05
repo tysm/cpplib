@@ -9,7 +9,7 @@
  * of the Pascal's triangle.
  *
  * Time Complexity: O(k).
- * Space Complexity: O(k).
+ * Space Complexity: O(1).
  */
 uint binc(const uint n, const uint k){
     assert(k <= n);
