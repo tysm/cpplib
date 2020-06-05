@@ -4,6 +4,8 @@
 /**
  * Binary Exponentiation.
  *
+ * Computes b**e.
+ *
  * Time Complexity: O(log(e)).
  * Space Complexity: O(log(e)).
  */
@@ -20,6 +22,8 @@ int bexp(int b, int e){
 
 /**
  * Binary Exponentiation with mod.
+ *
+ * Computes (b**e)%m.
  *
  * Time Complexity: O(log(e)).
  * Space Complexity: O(log(e)).
