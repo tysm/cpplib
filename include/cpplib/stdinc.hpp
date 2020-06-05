@@ -55,6 +55,7 @@ inline int mod(const int n, const int m = M){
  * Euclidean GCD.
  *
  * Time Complexity: O(log(min(a, b))).
+ * Space Complexity: O(log(min(a, b))).
  */
 int gcd(const int a, const int b){
     if(a < 0 or b < 0)
@@ -68,6 +69,7 @@ int gcd(const int a, const int b){
  * Euclidean derivated LCM.
  *
  * Time Complexity: O(log(min(a, b))).
+ * Space Complexity: O(log(min(a, b))).
  */
 int lcm(const int a, const int b){
     // same as a*b/gcd(a, b) but avoiding overflow.
