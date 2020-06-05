@@ -41,7 +41,7 @@ public:
     {
         assert(value < base);
         if(base_pows.size() == hash_table.size()-1){
-            if(base_pows.size() == 0)
+            if(base_pows.empty())
                 base_pows.pb({1, 1});
             else{
                 pair<uint, uint> aux = base_pows.back();

@@ -88,7 +88,7 @@ public:
      */
     friend uint operator^(const uint x, const BTrie<B> &other)
     {
-        if(other.size() == 0)
+        if(other.empty())
             return 0;
 
         uint ans = 0;

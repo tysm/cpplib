@@ -44,10 +44,10 @@ public:
         if(x >= 2){
             while(x != 1){
                 uint factor = min_prime_factor[x];
-                if(factors.size() == 0 or factors[factors.size()-1].ff != factor)
+                if(factors.empty() or factors.back().ff != factor)
                     factors.pb({factor, 1});
                 else
-                    factors[factors.size()-1].ss++;
+                    factors.back().ss++;
                 x /= factor;
             }
         }
