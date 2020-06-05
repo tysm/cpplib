@@ -37,7 +37,7 @@ public:
      */
     size_t find(const size_t x)
     {
-        assert(0 <= x and x < set_size);
+        assert(x < set_size);
         return root[x] == x? x : root[x] = find(root[x]);
     }
 
@@ -50,7 +50,7 @@ public:
      */
     bool merge(size_t a, size_t b)
     {
-        assert(0 <= a and a < set_size and 0 <= b and b < set_size);
+        assert(a < set_size and b < set_size);
         a = find(a);
         b = find(b);
 
@@ -74,7 +74,7 @@ public:
      */
     bool same(const size_t a, const size_t b)
     {
-        assert(0 <= a and a < set_size and 0 <= b and b < set_size);
+        assert(a < set_size and b < set_size);
         return find(a) == find(b);
     }
 
@@ -87,7 +87,7 @@ public:
      */
     size_t size(const size_t x)
     {
-        assert(0 <= x and x < set_size);
+        assert(x < set_size);
         return sz[find(x)];
     }
 
