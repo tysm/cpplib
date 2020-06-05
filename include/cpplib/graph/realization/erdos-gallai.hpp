@@ -20,7 +20,7 @@ bool erdos(vi dgrs){
         return false;
     // if it's not possible to use count-sort
     // use the O(n*log(n)) sort:
-    // sort(dgrs.rbegin(), dgrs.rend());
+    // sort(rall(dgrs));
 
     vi psum(dgrs);
     for(int i=1; i<n; ++i)
@@ -32,10 +32,7 @@ bool erdos(vi dgrs){
         while(i>=0 and dgrs[i] < k)
             i--;
 
-        int minsumk = k*max(k & 0, i+1-k) + (psum[n-1] - psum[max(k-1, i)]);
-        // using (k & 0) to avoid the use of
-        // 0LL when using long long.
-
+        int minsumk = k*max(i+1-k, (int)0) + (psum[n-1] - psum[max(k-1, i)]);
         if(psum[k-1] > k*(k-1) + minsumk)
             return false;
     }

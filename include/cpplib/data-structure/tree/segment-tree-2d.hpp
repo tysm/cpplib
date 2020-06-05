@@ -21,18 +21,11 @@
  * update, the time complexity is actually
  * O(n*m*log(n)*log(m)).
  *
- * Note: it's recommended to remove the
- * pair<T, bool> set from
- * SegTree<K, T>::Node when it's not being
- * used since it costs a bunch of time and
- * memory mainly when many Segment Trees
- * are constructed.
- *
  * Time Complexity: O(n*m).
  * Space Complexity: O(n*m).
  * Where n is the height and m is the width of the matrix.
  */
-template<SegTreeKind K, typename T>
+template<STKind K, typename T>
 class SegTree2D
 {
 public:
@@ -103,7 +96,7 @@ public:
 
 private:
     using internal_type = SegTree<K, T>;
-    using node_type = typename internal_type::Node;
+    using node_type = STNode<K, T>;
 
     internal_type build(const size_t l, const size_t r, const size_t pos, const vector<vector<T> > &mat)
     {

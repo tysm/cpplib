@@ -14,7 +14,7 @@ int32_t main(){
             arr[i][j] = (c == '*');
         }
     }
-    SegTree2D<SegTreeKind::RSumQ, int> st(arr);
+    SegTree2D<RSumQ, int> st(arr);
     while(q--){
         int k;
         cin >> k;

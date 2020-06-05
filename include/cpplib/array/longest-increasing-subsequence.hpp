@@ -6,7 +6,7 @@ vi lis(const vi &seq){
     vi d, idx, p(n, -1);
 
     for(int i=0; i<n; ++i){
-        int j = upper_bound(d.begin(), d.end(), seq[i]) - d.begin();
+        int j = upper_bound(all(d), seq[i]) - d.begin();
         if(j == 0 or d[j-1] < seq[i]){
             if(j == d.size()){
                 d.pb(seq[i]);
@@ -24,6 +24,6 @@ vi lis(const vi &seq){
     vi ans;
     for(int i=idx[d.size()-1]; i != -1; i = p[i])
         ans.pb(seq[i]);
-    reverse(ans.begin(), ans.end());
+    reverse(all(ans));
     return ans;
 }

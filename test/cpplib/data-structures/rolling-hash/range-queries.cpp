@@ -9,7 +9,7 @@ int32_t main(){
 
     RollingHash hash(31);
     // Hash h(s);
-    for(char c:s)
+    for(char c : s)
         hash.push_back(c-'a'+1);
 
     vi ans;

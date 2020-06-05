@@ -27,7 +27,7 @@ public:
     RollingHash(const vi &seq, const uint base, const pair<uint, uint> &mod_values = {1e9+7, 1e9+9}) :
         RollingHash(base, mod_values)
     {
-        for(int i:seq)
+        for(int i : seq)
             push_back(i);
     }
 

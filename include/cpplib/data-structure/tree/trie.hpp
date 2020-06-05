@@ -83,6 +83,8 @@ public:
         }
     };
 
+    Trie() {}
+
     Trie(const vector<string> &content)
     {
         for(const string &s : content)
@@ -142,13 +144,22 @@ public:
      */
     size_t count(const string &s) const
     {
-        Node* cur = root;
-        for(char c : s){
-            if(!cur->exists(c))
-                return 0;
-            cur = cur->next(c);
-        }
-        return cur->words;
+        Node* cur = node_at(s);
+        return cur == nullptr? 0 : cur->words;
+    }
+
+    /**
+     * Returns the amount of strings in the
+     * Trie with prefix s.
+     *
+     * Time Complexity: O(n).
+     * Space Complexity: O(1).
+     * Where n is the string size.
+     */
+    size_t size(const string &s) const
+    {
+        Node* cur = node_at(s);
+        return cur == nullptr? 0 : cur->cnt;
     }
 
     /**

@@ -25,9 +25,9 @@ vi rabin(const string &s, const string &t){
         return vi();
 
     RollingHash hs(31), ht(31);
-    for(char c:s)
+    for(char c : s)
         hs.pb(c-'a'+1);
-    for(char c:t)
+    for(char c : t)
         ht.pb(c-'a'+1);
 
     vi ans;

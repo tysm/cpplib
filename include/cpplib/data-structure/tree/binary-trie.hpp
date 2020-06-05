@@ -18,6 +18,8 @@ template<size_t B = 8*sizeof(uint)>
 class BTrie : protected Trie<2, '0'>
 {
 public:
+    BTrie() {}
+
     BTrie(const vector<uint> &content)
     {
         for(uint x : content)

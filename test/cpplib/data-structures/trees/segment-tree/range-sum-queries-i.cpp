@@ -7,9 +7,9 @@ int32_t main(){
     int n, q;
     cin >> n >> q;
     vi arr(n);
-    for(auto &i:arr)
+    for(auto &i : arr)
         cin >> i;
-    SegTree<SegTreeKind::RSumQ, int> st(arr);
+    SegTree<RSumQ, int> st(arr);
     while(q--){
         int a, b;
         cin >> a >> b;

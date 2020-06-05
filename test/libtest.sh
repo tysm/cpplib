@@ -43,7 +43,7 @@ function dfs {
         [[ exit_code ]] || break
 
         if [[ -d $file ]]; then
-            cd $file
+            cd "$file"
             dfs "$1/$file"
             cd ..
         fi

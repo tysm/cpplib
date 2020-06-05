@@ -5,9 +5,9 @@ class UnionFind
 {
 public:
     UnionFind(const size_t graph_size) :
-        root(vector<size_t>(graph_size)), sz(vector<size_t>(graph_size))
+        root(vector<size_t>(graph_size)), sz(vector<size_t>(graph_size, 1))
     {
-        iota(root.begin(), root.end(), 0);
+        iota(all(root), 0);
     }
 
     UnionFind(const size_t graph_size, const vector<pair<size_t, size_t> > &edges) :
@@ -38,9 +38,14 @@ public:
         return true;
     }
 
-    size_t size(const int x) const
+    bool same(const size_t a, const size_t b)
     {
-        return sz[x];
+        return find(a) == find(b);
+    }
+
+    size_t size(const size_t x)
+    {
+        return sz[find(x)];
     }
 
 private:

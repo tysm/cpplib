@@ -8,9 +8,9 @@ int32_t main(){
     cin >> n >> m;
 
     vi arr(n);
-    for(int &h:arr)
+    for(int &h : arr)
         cin >> h;
-    SegTree<SegTreeKind::RMaxQ, int> st(arr);
+    SegTree<RMaxQ, int> st(arr);
     for(int i=0; i<m; ++i){
         int r;
         cin >> r;
