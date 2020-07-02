@@ -9,8 +9,8 @@
  * that it is possible to perform queries
  * to find the hash of subsequences.
  *
- * Note: the base and the mod values must
- * be primes.
+ * Note: the base and the mod values should
+ * be coprimes.
  *
  * Time Complexity: O(n).
  * Space Complexity: O(n).
