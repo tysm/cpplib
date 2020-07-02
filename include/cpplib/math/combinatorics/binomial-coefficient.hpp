@@ -15,6 +15,6 @@ uint binc(const uint n, const uint k){
     assert(k <= n);
     double res = 1;
     for(uint i=1; i<=k; ++i)
-        res = res*(n - k + 1)/i;
+        res = res*(n - k + i)/i;
     return res + 0.01;
 }
