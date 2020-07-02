@@ -21,15 +21,21 @@ class RollingHash
 public:
     RollingHash() = delete;
 
-    RollingHash(const uint base, const pair<uint, uint> &mod_values = {1e9+7, 1e9+9}) :
-        base(base), mod_values(mod_values) {}
+    RollingHash(const uint base, const uint offset = 0, const pair<uint, uint> &mod_values = {1e9+7, 1e9+9}) :
+        offset(offset), bases({mod(base, mod_values.ff), mod(base, mod_values.ss)}), mod_values(mod_values)
+    {
+        assert(bases.ff > 0 and bases.ss > 0);
+    }
 
-    RollingHash(const vi &seq, const uint base, const pair<uint, uint> &mod_values = {1e9+7, 1e9+9}) :
-        RollingHash(base, mod_values)
+    RollingHash(const vi &seq, const uint base, const uint offset = 0, const pair<uint, uint> &mod_values = {1e9+7, 1e9+9}) :
+        RollingHash(base, offset, mod_values)
     {
         for(int i : seq)
             push_back(i);
     }
+
+    RollingHash(const string &s, const uint base, const uint offset = 0, const pair<uint, uint> &mod_values = {1e9+7, 1e9+9}) :
+        RollingHash(vi(s.begin(), s.end()), base, offset, mod_values) {}
 
     /**
      * Adds a sequence value to the hash.
@@ -37,24 +43,27 @@ public:
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    void push_back(const uint value)
+    void push_back(uint value)
     {
-        assert(value < base);
+        assert(value >= offset);
+        value = value - offset + 1;
+        pair<uint, uint> values = {value%mod_values.ff, value%mod_values.ss};
+
         if(base_pows.size() == hash_table.size()-1){
             if(base_pows.empty())
                 base_pows.pb({1, 1});
             else{
                 pair<uint, uint> aux = base_pows.back();
-                aux.ff = (aux.ff*base)%mod_values.ff;
-                aux.ss = (aux.ss*base)%mod_values.ss;
+                aux.ff = (aux.ff*bases.ff)%mod_values.ff;
+                aux.ss = (aux.ss*bases.ss)%mod_values.ss;
                 base_pows.pb(aux);
             }
         }
         assert(base_pows.size() >= hash_table.size());
 
         pair<uint, uint> hash = hash_table.back();
-        hash.ff = (hash.ff*base + value) % mod_values.ff;
-        hash.ss = (hash.ss*base + value) % mod_values.ss;
+        hash.ff = (((hash.ff*bases.ff)%mod_values.ff) + values.ff)%mod_values.ff;
+        hash.ss = (((hash.ss*bases.ss)%mod_values.ss) + values.ss)%mod_values.ss;
         hash_table.pb(hash);
     }
 
@@ -105,14 +114,13 @@ public:
     {
         assert(l <= r); assert(r < hash_table.size()-1);
         pair<uint, uint> ans = hash_table[r+1];
-        ans.ff = mod(ans.ff - hash_table[l].ff*base_pows[r - l + 1].ff, mod_values.ff);
-        ans.ss = mod(ans.ss - hash_table[l].ss*base_pows[r - l + 1].ss, mod_values.ss);
+        ans.ff = mod(ans.ff - (hash_table[l].ff*base_pows[r - l + 1].ff)%mod_values.ff, mod_values.ff);
+        ans.ss = mod(ans.ss - (hash_table[l].ss*base_pows[r - l + 1].ss)%mod_values.ss, mod_values.ss);
         return ans;
     }
 
 private:
-    uint base;
-    pair<uint, uint> mod_values;
-    vector<pair<uint, uint> > hash_table = {{0, 0}};
-    vector<pair<uint, uint> > base_pows;
+    uint offset;
+    pair<uint, uint> bases, mod_values;
+    vector<pair<uint, uint> > base_pows, hash_table = {{0, 0}};
 };
