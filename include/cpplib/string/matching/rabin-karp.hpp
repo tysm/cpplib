@@ -11,10 +11,10 @@
  *
  * Note: if the strings are composed only
  * of lowercase letters of the English
- * alphabet, the hash base could be 31.
+ * alphabet, a good hash base could be 31.
  * If the strings are composed of both
- * uppercase and lowercase letters the
- * base could be 53.
+ * uppercase and lowercase letters a good
+ * hash base could be 53.
  *
  * Time Complexity: O(n + m).
  * Space Complexity: O(n + m).
