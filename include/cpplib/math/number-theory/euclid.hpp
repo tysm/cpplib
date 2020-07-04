@@ -10,7 +10,7 @@
  * Time Complexity: O(log(min(a, b))).
  * Space Complexity: O(1).
  */
-uint64_t gcd(uint64_t a, uint64_t b){
+uint gcd(uint a, uint b){
     while(a != 0){
         swap(a, b);
         a %= b;
@@ -27,10 +27,10 @@ uint64_t gcd(uint64_t a, uint64_t b){
  * Time Complexity: O(log(min(a, b))).
  * Space Complexity: O(1).
  */
-tuple<uint64_t, int64_t, int64_t> extended_gcd(uint64_t a, uint64_t b){
-    int64_t x = 0, y = 1, x1 = 1, y1 = 0;
+tuple<uint, int, int> extended_gcd(uint a, uint b){
+    int x = 0, y = 1, x1 = 1, y1 = 0;
     while(a != 0){
-        uint64_t q = b/a;
+        uint q = b/a;
         tie(x, x1) = make_tuple(x1, x - q*x1);
         tie(y, y1) = make_tuple(y1, y - q*y1);
         tie(a, b) = make_tuple(b%a, a);
@@ -44,7 +44,7 @@ tuple<uint64_t, int64_t, int64_t> extended_gcd(uint64_t a, uint64_t b){
  * Time Complexity: O(log(min(a, b))).
  * Space Complexity: O(1).
  */
-uint64_t lcm(const uint64_t a, const uint64_t b){
+uint lcm(const uint a, const uint b){
     // same as a*b/gcd(a, b) but avoiding overflow.
     return a/gcd(a, b)*b;
 }

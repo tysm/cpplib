@@ -13,15 +13,15 @@
  * Time Complexity: O(log(min(abs(a), abs(b)))).
  * Space Complexity: O(1).
  */
-tuple<int64_t, int64_t> diophantine(const int64_t a, const int64_t b, const int64_t c){
-    int64_t g, x, y;
+tuple<int, int> diophantine(const int a, const int b, const int c){
+    int g, x, y;
     tie(g, x, y) = extended_gcd(abs(a), abs(b));
     assert(c%g == 0); // LDE condition.
 
     x *= c/g;
     y *= c/g;
 
-    int64_t k = min(abs(x/(b/g)), abs(y/(a/g)));
+    int k = min(abs(x/(b/g)), abs(y/(a/g)));
     if(abs(y) > abs(x)){
         x += k*(b/g)*(y > 0? 1 : -1);
         y -= k*(a/g)*(y > 0? 1 : -1);

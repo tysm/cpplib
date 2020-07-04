@@ -11,7 +11,7 @@
  *
  * Note: MOD must be positive.
  *
- * Note: if __int128_t is not present, + and
+ * Note: if __uint128_t is not present, + and
  * * may cause overflow before applying % if
  * the operation result >= pow(2, 64).
  *
@@ -40,9 +40,9 @@ struct modular {
     modular &operator+=(const modular &rhs)
     {
         #ifdef __SIZEOF_INT128__
-            value = ((__int128_t)value + rhs.value)%MOD;
+            value = ((__uint128_t)value + rhs.value)%MOD;
         #else
-            value = ((int64_t)value + rhs.value)%MOD;
+            value = ((uint64_t)value + rhs.value)%MOD;
         #endif
         return *this;
     }
@@ -57,9 +57,9 @@ struct modular {
     modular &operator*=(const modular &rhs)
     {
         #ifdef __SIZEOF_INT128__
-            value = (__int128_t)value*rhs.value%MOD;
+            value = (__uint128_t)value*rhs.value%MOD;
         #else
-            value = (int64_t)value*rhs.value%MOD;
+            value = (uint64_t)value*rhs.value%MOD;
         #endif
         return *this;
     }
@@ -77,7 +77,7 @@ struct modular {
      * Time Complexity: O(log(e)).
      * Space Complexity: O(1).
      */
-    friend modular exp(modular b, uint64_t e)
+    friend modular exp(modular b, uint e)
     {
         modular res = 1;
         for(; e > 0; e >>= 1){

@@ -80,7 +80,7 @@ int moddiv(const int a, const int b, const int m = M){
  * Time Complexity: O(log(e)*log(m)).
  * Space Complexity: O(1).
  */
-int modexp(int b, uint64_t e, const int m = M){
+int modexp(int b, uint e, const int m = M){
     int res = 1;
     for(; e > 0; e >>= 1){
         if(e & 1)

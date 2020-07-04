@@ -9,8 +9,8 @@
  * Time Complexity: O(log(e)).
  * Space Complexity: O(1).
  */
-int64_t bexp(int64_t b, uint64_t e){
-    int64_t res = 1;
+int bexp(int b, uint e){
+    int res = 1;
     for(; e > 0; e >>= 1){
         if(e & 1)
             res *= b;
@@ -28,7 +28,7 @@ int64_t bexp(int64_t b, uint64_t e){
  * Time Complexity: O(log(e)).
  * Space Complexity: O(1).
  */
-double bexp(double b, uint64_t e){
+double bexp(double b, uint e){
     double res = 1;
     for(; e > 0; e >>= 1){
         if(e & 1)
