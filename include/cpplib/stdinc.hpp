@@ -46,32 +46,3 @@ using vvii = vector<vii>;
 #define rall(x) x.rbegin(), x.rend()
 #define debug(x) (cerr << #x << " = " << (x) << endl)
 #define desync() (ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL))
-
-inline int mod(const int n, const int m = M){
-    return (n%m + m)%m;
-}
-
-/**
- * Euclidean GCD.
- *
- * Time Complexity: O(log(min(a, b))).
- * Space Complexity: O(log(min(a, b))).
- */
-int gcd(const int a, const int b){
-    if(a < 0 or b < 0)
-        return gcd(abs(a), abs(b));
-    if(a == 0)
-        return b;
-    return gcd(b%a, a);
-}
-
-/**
- * Euclidean derivated LCM.
- *
- * Time Complexity: O(log(min(a, b))).
- * Space Complexity: O(log(min(a, b))).
- */
-int lcm(const int a, const int b){
-    // same as a*b/gcd(a, b) but avoiding overflow.
-    return a/gcd(a, b)*b;
-}
