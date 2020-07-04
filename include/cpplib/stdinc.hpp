@@ -13,8 +13,8 @@
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
 #ifdef INT_LL
-#   define int long long
-#   define uint unsigned long long
+#   define int int64_t
+#   define uint uint64_t
 #endif
 #ifdef DOUBLE_LD
 #   define double long double
