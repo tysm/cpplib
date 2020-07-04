@@ -2,6 +2,14 @@
 #include <cpplib/stdinc.hpp>
 #include <cpplib/math/number-theory/euclid.hpp>
 
+///
+// It's ok to say that the following
+// functions run in O(log(m)) of time:
+//   - modmul;
+//   - inverse;
+//   - moddiv.
+///
+
 /**
  * Modulus.
  *
@@ -22,10 +30,12 @@ int mod(int a, const int m = M){
  *
  * Computes a*b%m.
  *
- * Time Complexity: O(log(mod(b, m))).
+ * Time Complexity: O(log(min(mod(a, m), mod(b, m)))).
  * Space Complexity: O(1).
  */
 int modmul(const int a, const int b, const int m = M){
+    if(mod(a, m) < mod(b, m))
+        return modmul(b, a, m);
     int acc = mod(a, m), res = 0;
     for(int t = mod(b, m); t > 0; t >>= 1){
         if(t & 1)
@@ -55,11 +65,11 @@ int inverse(const int a, const int m = M){
  *
  * Computes a/b%m.
  *
- * Time Complexity: O(log(mod(a, m))).
+ * Time Complexity: O(log(mod(b, m)) + log(min(mod(a, m), inverse(b, m)))).
  * Space Complexity: O(1).
  */
 int moddiv(const int a, const int b, const int m = M){
-    return mod(mod(a, m)*inverse(b, m), m);
+    return modmul(mod(a, m), inverse(b, m), m);
 }
 
 /**
