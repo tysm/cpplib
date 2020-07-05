@@ -33,34 +33,34 @@ public:
 
     /**
      * Computes the prime numbers in the range
-     * [segment_l, segment_u].
+     * [l, r].
      *
      * Time Complexity: O(n).
      * Space Complexity: O(n).
-     * Where n is the size of the segment range (i.e. segment_u - segment_l + 1).
+     * Where n is the size of the segment range (i.e. r - l + 1).
      */
-    void segment(const uint segment_l, const uint segment_u)
+    void segment(const uint l, const uint r)
     {
-        assert(segment_l <= segment_u and ceil(sqrt(segment_u)) <= sieve_u);
-        tie(this->segment_l, this->segment_u) = make_tuple(segment_l, segment_u);
+        assert(l <= r and ceil(sqrt(r)) <= sieve_u);
+        tie(segment_l, segment_u) = make_tuple(l, r);
 
-        uint n = segment_u - segment_l + 1, lim = sqrt(segment_u);
+        uint n = r - l + 1, lim = sqrt(r);
         segment_spf.assign(n, 0);
         segment_primes.clear();
 
         for(uint p : primes){
             if(p > lim)
                 break;
-            for(uint i = (p - segment_l%p)%p; i < n; i += p){
-                if(!segment_spf[i] and i + segment_l > p)
+            for(uint i = (p*p >= l? p*p - l : (p - l%p)%p); i < n; i += p){
+                if(!segment_spf[i])
                     segment_spf[i] = p;
             }
         }
 
-        for(uint i = segment_l; i <= segment_u; ++i){
-            if(i < 2 or segment_spf[i - segment_l])
+        for(uint i = l; i <= r; ++i){
+            if(i < 2 or segment_spf[i - l])
                 continue;
-            segment_spf[i - segment_l] = i;
+            segment_spf[i - l] = i;
             segment_primes.emplace_back(i);
         }
     }
