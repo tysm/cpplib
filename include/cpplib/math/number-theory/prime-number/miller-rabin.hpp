@@ -64,7 +64,6 @@ static uint modexp(const uint b, uint e, const uint m = M){
  * Space Complexity: O(1).
  */
 bool is_prime(const uint x){
-    assert(x >= 0);
     if(x < 2)
         return false;
 
