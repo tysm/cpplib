@@ -15,7 +15,7 @@ template<typename T>
 T sum_ap(const T a, const T d, const uint n){
     assert(n > 0);
     T aux = 2*a + d*(n-1);
-    if(n%2 == 0)
+    if(n & 1 == 0)
         return aux*(n/2);
     return (aux/2)*n;
 }
