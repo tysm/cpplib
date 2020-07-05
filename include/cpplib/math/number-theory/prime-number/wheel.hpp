@@ -50,8 +50,7 @@ vector<pair<uint, uint> > factorization(uint x){
  */
 uint count_prime_factors(uint x){
     assert(x > 0);
-
-    uint res = 1;
+    uint res = 0;
     for(uint p : {2, 3, 5}){
         if(p*p*p > x)
             break;
