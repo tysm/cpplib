@@ -11,7 +11,7 @@
  * Space Complexity: O(1).
  */
 template<typename T,
-enable_if_t<is_integral<T>::value, uint> = 0>
+typename enable_if<is_integral<T>::value, uint>::type = 0>
 uint mod(const T a, const uint m = M){
     assert(m > 0);
     if(a >= 0)
@@ -29,7 +29,7 @@ uint mod(const T a, const uint m = M){
  * Space Complexity: O(1).
  */
 template<typename T1, typename T2,
-enable_if_t<is_integral<T1>::value and is_integral<T2>::value, uint> = 0>
+typename enable_if<is_integral<T1>::value and is_integral<T2>::value, uint>::type = 0>
 uint modadd(const T1 a, const T2 b, const uint m = M){
     assert(m > 0);
     uint mod_a = mod(a, m), mod_b = mod(b, m);
@@ -47,7 +47,7 @@ uint modadd(const T1 a, const T2 b, const uint m = M){
  * Space Complexity: O(1).
  */
 template<typename T1, typename T2,
-enable_if_t<is_integral<T1>::value and is_integral<T2>::value, uint> = 0>
+typename enable_if<is_integral<T1>::value and is_integral<T2>::value, uint>::type = 0>
 uint modsub(const T1 a, const T2 b, const uint m = M){
     assert(m > 0);
     uint mod_a = mod(a, m), mod_b = mod(b, m);
@@ -70,7 +70,7 @@ uint modsub(const T1 a, const T2 b, const uint m = M){
  * Space Complexity: O(1).
  */
 template<typename T1, typename T2,
-enable_if_t<is_integral<T1>::value and is_integral<T2>::value, uint> = 0>
+typename enable_if<is_integral<T1>::value and is_integral<T2>::value, uint>::type = 0>
 uint modmul(const T1 a, const T2 b, const uint m = M){
     assert(m > 0);
     uint mod_a = mod(a, m), mod_b = mod(b, m);
@@ -91,7 +91,7 @@ uint modmul(const T1 a, const T2 b, const uint m = M){
  * Space Complexity: O(1).
  */
 template<typename T,
-enable_if_t<is_integral<T>::value, uint> = 0>
+typename enable_if<is_integral<T>::value, uint>::type = 0>
 uint modinv(const T a, const uint m = M){
     assert(m > 0);
     auto aux = extended_gcd(mod(a, m), m);
@@ -108,7 +108,7 @@ uint modinv(const T a, const uint m = M){
  * Space Complexity: O(1).
  */
 template<typename T1, typename T2,
-enable_if_t<is_integral<T1>::value and is_integral<T2>::value, uint> = 0>
+typename enable_if<is_integral<T1>::value and is_integral<T2>::value, uint>::type = 0>
 uint moddiv(const T1 a, const T2 b, const uint m = M){
     assert(m > 0);
     return modmul(a, modinv(b, m), m);
@@ -123,7 +123,7 @@ uint moddiv(const T1 a, const T2 b, const uint m = M){
  * Space Complexity: O(1).
  */
 template<typename T,
-enable_if_t<is_integral<T>::value, uint> = 0>
+typename enable_if<is_integral<T>::value, uint>::type = 0>
 uint modexp(const T b, uint e, const uint m = M){
     assert(m > 0);
     uint mod_b = mod(b, m), res = 1;
