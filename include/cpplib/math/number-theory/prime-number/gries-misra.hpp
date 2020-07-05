@@ -15,18 +15,18 @@
 class Sieve
 {
 public:
-    Sieve(const size_t upper_bound) :
-        min_prime_factor(upper_bound+1), sz(upper_bound)
+    Sieve(const uint upper_bound) :
+        upper_bound(upper_bound), min_prime_factor(upper_bound+1)
     {
-        for(size_t i=2; i<=upper_bound; ++i){
+        for(uint i = 2; i <= upper_bound; ++i){
             if(!min_prime_factor[i]){
                 min_prime_factor[i] = i;
-                primes.pb(i);
+                primes.emplace_back(i);
             }
-            for(uint j : primes){
-                if(j > min_prime_factor[i] or i*j > upper_bound)
+            for(uint p : primes){
+                if(p > min_prime_factor[i] or i*p > upper_bound)
                     break;
-                min_prime_factor[i*j] = j;
+                min_prime_factor[i*p] = p;
             }
         }
     }
@@ -39,17 +39,14 @@ public:
      */
     vector<pair<uint, uint> > factorization(uint x) const
     {
-        assert(x <= sz);
+        assert(0 < x and x <= upper_bound);
         vector<pair<uint, uint> > factors;
-        if(x >= 2){
-            while(x != 1){
-                uint factor = min_prime_factor[x];
-                if(factors.empty() or factors.back().ff != factor)
-                    factors.pb({factor, 1});
-                else
-                    factors.back().ss++;
-                x /= factor;
-            }
+        for(; x > 1; x /= min_prime_factor[x]){
+            uint p = min_prime_factor[x];
+            if(factors.empty() or factors.back().first != p)
+                factors.emplace_back(p, 1);
+            else
+                factors.back().second++;
         }
         return factors;
     }
@@ -60,9 +57,9 @@ public:
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    bool isprime(const uint x) const
+    bool is_prime(const uint x) const
     {
-        assert(x <= sz);
+        assert(0 < x and x <= upper_bound);
         return x <= 1? false : min_prime_factor[x] == x;
     }
 
@@ -85,10 +82,10 @@ public:
      */
     size_t size() const
     {
-        return sz;
+        return upper_bound;
     }
 
 private:
+    uint upper_bound;
     vector<uint> min_prime_factor, primes;
-    size_t sz;
 };
