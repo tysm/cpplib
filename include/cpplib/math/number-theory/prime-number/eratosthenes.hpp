@@ -7,23 +7,23 @@
  * Computes the prime numbers until
  * an upper bound.
  *
- * Time Complexity: O(n*log(n)*log(n)).
+ * Time Complexity: O(n*pow(log(n), 2)).
  * Space Complexity: O(n).
  * Where n is the upper bound.
  */
 class Sieve
 {
 public:
-    Sieve(const size_t upper_bound) :
-        is_prime((upper_bound+1)/2, true), sz(upper_bound)
+    Sieve(const uint upper_bound) :
+        upper_bound(upper_bound), prime((upper_bound+1)/2, true)
     {
-        is_prime[0] = false;
-        for(size_t i=3; i*i<=upper_bound; i+=2){
-            if(!is_prime[i/2])
+        prime[0] = false;
+        for(uint i = 3; i*i <= upper_bound; i += 2){
+            if(!prime[i/2])
                 continue;
-            for(size_t j=i*i; j<=upper_bound; j+=i){
+            for(uint j = i*i; j <= upper_bound; j += i){
                 if(j%2)
-                    is_prime[j/2] = false;
+                    prime[j/2] = false;
             }
         }
     }
@@ -34,10 +34,10 @@ public:
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    bool isprime(const uint x) const
+    bool is_prime(const uint x) const
     {
-        assert(x <= sz);
-        return x%2? is_prime[x/2] : x == 2;
+        assert(0 < x and x <= upper_bound);
+        return x%2? prime[x/2] : x == 2;
     }
 
     /**
@@ -48,10 +48,10 @@ public:
      */
     size_t size() const
     {
-        return sz;
+        return upper_bound;
     }
 
 private:
-    vb is_prime;
-    size_t sz;
+    uint upper_bound;
+    vector<bool> prime;
 };
