@@ -11,10 +11,8 @@
  * Space Complexity: O(1).
  */
 uint gcd(uint a, uint b){
-    while(a != 0){
+    for(; a != 0; a %= b)
         swap(a, b);
-        a %= b;
-    }
     return b;
 }
 
