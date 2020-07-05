@@ -8,12 +8,12 @@
  * Computes the sum of an arithmetic
  * progression of size n, mod m.
  *
- * Time Complexity: O(log(m)).
+ * Time Complexity: O(1).
  * Space Complexity: O(1).
  */
-int modsum_ap(const int a, const int d, const int n, const int m = M){
-    assert(n > 0);
-    return moddiv(modmul((2*mod(a, m))%m + modmul(d, n-1, m), n, m), 2, m);
+uint modsum_ap(const int a, const int d, const uint n, const uint m = M){
+    assert(n > 0 and m > 0);
+    return moddiv(modmul(modadd(modmul(2, a, m), modmul(d, n-1, m), m), n, m), 2, m);
 }
 
 /**
@@ -22,12 +22,12 @@ int modsum_ap(const int a, const int d, const int n, const int m = M){
  * Computes the sum of a geometric
  * progression of size n, mod m.
  *
- * Time Complexity: O(log(m)).
+ * Time Complexity: O(log(n) + log(m)).
  * Space Complexity: O(1).
  */
-int modsum_gp(const int a, const int r, const int n, const int m = M){
-    assert(n > 0);
+uint modsum_gp(const int a, const int r, const uint n, const uint m = M){
+    assert(n > 0 and m > 0);
     if(r == 1)
         return modmul(a, n, m);
-    return moddiv(modmul(a, 1 - modexp(r, n, m), m), 1 - r, m);
+    return moddiv(modmul(a, modsub(1, modexp(r, n, m), m), m), 1 - r, m);
 }

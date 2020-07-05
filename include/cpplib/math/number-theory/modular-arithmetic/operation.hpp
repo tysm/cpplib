@@ -2,14 +2,6 @@
 #include <cpplib/stdinc.hpp>
 #include <cpplib/math/number-theory/euclid.hpp>
 
-///
-// It's ok to say that the following
-// functions run in O(log(m)) of time:
-//   - modmul;
-//   - inverse;
-//   - moddiv.
-///
-
 /**
  * Modulus.
  *
@@ -18,11 +10,50 @@
  * Time Complexity: O(1).
  * Space Complexity: O(1).
  */
-int mod(int a, const int m = M){
-    a %= m;
-    if(a < m)
-        a += m;
-    return a;
+template<typename T,
+enable_if_t<is_integral<T>::value, uint> = 0>
+uint mod(const T a, const uint m = M){
+    assert(m > 0);
+    if(a >= 0)
+        return ((uint)a < m? a : (uint)a%m);
+    uint abs_a = (-(uint)a)%m;
+    return (abs_a == 0? 0 : m - abs_a);
+}
+
+/**
+ * Modular Addition.
+ *
+ * Computes (a+b)%m.
+ *
+ * Time Complexity: O(1).
+ * Space Complexity: O(1).
+ */
+template<typename T1, typename T2,
+enable_if_t<is_integral<T1>::value and is_integral<T2>::value, uint> = 0>
+uint modadd(const T1 a, const T2 b, const uint m = M){
+    assert(m > 0);
+    uint mod_a = mod(a, m), mod_b = mod(b, m);
+    if(mod_b >= m - mod_a)
+        return mod_b - (m - mod_a);
+    return mod_a + mod_b;
+}
+
+/**
+ * Modular Subtraction.
+ *
+ * Computes (a-b)%m.
+ *
+ * Time Complexity: O(1).
+ * Space Complexity: O(1).
+ */
+template<typename T1, typename T2,
+enable_if_t<is_integral<T1>::value and is_integral<T2>::value, uint> = 0>
+uint modsub(const T1 a, const T2 b, const uint m = M){
+    assert(m > 0);
+    uint mod_a = mod(a, m), mod_b = mod(b, m);
+    if(mod_b > mod_a)
+        return m - (mod_b - mod_a);
+    return mod_a - mod_b;
 }
 
 /**
@@ -30,19 +61,24 @@ int mod(int a, const int m = M){
  *
  * Computes a*b%m.
  *
- * Time Complexity: O(log(min(mod(a, m), mod(b, m)))).
+ * Note: if __uint128_t is not present,
+ * mod_a*mod_b may cause overflow before
+ * applying % if the multiplication result
+ * >= pow(2, 64).
+ *
+ * Time Complexity: O(1).
  * Space Complexity: O(1).
  */
-int modmul(const int a, const int b, const int m = M){
-    if(mod(a, m) < mod(b, m))
-        return modmul(b, a, m);
-    int acc = mod(a, m), res = 0;
-    for(int t = mod(b, m); t > 0; t >>= 1){
-        if(t & 1)
-            res = (res + acc)%m;
-        acc = (acc*2)%m;
-    }
-    return res;
+template<typename T1, typename T2,
+enable_if_t<is_integral<T1>::value and is_integral<T2>::value, uint> = 0>
+uint modmul(const T1 a, const T2 b, const uint m = M){
+    assert(m > 0);
+    uint mod_a = mod(a, m), mod_b = mod(b, m);
+    #ifdef __SIZEOF_INT128__
+        return (__uint128_t)mod_a*mod_b%m;
+    #else
+        return (uint64_t)mod_a*mod_b%m;
+    #endif
 }
 
 /**
@@ -54,7 +90,10 @@ int modmul(const int a, const int b, const int m = M){
  * Time Complexity: O(log(mod(a, m))).
  * Space Complexity: O(1).
  */
-int inverse(const int a, const int m = M){
+template<typename T,
+enable_if_t<is_integral<T>::value, uint> = 0>
+uint modinv(const T a, const uint m = M){
+    assert(m > 0);
     auto aux = extended_gcd(mod(a, m), m);
     assert(get<0>(aux) == 1); // mod(a, m) and m must be coprimes.
     return mod(get<1>(aux), m);
@@ -65,11 +104,14 @@ int inverse(const int a, const int m = M){
  *
  * Computes a/b%m.
  *
- * Time Complexity: O(log(mod(b, m)) + log(min(mod(a, m), inverse(b, m)))).
+ * Time Complexity: O(log(mod(b, m))).
  * Space Complexity: O(1).
  */
-int moddiv(const int a, const int b, const int m = M){
-    return modmul(mod(a, m), inverse(b, m), m);
+template<typename T1, typename T2,
+enable_if_t<is_integral<T1>::value and is_integral<T2>::value, uint> = 0>
+uint moddiv(const T1 a, const T2 b, const uint m = M){
+    assert(m > 0);
+    return modmul(a, modinv(b, m), m);
 }
 
 /**
@@ -77,15 +119,18 @@ int moddiv(const int a, const int b, const int m = M){
  *
  * Computes pow(b, e)%m.
  *
- * Time Complexity: O(log(e)*log(m)).
+ * Time Complexity: O(log(e)).
  * Space Complexity: O(1).
  */
-int modexp(int b, uint e, const int m = M){
-    int res = 1;
+template<typename T,
+enable_if_t<is_integral<T>::value, uint> = 0>
+uint modexp(const T b, uint e, const uint m = M){
+    assert(m > 0);
+    uint mod_b = mod(b, m), res = 1;
     for(; e > 0; e >>= 1){
         if(e & 1)
-            res = modmul(res, b, m);
-        b = modmul(b, b, m);
+            res = modmul(res, mod_b, m);
+        mod_b = modmul(mod_b, mod_b, m);
     }
     return res;
 }

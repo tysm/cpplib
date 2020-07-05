@@ -9,48 +9,56 @@
  * *, /, multiplicative inverse and
  * binary exponentiation.
  *
- * Note: MOD must be positive.
- *
- * Note: if __uint128_t is not present, + and
- * * may cause overflow before applying % if
- * the operation result >= pow(2, 64).
- *
- * Note: if T is unsigned, then - may cause
- * underflow before applying % if rhs > lhs.
+ * Note: if __uint128_t is not present, *
+ * may cause overflow before applying % if
+ * the multiplication result >= pow(2, 64).
  *
  * Time Complexity: O(1).
  * Space Complexity: O(1).
  */
-template<typename T, T MOD = M>
+template<uint MOD = M>
 struct modular {
-    T value;
+    static_assert(MOD > 0, "MOD must be greater than 0.");
 
-    modular(T value = 0)
+    uint value = 0;
+
+    template<typename T>
+    modular(const T value)
     {
-        this->value = value%MOD;
-        if(this->value < 0)
-            this->value += MOD;
+        if(value >= 0)
+            this->value = ((uint)value < MOD? value : (uint)value%MOD);
+        else{
+            uint abs_value = (-(uint)value)%MOD;
+            this->value = (abs_value == 0? 0 : MOD - abs_value);
+        }
     }
 
+    template<typename T>
     explicit operator T() const
     {
         return value;
     }
 
+    modular operator-()
+    {
+        return modular(value == 0? 0 : MOD - value);
+    }
+
     modular &operator+=(const modular &rhs)
     {
-        #ifdef __SIZEOF_INT128__
-            value = ((__uint128_t)value + rhs.value)%MOD;
-        #else
-            value = ((uint64_t)value + rhs.value)%MOD;
-        #endif
+        if(rhs.value >= MOD - value)
+            value = rhs.value - (MOD - value);
+        else
+            value += rhs.value;
         return *this;
     }
 
     modular &operator-=(const modular &rhs)
     {
-        if((value -= rhs.value) < 0)
-            value += MOD;
+        if(rhs.value > value)
+            value = MOD - (rhs.value - value);
+        else
+            value -= rhs.value;
         return *this;
     }
 
@@ -100,26 +108,8 @@ struct modular {
     friend modular inverse(const modular &a)
     {
         auto aux = extended_gcd(a.value, MOD);
-        assert(get<0>(aux) == 1); // a and M must be coprimes.
+        assert(get<0>(aux) == 1); // a and MOD must be coprimes.
         return modular(get<1>(aux));
-    }
-
-    /**
-     * Range Modular Multiplicative Inverse.
-     *
-     * Computes the modular multiplicative
-     * inverse for each natural <= n with mod MOD.
-     *
-     * Time Complexity: O(n).
-     * Space Complexity: O(n).
-     */
-    friend vector<T> range_inverse(const modular &n)
-    {
-        vector<T> inv(n.value + 1);
-        inv[1] = 1;
-        for(T i=2; i<=n.value; ++i)
-            inv[i] = (MOD - (MOD/i)*inv[MOD%i]%MOD)%MOD;
-        return inv;
     }
 
     friend modular operator+(modular lhs, const modular &rhs)
@@ -152,17 +142,10 @@ struct modular {
         return lhs.value != rhs.value;
     }
 
-    friend istream &operator>>(istream &lhs, modular &rhs)
-    {
-        T value;
-        lhs >> value;
-        rhs = value;
-    }
-
     friend ostream &operator<<(ostream &lhs, const modular &rhs)
     {
         return lhs << rhs.value;
     }
 };
 
-using mint = modular<int>;
+using mint = modular<>;
