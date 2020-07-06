@@ -6,7 +6,7 @@
  * Modular Combinatorics.
  *
  * Provides modular combinatorial algorithms
- * such as C and factorials.
+ * such as C, P and factorials.
  *
  * Note: if __uint128_t is not present, *
  * may cause overflow in modular operations.
@@ -37,7 +37,21 @@ public:
     mint C(uint n, uint k)
     {
         assert(k <= n and n <= N);
-        return fact(n)*inv(fact(k))*inv(fact(n - k));
+        return fact(n)*inv(fact(k)*fact(n - k));
+    }
+
+    /**
+     * Modular Permutation.
+     *
+     * Returns P(n, k)%MOD.
+     *
+     * Time Complexity: O(1).
+     * Space Complexity: O(1).
+     */
+    mint P(uint n, uint k)
+    {
+        assert(k <= n and n <= N);
+        return fact(n)*inv(fact(n - k));
     }
 
     /**
