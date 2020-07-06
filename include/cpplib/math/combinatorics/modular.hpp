@@ -6,24 +6,32 @@
  * Modular Combinatorics.
  *
  * Provides modular combinatorial algorithms
- * such as C, P and factorials.
+ * such as C, P, factorials and fibonacci
+ * computation.
+ *
+ * Note: MOD must be prime.
  *
  * Note: if __uint128_t is not present, *
  * may cause overflow in modular operations.
  *
- * Time Complexity: O(N).
- * Space Complexity: O(N).
+ * Time Complexity: O(n).
+ * Space Complexity: O(n).
+ * Where n is the greatest precomputed value.
  */
-template<uint N, uint MOD = M>
+template<uint MOD = M>
 class ModC
 {
 public:
+    static_assert(MOD > 0, "MOD must be prime, thus greater than 0.");
+
     using mint = modular<MOD>;
 
-    ModC()
+    ModC(const uint max_value = MAX) :
+        max_value(max_value)
     {
-        _fact = range_factorial(N);
-        _inv = range_inverse(N);
+        assert(0 < max_value and max_value < MOD);
+        _fact = range_factorial(max_value);
+        _inv = range_inverse(max_value);
     }
 
     /**
@@ -36,7 +44,7 @@ public:
      */
     mint C(const uint n, const uint k) const
     {
-        assert(k <= n and n <= N);
+        assert(k <= n and n <= max_value);
         return fact(n)*inv(fact(k)*fact(n - k));
     }
 
@@ -50,7 +58,7 @@ public:
      */
     mint P(const uint n, const uint k) const
     {
-        assert(k <= n and n <= N);
+        assert(k <= n and n <= max_value);
         return fact(n)*inv(fact(n - k));
     }
 
@@ -64,8 +72,21 @@ public:
      */
     mint fact(const uint n) const
     {
-        assert(n <= N);
+        assert(n <= max_value);
         return _fact[n];
+    }
+
+    /**
+     * Modular Fibonacci Number.
+     *
+     * Computes the n-th fibonacci number mod MOD.
+     *
+     * Time Complexity: O(log(n)).
+     * Space Complexity: O(log(n)).
+     */
+    static mint fib(const uint n)
+    {
+        return _fib(n).first;
     }
 
     /**
@@ -77,13 +98,13 @@ public:
      * Note: this specific algorithm requires a
      * prime MOD value.
      *
-     * Time Complexity: O((a <= N? 1 : log(a))).
+     * Time Complexity: O((a <= max_value? 1 : log(a))).
      * Space Complexity: O(1).
      */
     mint inv(const mint &a) const
     {
         assert(a.value > 0);
-        return a.value <= N? _inv[a.value] : inverse(a);
+        return a.value <= max_value? _inv[a.value] : inverse(a);
     }
 
 private:
@@ -103,6 +124,26 @@ private:
         for(uint i = 1; i <= n; ++i)
             fact[i] = fact[i-1]*i;
         return fact;
+    }
+
+    /**
+     * Modular Fibonacci Number.
+     *
+     * Computes the n-th and n+1-th
+     * fibonacci numbers mod MOD.
+     *
+     * Time Complexity: O(log(n)).
+     * Space Complexity: O(log(n)).
+     */
+    static pair<mint, mint> _fib(const uint n)
+    {
+        if(n == 0)
+            return {0, 1};
+        pair<mint, mint> p = _fib(n >> 1);
+        mint c = p.first*(2*p.second - p.first), d = p.first*p.first + p.second*p.second;
+        if(n & 1)
+            return {d, c + d};
+        return {c, d};
     }
 
     /**
@@ -128,5 +169,6 @@ private:
         return inv;
     }
 
+    uint max_value;
     vector<mint> _inv, _fact;
 };
