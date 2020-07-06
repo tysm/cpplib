@@ -20,7 +20,10 @@ template<uint MOD = M>
 struct modular {
     static_assert(MOD > 0, "MOD must be greater than 0.");
 
-    uint value = 0;
+    uint value;
+
+    modular() :
+        value(0) {}
 
     template<typename T>
     modular(const T value)
@@ -107,6 +110,7 @@ struct modular {
      */
     friend modular inverse(const modular &a)
     {
+        assert(a.value > 0);
         auto aux = extended_gcd(a.value, MOD);
         assert(get<0>(aux) == 1); // a and MOD must be coprimes.
         return modular(get<1>(aux));
