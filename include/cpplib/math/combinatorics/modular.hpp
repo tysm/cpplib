@@ -34,7 +34,7 @@ public:
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    mint C(uint n, uint k)
+    mint C(const uint n, const uint k) const
     {
         assert(k <= n and n <= N);
         return fact(n)*inv(fact(k)*fact(n - k));
@@ -48,7 +48,7 @@ public:
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    mint P(uint n, uint k)
+    mint P(const uint n, const uint k) const
     {
         assert(k <= n and n <= N);
         return fact(n)*inv(fact(n - k));
@@ -62,7 +62,7 @@ public:
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    mint fact(const uint n)
+    mint fact(const uint n) const
     {
         assert(n <= N);
         return _fact[n];
@@ -80,7 +80,7 @@ public:
      * Time Complexity: O((a <= N? 1 : log(a))).
      * Space Complexity: O(1).
      */
-    mint inv(const mint &a)
+    mint inv(const mint &a) const
     {
         assert(a.value > 0);
         return a.value <= N? _inv[a.value] : inverse(a);
