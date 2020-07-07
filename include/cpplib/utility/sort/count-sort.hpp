@@ -8,21 +8,23 @@
  * approach.
  *
  * Note: It can only applied in vectors
- * which values are non-negative integers
- * up to MAX.
+ * which values are non-negative integers.
  *
- * Time Complexity: O(MAX + n).
- * Space Complexity: O(MAX).
- * Where n is the size of the vector.
+ * Time Complexity: O(n + m).
+ * Space Complexity: O(m).
+ * Where n is the vector size and m is the greatest integer in the vector.
  */
-void count_sort(vi &v, const bool inc = true){
-    int n = v.size(), cnt[MAX] = {};
-    for(int i=0; i<n; ++i)
-        cnt[v[i]]++;
-
-    int k = (inc? 0 : v.size()-1);
-    for(int i=0; i<MAX; ++i){
-        for(int j=0; j<cnt[i]; ++j, k += (inc? 1 : -1))
-            v[k] = i;
+template<typename T,
+typename enable_if<is_integral<T>::value, uint>::type = 0>
+void count_sort(vector<T> &v, const bool non_decreasing = true){
+    uint n = v.size(), m = *max_element(v.begin(), v.end());
+    vector<uint> cnt(m+1);
+    for(uint i : v){
+        assert((T)i >= 0);
+        cnt[i]++;
+    }
+    for(uint i = 0, j = (non_decreasing? 0 : n-1); i <= m; ++i){
+        for(; cnt[i] > 0; --cnt[i], j += (non_decreasing? 1 : -1))
+            v[j] = i;
     }
 }
