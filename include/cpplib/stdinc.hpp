@@ -53,7 +53,10 @@ template<typename T>
 ostream &operator<<(ostream &lhs, const vector<T> &rhs){
     if(is_floating_point<T>::value)
         lhs << fixed << setprecision(16);
-    for(size_t i = 0; i < rhs.size(); ++i)
-        cout << rhs[i] << " \n"[i+1 == rhs.size()];
+    for(size_t i = 0; i < rhs.size(); ++i){
+        if(i)
+            cout << ' ';
+        cout << rhs[i];
+    }
     return lhs;
 }

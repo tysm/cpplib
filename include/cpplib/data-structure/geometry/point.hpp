@@ -1,12 +1,25 @@
 #pragma once
 #include <cpplib/stdinc.hpp>
 
+///
+// Note: result_of should be used to get the propper
+// return type on the following functions:
+// - operator~;
+// - operator>>=;
+// - operator<<=;
+// - operator>>;
+// - operator<<;
+// - projection;
+// - rejection;
+// - abs;
+///
+
 template<typename T,
 typename enable_if<is_arithmetic<T>::value, uint>::type = 0>
 struct point {
     T x, y, z;
 
-    point(const T x = 0, const T y = 0, const T z = 0) :
+    explicit point(const T x = 0, const T y = 0, const T z = 0) :
         x(x), y(y), z(z) {}
 
     template<typename T1>
@@ -17,6 +30,18 @@ struct point {
     point operator-() const
     {
         return point(-x, -y, -z);
+    }
+
+    // Unit vector - O(1).
+    point<double> operator~() const
+    {
+        return (*this)/abs(*this);
+    }
+
+    // Vector squared norm - O(1).
+    T operator!() const
+    {
+        return (*this)*(*this);
     }
 
     // Vector addiction assignment - O(1).
@@ -45,6 +70,22 @@ struct point {
     {
         tie(x, y, z) = make_tuple(y*rhs.z - z*rhs.y, z*rhs.x - x*rhs.z, x*rhs.y - y*rhs.x);
         return *this;
+    }
+
+    // Vector projection assignment - O(1).
+    template<typename T1>
+    point &operator>>=(const point<T1> &rhs)
+    {
+        auto res = ((*this)*rhs/(!rhs))*rhs;
+        tie(x, y, z) = make_tuple(res.x, res.y, res.z);
+        return *this;
+    }
+
+    // Vector rejection assignment - O(1).
+    template<typename T1>
+    point &operator<<=(const point<T1> &rhs)
+    {
+        return *this -= (*this >> rhs);
     }
 
     // Scalar multiplication assignment - O(1).
@@ -94,6 +135,22 @@ struct point {
     {
         point<typename common_type<T, T1>::type> res(lhs);
         return res ^= rhs;
+    }
+
+    // Vector projection - O(1).
+    template<typename T1>
+    friend point<double> operator>>(const point &lhs, const point<T1> &rhs)
+    {
+        point<double> res(lhs);
+        return res >>= rhs;
+    }
+
+    // Vector rejection - O(1).
+    template<typename T1>
+    friend point<double> operator<<(const point &lhs, const point<T1> &rhs)
+    {
+        point<double> res(lhs);
+        return res <<= rhs;
     }
 
     // Scalar multiplication - O(1).
@@ -163,6 +220,41 @@ struct point {
     friend bool operator>=(const point &lhs, const point<T1> &rhs)
     {
         return !(lhs < rhs);
+    }
+
+    // Vector triple product - O(1).
+    template<typename T1, typename T2>
+    friend auto triple(const point &a, const point<T1> &b, const point<T2> &c) -> typename common_type<T, T1, T2>::type
+    {
+        return a*(b^c);
+    }
+
+    // Angle between two vectors - O(1).
+    template<typename T1>
+    friend double angle(const point &a, const point<T1> &b)
+    {
+        auto aux = a*b/abs(a)/abs(b);
+        return aux > 1? acos(1) : (aux < -1? acos(-1) : acos(aux));
+    }
+
+    // Scalar projection - O(1).
+    template<typename T1>
+    friend double projection(const point &a, const point<T1> &b)
+    {
+        return a*b/abs(b);
+    }
+
+    // Scalar rejection - O(1).
+    template<typename T1>
+    friend double rejection(const point &a, const point<T1> &b)
+    {
+        return abs(a - (a >> b));
+    }
+
+    // Vector norm - O(1).
+    friend double abs(const point &p)
+    {
+        return sqrt(!p);
     }
 
     // Vector string conversion - O(1).
