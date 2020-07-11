@@ -26,7 +26,7 @@ public:
 
     using mint = modular<MOD>;
 
-    ModC(const uint max_value = MAX) :
+    ModC(const uint max_value = N) :
         max_value(max_value)
     {
         assert(0 < max_value and max_value < MOD);

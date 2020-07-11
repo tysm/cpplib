@@ -34,15 +34,26 @@ using vvii = vector<vii>;
 
 #define ff first
 #define ss second
-#define pb push_back
+#define eb emplace_back
 
-#define EPS 1e-9
-#define INF ((int)1e9+1)
-#define MAX ((int)1e6+1)
-#define M ((int)1e9+7)
-
-#define endl "\n"
 #define all(x) x.begin(), x.end()
 #define rall(x) x.rbegin(), x.rend()
-#define debug(x) (cerr << #x << " = " << (x) << endl)
+
+#define EPS 1e-9
+#define INF ((int)2e9+1)
+#define LINF ((int)2e18+1)
+#define N ((int)2e6+1)
+#define M ((int)1e9+7)
+
 #define desync() (ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL))
+#define endl "\n"
+#define debug(x) (cerr << #x << " = " << (x) << endl)
+
+template<typename T>
+ostream &operator<<(ostream &lhs, const vector<T> &rhs){
+    if(is_floating_point<T>::value)
+        lhs << fixed << setprecision(16);
+    for(size_t i = 0; i < rhs.size(); ++i)
+        cout << rhs[i] << " \n"[i+1 == rhs.size()];
+    return lhs;
+}
