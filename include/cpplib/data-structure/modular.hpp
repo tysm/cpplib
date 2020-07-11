@@ -42,7 +42,7 @@ struct modular {
         return value;
     }
 
-    modular operator-()
+    modular operator-() const
     {
         return modular(value == 0? 0 : MOD - value);
     }
@@ -143,12 +143,17 @@ struct modular {
 
     friend bool operator!=(const modular &lhs, const modular &rhs)
     {
-        return lhs.value != rhs.value;
+        return !(lhs == rhs);
+    }
+
+    friend string to_string(const modular &a)
+    {
+        return to_string(a);
     }
 
     friend ostream &operator<<(ostream &lhs, const modular &rhs)
     {
-        return lhs << rhs.value;
+        return lhs << to_string(rhs);
     }
 };
 
