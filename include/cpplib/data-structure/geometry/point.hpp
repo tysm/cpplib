@@ -1,19 +1,6 @@
 #pragma once
 #include <cpplib/stdinc.hpp>
 
-///
-// Note: result_of should be used to get the propper
-// return type on the following functions:
-// - operator~;
-// - operator>>=;
-// - operator<<=;
-// - operator>>;
-// - operator<<;
-// - projection;
-// - rejection;
-// - abs;
-///
-
 template<typename T,
 typename enable_if<is_arithmetic<T>::value, uint>::type = 0>
 struct point {
@@ -33,7 +20,7 @@ struct point {
     }
 
     // Unit vector - O(1).
-    point<double> operator~() const
+    auto operator~() const // -> point<floating type>
     {
         return (*this)/abs(*this);
     }
@@ -231,7 +218,7 @@ struct point {
 
     // Angle between two vectors - O(1).
     template<typename T1>
-    friend double angle(const point &a, const point<T1> &b)
+    friend auto angle(const point &a, const point<T1> &b) // -> floating type
     {
         auto aux = a*b/abs(a)/abs(b);
         return aux > 1? acos(1) : (aux < -1? acos(-1) : acos(aux));
@@ -239,20 +226,20 @@ struct point {
 
     // Scalar projection - O(1).
     template<typename T1>
-    friend double projection(const point &a, const point<T1> &b)
+    friend auto projection(const point &a, const point<T1> &b) // -> floating type
     {
         return a*b/abs(b);
     }
 
     // Scalar rejection - O(1).
     template<typename T1>
-    friend double rejection(const point &a, const point<T1> &b)
+    friend auto rejection(const point &a, const point<T1> &b) // -> floating type
     {
         return abs(a - (a >> b));
     }
 
     // Vector norm - O(1).
-    friend double abs(const point &p)
+    friend auto abs(const point &p) // -> floating type
     {
         return sqrt(!p);
     }
