@@ -13,6 +13,12 @@ struct point {
     point(const point<T1> &p) :
         x(p.x), y(p.y), z(p.z) {}
 
+    // Component sum - O(1).
+    T operator+() const
+    {
+        return x + y + z;
+    }
+
     // Negative vector - O(1).
     point operator-() const
     {
@@ -192,7 +198,7 @@ struct point {
     template<typename T1>
     friend bool operator>(const point &lhs, const point<T1> &rhs)
     {
-        return tie(lhs.x, lhs.y, lhs.z) > tie(rhs.x, rhs.y, rhs.z);
+        return rhs < lhs;
     }
 
     // Vector less than or equal to - O(1).
@@ -242,6 +248,13 @@ struct point {
     friend double abs(const point &p)
     {
         return sqrt(!p);
+    }
+
+    // Point distance - O(1).
+    template<typename T1>
+    friend double distance(const point &a, const point<T1> &b)
+    {
+        return abs(a - b);
     }
 
     // Vector string conversion - O(1).
