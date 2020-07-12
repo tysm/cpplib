@@ -20,7 +20,7 @@ struct point {
     }
 
     // Unit vector - O(1).
-    auto operator~() const // -> point<floating type>
+    point<double> operator~() const
     {
         return (*this)/abs(*this);
     }
@@ -218,7 +218,7 @@ struct point {
 
     // Angle between two vectors - O(1).
     template<typename T1>
-    friend auto angle(const point &a, const point<T1> &b) // -> floating type
+    friend double angle(const point &a, const point<T1> &b)
     {
         auto aux = a*b/abs(a)/abs(b);
         return aux > 1? acos(1) : (aux < -1? acos(-1) : acos(aux));
@@ -226,20 +226,20 @@ struct point {
 
     // Scalar projection - O(1).
     template<typename T1>
-    friend auto projection(const point &a, const point<T1> &b) // -> floating type
+    friend double projection(const point &a, const point<T1> &b)
     {
         return a*b/abs(b);
     }
 
     // Scalar rejection - O(1).
     template<typename T1>
-    friend auto rejection(const point &a, const point<T1> &b) // -> floating type
+    friend double rejection(const point &a, const point<T1> &b)
     {
         return abs(a - (a >> b));
     }
 
     // Vector norm - O(1).
-    friend auto abs(const point &p) // -> floating type
+    friend double abs(const point &p)
     {
         return sqrt(!p);
     }
