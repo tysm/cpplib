@@ -14,10 +14,10 @@ struct point {
     point(const point<T1> &p) :
         x(p.x), y(p.y), z(p.z) {}
 
-    // Component sum - O(1).
-    T operator+() const
+    // Not null vector check - O(1).
+    operator bool() const
     {
-        return x + y + z;
+        return x or y or z;
     }
 
     // Negative vector - O(1).
@@ -29,13 +29,8 @@ struct point {
     // Unit vector - O(1).
     point<double> operator~() const
     {
+        assert(*this);
         return (*this)/norm(*this);
-    }
-
-    // Vector squared norm - O(1).
-    T operator!() const
-    {
-        return (*this)*(*this);
     }
 
     // Vector addiction assignment - O(1).
@@ -70,8 +65,12 @@ struct point {
     template<typename T1>
     point &operator>>=(const point<T1> &rhs)
     {
-        auto res = ((*this)*rhs/(!rhs))*rhs;
-        tie(x, y, z) = make_tuple(res.x, res.y, res.z);
+        if(!rhs)
+            tie(x, y, z) = make_tuple(0, 0, 0);
+        else{
+            auto res = ((*this)*rhs/squared_norm(rhs))*rhs;
+            tie(x, y, z) = make_tuple(res.x, res.y, res.z);
+        }
         return *this;
     }
 
@@ -216,6 +215,20 @@ struct point {
         return !(lhs < rhs);
     }
 
+    // Vector parallelism check - O(1).
+    template<typename T1>
+    friend bool parallel(const point &a, const point<T1> &b)
+    {
+        return !(a^b);
+    }
+
+    // Point collinearity check - O(1).
+    template<typename T1, typename T2>
+    friend bool collinear(const point &a, const point<T1> &b, const point<T2> &c)
+    {
+        return parallel(a - b, c - b);
+    }
+
     // Vector triple product - O(1).
     template<typename T1, typename T2>
     friend auto triple(const point &a, const point<T1> &b, const point<T2> &c) -> typename common_type<T, T1, T2>::type
@@ -223,17 +236,23 @@ struct point {
         return a*(b^c);
     }
 
+    // Vector squared norm - O(1).
+    friend T squared_norm(const point &p)
+    {
+        return p*p;
+    }
+
     // Vector norm - O(1).
     friend double norm(const point &p)
     {
-        return sqrt(!p);
+        return sqrt(squared_norm(p));
     }
 
     // Scalar projection - O(1).
     template<typename T1>
     friend double projection(const point &a, const point<T1> &b)
     {
-        return a*b/norm(b);
+        return !b? 0 : a*b/norm(b);
     }
 
     // Scalar rejection - O(1).
@@ -247,13 +266,14 @@ struct point {
     template<typename T1>
     friend double distance(const point &a, const point<T1> &b)
     {
-        return norm(a - b);
+        return norm(b - a);
     }
 
     // Angle between two vectors - O(1).
     template<typename T1>
     friend double angle(const point &a, const point<T1> &b)
     {
+        assert(a and b);
         auto aux = a*b/norm(a)/norm(b);
         return aux > 1? acos(1) : (aux < -1? acos(-1) : acos(aux));
     }
@@ -275,6 +295,18 @@ struct point {
         // -1 means clockwise.
         // (yTOz, zTOx, xTOy) == (x-axis, y-axis, z-axis).
         return make_tuple(sign(aux.x), sign(aux.y), sign(aux.z));
+    }
+
+    // Vector rotation - O(1).
+    template<typename T1>
+    friend point<double> rotate(const point &p, const point<T1> &u, double a)
+    {
+        assert(norm(u) == 1);
+        double dot = p*u, co = cos(a), si = sin(a);
+        double x = u.x*dot*(1 - co) + p.x*co + (u.y*p.z - u.z*p.y)*si;
+        double y = u.y*dot*(1 - co) + p.y*co + (u.z*p.x - u.x*p.z)*si;
+        double z = u.z*dot*(1 - co) + p.z*co + (u.x*p.y - u.y*p.x)*si;
+        return point<double>(x, y, z);
     }
 
     // Vector string conversion - O(1).
