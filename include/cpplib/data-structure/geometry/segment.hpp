@@ -13,16 +13,9 @@ struct segment {
         a(a), b(b) {}
 
     // Not null segment check - O(1).
-    operator bool() const
+    explicit operator bool() const
     {
         return a != b;
-    }
-
-    // Segment parallelism check - O(1).
-    template<typename T1>
-    friend bool parallel(const segment<T1> &r, const segment &s)
-    {
-        return parallel(r.b - r.a, s.b - s.a);
     }
 
     // Point lies on segment check - O(1).
@@ -35,7 +28,42 @@ struct segment {
         return parallel(pa, pb) and pa*pb <= 0;
     }
 
-    // Point to segment distance - O(1).
+    // Segment equivalent to - O(1).
+    template<typename T1>
+    friend bool operator==(const segment &lhs, const segment<T1> &rhs)
+    {
+        return tie(lhs.a, lhs.b) == tie(rhs.a, rhs.b);
+    }
+
+    // Segment not equivalent to - O(1).
+    template<typename T1>
+    friend bool operator!=(const segment &lhs, const segment<T1> &rhs)
+    {
+        return !(lhs == rhs);
+    }
+
+    // Segment coplanarity check - O(1).
+    template<typename T1>
+    friend bool coplanar(const segment<T1> &r, const segment &s)
+    {
+        return parallel(r, s) or parallel(s.a - r.a, r.b - r.a + s.b - s.a);
+    }
+
+    // Segment parallelism check - O(1).
+    template<typename T1>
+    friend bool parallel(const segment<T1> &r, const segment &s)
+    {
+        return parallel(r.b - r.a, s.b - s.a);
+    }
+
+    // Segment concurrency check - O(1).
+    template<typename T1>
+    friend bool concurrent(const segment<T1> &r, const segment &s)
+    {
+        return coplanar(r, s) and !parallel(r, s);
+    }
+
+    // Point-segment distance - O(1).
     template<typename T1>
     friend double distance(const point<T1> &p, const segment &s)
     {
