@@ -55,15 +55,14 @@ struct line {
     template<typename T1>
     friend bool coplanar(const segment<T1> &s, const line &l)
     {
-        auto ab = s.b - s.a;
-        return parallel(ab, l.v) or parallel(l.p - s.a, ab + l.v);
+        return parallel(s, l) or parallel(l.p - s.a, s.b - s.a + l.v);
     }
 
     // Line-line coplanarity check - O(1).
     template<typename T1>
     friend bool coplanar(const line<T1> &r, const line &l)
     {
-        return parallel(r.v, l.v) or parallel(l.p - r.p, r.v + l.v);
+        return parallel(r, l) or parallel(l.p - r.p, r.v + l.v);
     }
 
     // Segment-line parallelism check - O(1).
