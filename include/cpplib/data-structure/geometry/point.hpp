@@ -15,7 +15,7 @@ struct point {
         x(p.x), y(p.y), z(p.z) {}
 
     // Not null vector check - O(1).
-    operator bool() const
+    explicit operator bool() const
     {
         return x or y or z;
     }
@@ -222,6 +222,13 @@ struct point {
         return !(a^b);
     }
 
+    // Vector perpendicularity check - O(1).
+    template<typename T1>
+    friend bool perpendicular(const point &a, const point<T1> &b)
+    {
+        return a*b == 0;
+    }
+
     // Point collinearity check - O(1).
     template<typename T1, typename T2>
     friend bool collinear(const point &a, const point<T1> &b, const point<T2> &c)
@@ -259,7 +266,7 @@ struct point {
     template<typename T1>
     friend double rejection(const point &a, const point<T1> &b)
     {
-        return norm(a - (a >> b));
+        return norm(a << b);
     }
 
     // Point distance - O(1).
@@ -273,7 +280,8 @@ struct point {
     template<typename T1>
     friend double angle(const point &a, const point<T1> &b)
     {
-        assert(a and b);
+        if(!a or !b)
+            return acos(0);
         auto aux = a*b/norm(a)/norm(b);
         return aux > 1? acos(1) : (aux < -1? acos(-1) : acos(aux));
     }
