@@ -93,6 +93,34 @@ struct line {
         return coplanar(r, l) and !parallel(r, l);
     }
 
+    // Segment-line orthogonality check - O(1).
+    template<typename T1>
+    friend bool orthogonal(const segment<T1> &s, const line &l)
+    {
+        return perpendicular(s.b - s.a, l.v);
+    }
+
+    // Line-line orthogonality check - O(1).
+    template<typename T1>
+    friend bool orthogonal(const line<T1> &r, const line &l)
+    {
+        return perpendicular(r.v, l.v);
+    }
+
+    // Segment-line perpendicularity check - O(1).
+    template<typename T1>
+    friend bool perpendicular(const segment<T1> &s, const line &l)
+    {
+        return coplanar(s, l) and orthogonal(s, l);
+    }
+
+    // Line-line perpendicularity check - O(1).
+    template<typename T1>
+    friend bool perpendicular(const line<T1> &r, const line &l)
+    {
+        return coplanar(r, l) and orthogonal(r, l);
+    }
+
     // Point-line distance - O(1).
     template<typename T1>
     friend double distance(const point<T1> &p, const line &l)

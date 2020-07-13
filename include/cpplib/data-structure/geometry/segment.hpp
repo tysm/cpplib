@@ -63,6 +63,20 @@ struct segment {
         return coplanar(r, s) and !parallel(r, s);
     }
 
+    // Segment orthogonality check - O(1).
+    template<typename T1>
+    friend bool orthogonal(const segment<T1> &r, const segment &s)
+    {
+        return perpendicular(r.b - r.a, s.b - s.a);
+    }
+
+    // Segment perpendicularity check - O(1).
+    template<typename T1>
+    friend bool perpendicular(const segment<T1> &r, const segment &s)
+    {
+        return coplanar(r, s) and orthogonal(r, s);
+    }
+
     // Point-segment distance - O(1).
     template<typename T1>
     friend double distance(const point<T1> &p, const segment &s)
