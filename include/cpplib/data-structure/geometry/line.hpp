@@ -44,6 +44,13 @@ struct line {
         return false;
     }
 
+    // Line not equivalent to - O(1).
+    template<typename T1>
+    friend bool operator!=(const line &lhs, const line<T1> &rhs)
+    {
+        return !(lhs == rhs);
+    }
+
     // Segment-line coplanarity check - O(1).
     template<typename T1>
     friend bool coplanar(const segment<T1> &s, const line &l)
