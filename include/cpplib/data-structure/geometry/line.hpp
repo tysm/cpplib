@@ -14,34 +14,9 @@ struct line {
         p(p), v(v) {}
 
     // Not null line check - O(1).
-    operator bool() const
+    explicit operator bool() const
     {
-        return v;
-    }
-
-    // Line equivalent to - O(1).
-    template<typename T1>
-    friend bool operator==(const line &lhs, const line<T1> &rhs)
-    {
-        if(!lhs and !rhs)
-            return lhs.p == rhs.p;
-        else if(lhs and rhs)
-            return parallel(lhs, rhs) and lhs.count(rhs.p);
-        return false;
-    }
-
-    // Segment-line parallelism check - O(1).
-    template<typename T1>
-    friend bool parallel(const segment<T1> &s, const line &l)
-    {
-        return parallel(s.b - s.a, l.v);
-    }
-
-    // Line-line parallelism check - O(1).
-    template<typename T1>
-    friend bool parallel(const line<T1> &r, const line &l)
-    {
-        return parallel(r.v, l.v);
+        return (bool)v;
     }
 
     // Point lies on line check - O(1).
@@ -58,7 +33,61 @@ struct line {
         return count(s.a) and count(s.b);
     }
 
-    // Point to line distance - O(1).
+    // Line equivalent to - O(1).
+    template<typename T1>
+    friend bool operator==(const line &lhs, const line<T1> &rhs)
+    {
+        if(!lhs and !rhs)
+            return lhs.p == rhs.p;
+        else if(lhs and rhs)
+            return parallel(lhs, rhs) and lhs.count(rhs.p);
+        return false;
+    }
+
+    // Segment-line coplanarity check - O(1).
+    template<typename T1>
+    friend bool coplanar(const segment<T1> &s, const line &l)
+    {
+        auto ab = s.b - s.a;
+        return parallel(ab, l.v) or parallel(l.p - s.a, ab + l.v);
+    }
+
+    // Line-line coplanarity check - O(1).
+    template<typename T1>
+    friend bool coplanar(const line<T1> &r, const line &l)
+    {
+        return parallel(r.v, l.v) or parallel(l.p - r.p, r.v + l.v);
+    }
+
+    // Segment-line parallelism check - O(1).
+    template<typename T1>
+    friend bool parallel(const segment<T1> &s, const line &l)
+    {
+        return parallel(s.b - s.a, l.v);
+    }
+
+    // Line-line parallelism check - O(1).
+    template<typename T1>
+    friend bool parallel(const line<T1> &r, const line &l)
+    {
+        return parallel(r.v, l.v);
+    }
+
+    // Segment-line concurrency check - O(1).
+    template<typename T1>
+    friend bool concurrent(const segment<T1> &s, const line &l)
+    {
+        return coplanar(s, l) and !parallel(s, l);
+    }
+
+    // Line-line concurrency check - O(1).
+    template<typename T1>
+    friend bool concurrent(const line<T1> &r, const line &l)
+    {
+        return coplanar(r, l) and !parallel(r, l);
+    }
+
+    // Point-line distance - O(1).
     template<typename T1>
     friend double distance(const point<T1> &p, const line &l)
     {
