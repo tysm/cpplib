@@ -28,14 +28,14 @@ struct segment {
         return parallel(pa, pb) and pa*pb <= 0;
     }
 
-    // Segment equivalent to - O(1).
+    // Segment equal to - O(1).
     template<typename T1>
     friend bool operator==(const segment &lhs, const segment<T1> &rhs)
     {
-        return tie(lhs.a, lhs.b) == tie(rhs.a, rhs.b);
+        return tie(lhs.a, lhs.b) == tie(rhs.a, rhs.b) or tie(lhs.a, lhs.b) == tie(rhs.b, rhs.a);
     }
 
-    // Segment not equivalent to - O(1).
+    // Segment not equal to - O(1).
     template<typename T1>
     friend bool operator!=(const segment &lhs, const segment<T1> &rhs)
     {
