@@ -226,7 +226,7 @@ struct point {
     template<typename T1, typename T2>
     friend bool coplanar(const point &u, const point<T1> &v, const point<T2> &w)
     {
-        return parallel(u, v) or parallel(u, w) or parallel(v, w) or parallel(w, u + v) or parallel(w, u - v);
+        return triple(u, v, w) == 0;
     }
 
     // Vector perpendicularity check - O(1).
