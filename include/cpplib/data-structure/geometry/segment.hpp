@@ -86,7 +86,7 @@ struct segment {
             return distance(p, s.a);
         else if(bp*ab >= 0)
             return distance(p, s.b);
-        return norm(ap^ab)/norm(ab); // same as distance(p, line(s.a, ab)).
+        return sqrt((double)squared_norm(ap^ab)/squared_norm(ab)); // same as distance(p, line(s.a, ab)).
     }
 
     // Closest point in segment - O(1).
