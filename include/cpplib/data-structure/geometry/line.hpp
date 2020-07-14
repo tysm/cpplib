@@ -198,6 +198,14 @@ struct line {
         return {projection(s.a, l), projection(s.b, l)};
     }
 
+    // Line projection onto line - O(1).
+    template<typename T1>
+    friend line<double> projection(const line<T1> &r, const line &l)
+    {
+        auto s = projection(segment<T1>(r.p, r.p + r.v), l);
+        return {s.a, s.b - s.a};
+    }
+
     // Point reflection over line - O(1).
     template<typename T1>
     friend point<double> reflection(const point<T1> &p, const line &l)
@@ -220,13 +228,13 @@ struct line {
         return {s.a, s.b - s.a};
     }
 
-    // Line string conversion - O(1).
+    // String conversion - O(1).
     friend string to_string(const line &l)
     {
         return '[' + to_string(l.p) + ' ' + to_string(l.v) + ']';
     }
 
-    // Line output - O(1).
+    // Output - O(1).
     friend ostream &operator<<(ostream &lhs, const line &rhs)
     {
         return lhs << to_string(rhs);

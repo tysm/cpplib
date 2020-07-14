@@ -105,13 +105,13 @@ struct segment {
         return point<double>(s.a) + ab*((double)(ap*ab)/squared_norm(ab)); // same as projection(p, line(s.a, ab)).
     }
 
-    // Segment string conversion - O(1).
+    // String conversion - O(1).
     friend string to_string(const segment &s)
     {
         return '[' + to_string(s.a) + ' ' + to_string(s.b) + ']';
     }
 
-    // Segment output - O(1).
+    // Output - O(1).
     friend ostream &operator<<(ostream &lhs, const segment &rhs)
     {
         return lhs << to_string(rhs);
