@@ -129,11 +129,33 @@ struct line {
         return coplanar(r, l) and orthogonal(r, l);
     }
 
+    // Segment-line intersection check - O(1).
+    template<typename T1>
+    friend bool intersect(const segment<T1> &s, const line &l)
+    {
+        line<T1> r = {s.a, s.b - s.a};
+        return r == l or (!s and l.count(s.a) or !l and s.count(l.p))) or (concurrent(r, l) and s.count(intersection(r, l).p));
+    }
+
     // Line-line intersection check - O(1).
     template<typename T1>
     friend bool intersect(const line<T1> &r, const line &l)
     {
-        return r == l or concurrent(r, l) or (!r and l.count(r.p)) or (!l and r.count(l.p));
+        return r == l or (!r and l.count(r.p) or !l and r.count(l.p)) or concurrent(r, l);
+    }
+
+    // Segment-line intersection - O(1).
+    template<typename T1>
+    friend segment<double> intersection(const segment<T1> &s, const line &l)
+    {
+        assert(intersect(s, l));
+        line<T1> r = {s.a, s.b - s.a};
+        if(r == l or !s)
+            return s;
+        else if(!l)
+            return {l.p, l.p};
+        auto aux = intersection(r, l);
+        return {aux.p, aux.p};
     }
 
     // Line-line intersection - O(1).
@@ -141,9 +163,7 @@ struct line {
     friend line<double> intersection(const line<T1> &r, const line &l)
     {
         assert(intersect(r, l));
-        if(r == l)
-            return r;
-        else if(!r)
+        if(r == l or !r)
             return r;
         else if(!l)
             return l;
