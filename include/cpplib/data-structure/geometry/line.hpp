@@ -19,6 +19,14 @@ struct line {
         return (bool)v;
     }
 
+    // Point on line - O(1).
+    template<typename T1,
+    typename enable_if<is_arithmetic<T1>::value, uint>::type = 0>
+    auto at(const T1 k) -> const point<typename common_type<T, T1>::type>
+    {
+        return p + k*v;
+    }
+
     // Point lies on line check - O(1).
     template<typename T1>
     bool count(const point<T1> &q) const
@@ -119,6 +127,27 @@ struct line {
     friend bool perpendicular(const line<T1> &r, const line &l)
     {
         return coplanar(r, l) and orthogonal(r, l);
+    }
+
+    // Line-line intersection check - O(1).
+    template<typename T1>
+    friend bool intersect(const line<T1> &r, const line &l)
+    {
+        return r == l or concurrent(r, l) or (!r and l.count(r.p)) or (!l and r.count(l.p));
+    }
+
+    // Line-line intersection - O(1).
+    template<typename T1>
+    friend line<double> intersection(const line<T1> &r, const line &l)
+    {
+        assert(intersect(r, l));
+        if(r == l)
+            return r;
+        else if(!r)
+            return r;
+        else if(!l)
+            return l;
+        return {r.at(sqrt((double)squared_norm((l.p - r.p)^r.v)/squared_norm(l.v^r.v))), point<double>()};
     }
 
     // Point-line distance - O(1).
