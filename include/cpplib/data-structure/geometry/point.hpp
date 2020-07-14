@@ -330,7 +330,7 @@ struct point {
         return '(' + to_string(p.x) + ' ' + to_string(p.y) + ' ' + to_string(p.z) + ')';
     }
 
-    // Vector output - O(1).
+    // Output - O(1).
     friend ostream &operator<<(ostream &lhs, const point &rhs)
     {
         return lhs << to_string(rhs);
