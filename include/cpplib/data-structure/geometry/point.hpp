@@ -217,9 +217,9 @@ struct point {
 
     // Vector parallelism check - O(1).
     template<typename T1>
-    friend bool parallel(const point &a, const point<T1> &b)
+    friend bool parallel(const point &u, const point<T1> &v)
     {
-        return !(a^b);
+        return !(u^v);
     }
 
     // Vector coplanarity check - O(1).
@@ -231,9 +231,9 @@ struct point {
 
     // Vector perpendicularity check - O(1).
     template<typename T1>
-    friend bool perpendicular(const point &a, const point<T1> &b)
+    friend bool perpendicular(const point &u, const point<T1> &v)
     {
-        return a*b == 0;
+        return u*v == 0;
     }
 
     // Point collinearity check - O(1).
@@ -245,35 +245,35 @@ struct point {
 
     // Vector triple product - O(1).
     template<typename T1, typename T2>
-    friend auto triple(const point &a, const point<T1> &b, const point<T2> &c) -> typename common_type<T, T1, T2>::type
+    friend auto triple(const point &u, const point<T1> &v, const point<T2> &w) -> typename common_type<T, T1, T2>::type
     {
-        return a*(b^c);
+        return u*(v^w);
     }
 
     // Vector squared norm - O(1).
-    friend T squared_norm(const point &p)
+    friend T squared_norm(const point &v)
     {
-        return p*p;
+        return v*v;
     }
 
     // Vector norm - O(1).
-    friend double norm(const point &p)
+    friend double norm(const point &v)
     {
-        return sqrt(squared_norm(p));
+        return sqrt(squared_norm(v));
     }
 
     // Scalar projection - O(1).
     template<typename T1>
-    friend double projection(const point &a, const point<T1> &b)
+    friend double projection(const point &u, const point<T1> &v)
     {
-        return !b? 0 : a*b/norm(b);
+        return !v? 0 : u*v/norm(v);
     }
 
     // Scalar rejection - O(1).
     template<typename T1>
-    friend double rejection(const point &a, const point<T1> &b)
+    friend double rejection(const point &u, const point<T1> &v)
     {
-        return norm(a << b);
+        return norm(u << v);
     }
 
     // Point distance - O(1).
@@ -285,11 +285,11 @@ struct point {
 
     // Angle between two vectors - O(1).
     template<typename T1>
-    friend double angle(const point &a, const point<T1> &b)
+    friend double angle(const point &u, const point<T1> &v)
     {
-        if(!a or !b)
+        if(!u or !v)
             return acos(0);
-        auto aux = a*b/norm(a)/norm(b);
+        auto aux = u*v/norm(u)/norm(v);
         return aux > 1? acos(1) : (aux < -1? acos(-1) : acos(aux));
     }
 
@@ -302,9 +302,9 @@ struct point {
 
     // Angle counterclockwise orientation between two vectors - O(1).
     template<typename T1>
-    friend tuple<int, int, int> orientation(const point &a, const point<T1> &b)
+    friend tuple<int, int, int> orientation(const point &u, const point<T1> &v)
     {
-        auto aux = a^b;
+        auto aux = u^v;
         //  1 means counterclockwise.
         //  0 means the target component is collinear.
         // -1 means clockwise.
@@ -314,17 +314,17 @@ struct point {
 
     // Vector rotation - O(1).
     template<typename T1>
-    friend point<double> rotate(const point &p, const point<T1> &u, double a)
+    friend point<double> rotate(const point &v, const point<T1> &u, double r)
     {
         assert(norm(u) == 1);
-        double dot = p*u, co = cos(a), si = sin(a);
-        double x = u.x*dot*(1 - co) + p.x*co + (u.y*p.z - u.z*p.y)*si;
-        double y = u.y*dot*(1 - co) + p.y*co + (u.z*p.x - u.x*p.z)*si;
-        double z = u.z*dot*(1 - co) + p.z*co + (u.x*p.y - u.y*p.x)*si;
+        double dot = v*u, co = cos(r), si = sin(r);
+        double x = u.x*dot*(1 - co) + v.x*co + (u.y*v.z - u.z*v.y)*si;
+        double y = u.y*dot*(1 - co) + v.y*co + (u.z*v.x - u.x*v.z)*si;
+        double z = u.z*dot*(1 - co) + v.z*co + (u.x*v.y - u.y*v.x)*si;
         return point<double>(x, y, z);
     }
 
-    // Vector string conversion - O(1).
+    // String conversion - O(1).
     friend string to_string(const point &p)
     {
         return '(' + to_string(p.x) + ' ' + to_string(p.y) + ' ' + to_string(p.z) + ')';
