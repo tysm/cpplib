@@ -12,6 +12,10 @@ struct segment {
     segment(const point<T1> &a, const point<T2> &b) :
         a(a), b(b) {}
 
+    template<typename T1>
+    segment(const segment<T1> &s) :
+        a(s.a), b(s.b) {}
+
     // Not null segment check - O(1).
     explicit operator bool() const
     {
@@ -46,7 +50,7 @@ struct segment {
     template<typename T1>
     friend bool coplanar(const segment<T1> &r, const segment &s)
     {
-        return parallel(r, s) or parallel(s.a - r.a, r.b - r.a + s.b - s.a);
+        return coplanar(r.b - r.a, s.b - s.a, s.a - r.a);
     }
 
     // Segment parallelism check - O(1).

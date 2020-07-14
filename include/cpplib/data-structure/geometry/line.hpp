@@ -13,6 +13,10 @@ struct line {
     line(const point<T1> &p, const point<T2> &v) :
         p(p), v(v) {}
 
+    template<typename T1>
+    line(const line<T1> &l) :
+        p(l.p), v(l.v) {}
+
     // Not null line check - O(1).
     explicit operator bool() const
     {
@@ -22,7 +26,7 @@ struct line {
     // Point on line - O(1).
     template<typename T1,
     typename enable_if<is_arithmetic<T1>::value, uint>::type = 0>
-    auto at(const T1 k) -> const point<typename common_type<T, T1>::type>
+    auto at(const T1 k) const -> point<typename common_type<T, T1>::type>
     {
         return p + k*v;
     }
@@ -63,14 +67,14 @@ struct line {
     template<typename T1>
     friend bool coplanar(const segment<T1> &s, const line &l)
     {
-        return parallel(s, l) or parallel(l.p - s.a, s.b - s.a + l.v);
+        return coplanar(s.b - s.a, l.v, l.p - s.a);
     }
 
     // Line-line coplanarity check - O(1).
     template<typename T1>
     friend bool coplanar(const line<T1> &r, const line &l)
     {
-        return parallel(r, l) or parallel(l.p - r.p, r.v + l.v);
+        return coplanar(r.v, l.v, l.p - r.p);
     }
 
     // Segment-line parallelism check - O(1).
@@ -134,7 +138,7 @@ struct line {
     friend bool intersect(const segment<T1> &s, const line &l)
     {
         line<T1> r = {s.a, s.b - s.a};
-        return r == l or (!s and l.count(s.a) or !l and s.count(l.p))) or (concurrent(r, l) and s.count(intersection(r, l).p));
+        return r == l or (!s and l.count(s.a) or !l and s.count(l.p)) or (concurrent(r, l) and s.count(intersection(r, l).p));
     }
 
     // Line-line intersection check - O(1).
