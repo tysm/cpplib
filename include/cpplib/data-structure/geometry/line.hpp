@@ -17,10 +17,10 @@ struct line {
     line(const line<T1> &l) :
         p(l.p), v(l.v) {}
 
-    // Not null line check - O(1).
-    explicit operator bool() const
+    // Degenerate line check - O(1).
+    bool is_degenerate() const
     {
-        return (bool)v;
+        return v.is_null();
     }
 
     // Point on line - O(1).
@@ -35,7 +35,7 @@ struct line {
     template<typename T1>
     bool count(const point<T1> &q) const
     {
-        return !(*this)? q == p : parallel((q - p), v);
+        return is_degenerate()? q == p : parallel((q - p), v);
     }
 
     // Segment lies on line check - O(1).
@@ -49,9 +49,9 @@ struct line {
     template<typename T1>
     friend bool operator==(const line &lhs, const line<T1> &rhs)
     {
-        if(!lhs and !rhs)
+        if(lhs.is_degenerate() and rhs.is_degenerate())
             return lhs.p == rhs.p;
-        else if(lhs and rhs)
+        else if(!lhs.is_degenerate() and !rhs.is_degenerate())
             return parallel(lhs, rhs) and lhs.count(rhs.p);
         return false;
     }
@@ -138,14 +138,26 @@ struct line {
     friend bool intersect(const segment<T1> &s, const line &l)
     {
         line<T1> r = {s.a, s.b - s.a};
-        return r == l or (!s and l.count(s.a) or !l and s.count(l.p)) or (concurrent(r, l) and s.count(intersection(r, l).p));
+        if(r == l)
+            return true;
+        else if(s.is_degenerate() and l.count(s.a))
+            return true;
+        else if(l.is_degenerate() and s.count(l.p))
+            return true;
+        return concurrent(r, l) and s.count(intersection(r, l).p);
     }
 
     // Line-line intersection check - O(1).
     template<typename T1>
     friend bool intersect(const line<T1> &r, const line &l)
     {
-        return r == l or (!r and l.count(r.p) or !l and r.count(l.p)) or concurrent(r, l);
+        if(r == l)
+            return true;
+        else if(r.is_degenerate() and l.count(r.p))
+            return true;
+        else if(l.is_degenerate() and r.count(l.p))
+            return true;
+        return  concurrent(r, l);
     }
 
     // Segment-line intersection - O(1).
@@ -154,9 +166,9 @@ struct line {
     {
         assert(intersect(s, l));
         line<T1> r = {s.a, s.b - s.a};
-        if(r == l or !s)
+        if(r == l or s.is_degenerate())
             return s;
-        else if(!l)
+        else if(l.is_degenerate())
             return {l.p, l.p};
         auto aux = intersection(r, l);
         return {aux.p, aux.p};
@@ -167,9 +179,9 @@ struct line {
     friend line<double> intersection(const line<T1> &r, const line &l)
     {
         assert(intersect(r, l));
-        if(r == l or !r)
+        if(r == l or r.is_degenerate())
             return r;
-        else if(!l)
+        else if(l.is_degenerate())
             return l;
         auto rl = l.p - r.p;
         double k = sqrt((double)squared_norm(rl^l.v)/squared_norm(r.v^l.v));
@@ -180,16 +192,18 @@ struct line {
     template<typename T1>
     friend double distance(const point<T1> &p, const line &l)
     {
-        return !l? distance(l.p, p) : sqrt((double)squared_norm((p - l.p)^l.v)/squared_norm(l.v));
+        if(l.is_degenerate())
+            return distance(l.p, p);
+        return sqrt((double)squared_norm((p - l.p)^l.v)/squared_norm(l.v));
     }
 
     // Line-line distance - O(1).
     template<typename T1>
     friend double distance(const line<T1> &r, const line &l)
     {
-        if(!l)
+        if(l.is_degenerate())
             return distance(l.p, r);
-        else if(!r or parallel(r, l))
+        else if(r.is_degenerate() or parallel(r, l))
             return distance(r.p, l);
         return abs((l.p - r.p)*(r.v^l.v))/norm(r.v^l.v);
     }
@@ -199,7 +213,7 @@ struct line {
     friend point<double> projection(const point<T1> &p, const line &l)
     {
         point<double> res = l.p;
-        if(l)
+        if(!l.is_degenerate())
             res += l.v*((double)((p - l.p)*l.v)/squared_norm(l.v));
         return res;
     }

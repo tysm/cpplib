@@ -16,17 +16,17 @@ struct segment {
     segment(const segment<T1> &s) :
         a(s.a), b(s.b) {}
 
-    // Not null segment check - O(1).
-    explicit operator bool() const
+    // Degenerate segment check - O(1).
+    bool is_degenerate() const
     {
-        return a != b;
+        return a == b;
     }
 
     // Point lies on segment check - O(1).
     template<typename T1>
     bool count(const point<T1> &p) const
     {
-        if(!(*this))
+        if(is_degenerate())
             return p == a;
         auto pa = a - p, pb = b - p;
         return parallel(pa, pb) and pa*pb <= 0;
@@ -96,13 +96,14 @@ struct segment {
         return false;
     }
 
+    // Segment intersection - O(1).
     template<typename T1>
     friend segment<double> intersection(const segment<T1> &r, const segment &s)
     {
         assert(intersect(r, s));
-        if(r == s or !r)
+        if(r == s or r.is_degenerate())
             return r;
-        else if(!s)
+        else if(s.is_degenerate())
             return s;
         else if(concurrent(s, r)){ // actually (line) intersection code.
             auto rs = s.a - r.a, rv = r.b - r.a, sv = s.b - s.a;
@@ -134,7 +135,7 @@ struct segment {
             return s.a;
         else if(bp*ab >= 0)
             return s.b;
-        return point<double>(s.a) + ab*((double)(ap*ab)/squared_norm(ab)); // same as projection(p, line(s.a, ab)).
+        return s.a + ab*((double)(ap*ab)/squared_norm(ab)); // same as projection(p, line(s.a, ab)).
     }
 
     // String conversion - O(1).

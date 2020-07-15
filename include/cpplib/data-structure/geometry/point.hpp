@@ -14,23 +14,23 @@ struct point {
     point(const point<T1> &p) :
         x(p.x), y(p.y), z(p.z) {}
 
-    // Not null vector check - O(1).
-    explicit operator bool() const
+    // Null vector check - O(1).
+    bool is_null() const
     {
-        return x or y or z;
+        return x == 0 and y == 0 and z == 0;
+    }
+
+    // Unit vector - O(1).
+    point<double> as_unit() const
+    {
+        assert(!is_null());
+        return (*this)/norm(*this);
     }
 
     // Negative vector - O(1).
     point operator-() const
     {
         return point(-x, -y, -z);
-    }
-
-    // Unit vector - O(1).
-    point<double> operator~() const
-    {
-        assert(*this);
-        return (*this)/norm(*this);
     }
 
     // Vector addiction assignment - O(1).
@@ -65,7 +65,7 @@ struct point {
     template<typename T1>
     point &operator>>=(const point<T1> &rhs)
     {
-        if(!rhs)
+        if(rhs.is_null())
             tie(x, y, z) = make_tuple(0, 0, 0);
         else{
             auto res = ((*this)*rhs/squared_norm(rhs))*rhs;
@@ -219,7 +219,7 @@ struct point {
     template<typename T1>
     friend bool parallel(const point &u, const point<T1> &v)
     {
-        return !(u^v);
+        return (u^v).is_null();
     }
 
     // Vector coplanarity check - O(1).
@@ -266,7 +266,7 @@ struct point {
     template<typename T1>
     friend double projection(const point &u, const point<T1> &v)
     {
-        return !v? 0 : u*v/norm(v);
+        return v.is_null()? 0 : u*v/norm(v);
     }
 
     // Scalar rejection - O(1).
@@ -287,7 +287,7 @@ struct point {
     template<typename T1>
     friend double angle(const point &u, const point<T1> &v)
     {
-        if(!u or !v)
+        if(u.is_null() or v.is_null())
             return acos(0);
         auto aux = u*v/norm(u)/norm(v);
         return aux > 1? acos(1) : (aux < -1? acos(-1) : acos(aux));
