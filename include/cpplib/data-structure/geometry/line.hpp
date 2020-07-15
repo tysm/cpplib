@@ -183,6 +183,17 @@ struct line {
         return !l? distance(l.p, p) : sqrt((double)squared_norm((p - l.p)^l.v)/squared_norm(l.v));
     }
 
+    // Line-line distance - O(1).
+    template<typename T1>
+    friend double distance(const line<T1> &r, const line &l)
+    {
+        if(!l)
+            return distance(l.p, r);
+        else if(!r or parallel(r, l))
+            return distance(r.p, l);
+        return abs((l.p - r.p)*(r.v^l.v))/norm(r.v^l.v);
+    }
+
     // Point projection onto line - O(1).
     template<typename T1>
     friend point<double> projection(const point<T1> &p, const line &l)
