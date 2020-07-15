@@ -5,9 +5,11 @@
 template<typename T,
 typename enable_if<is_arithmetic<T>::value, uint>::type = 0>
 struct point {
-    T x, y, z;
+    T x = 0, y = 0, z = 0;
 
-    explicit point(const T x = 0, const T y = 0, const T z = 0) :
+    point(){}
+
+    point(const T x, const T y, const T z) :
         x(x), y(y), z(z) {}
 
     template<typename T1>
