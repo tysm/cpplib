@@ -171,7 +171,9 @@ struct line {
             return r;
         else if(!l)
             return l;
-        return {r.at(sqrt((double)squared_norm((l.p - r.p)^r.v)/squared_norm(l.v^r.v))), point<double>()};
+        auto rl = l.p - r.p;
+        double k = sqrt((double)squared_norm(rl^l.v)/squared_norm(r.v^l.v));
+        return {r.at(k*orientation(rl, l.v, r.v^l.v)), point<double>()};
     }
 
     // Point-line distance - O(1).
