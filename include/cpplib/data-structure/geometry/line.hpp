@@ -204,8 +204,8 @@ struct line {
     template<typename T1>
     friend line<double> projection(const line<T1> &r, const line &l)
     {
-        auto s = projection(segment<T1>(r.p, r.p + r.v), l);
-        return {s.a, s.b - s.a};
+        auto p = projection(r.p, l), q = projection(r.p + r.v, l);
+        return {p, q - p};
     }
 
     // Point reflection over line - O(1).
@@ -226,8 +226,8 @@ struct line {
     template<typename T1>
     friend line<double> reflection(const line<T1> &r, const line &l)
     {
-        auto s = reflection(segment<T1>(r.p, r.p + r.v), l);
-        return {s.a, s.b - s.a};
+        auto p = reflection(r.p, l), q = reflection(r.p + r.v, l);
+        return {p, q - p};
     }
 
     // String conversion - O(1).
