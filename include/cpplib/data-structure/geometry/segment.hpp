@@ -81,6 +81,38 @@ struct segment {
         return coplanar(r, s) and orthogonal(r, s);
     }
 
+    // Segment intersection check - O(1).
+    template<typename T1>
+    friend bool intersect(const segment<T1> &r, const segment &s)
+    {
+        if(r.count(s.a) or r.count(s.b) or s.count(r.a) or s.count(r.b))
+            return true; // covers r == s, degenerate cases and partial intersection.
+        else if(concurrent(s, r)){ // actually (line) intersection code.
+            auto rs = s.a - r.a, rv = r.b - r.a, sv = s.b - s.a;
+            double k = sqrt((double)squared_norm(rs^sv)/squared_norm(rv^sv));
+            auto p = r.a + k*orientation(rs, sv, rv^sv)*rv;
+            return r.count(p) and s.count(p);
+        }
+        return false;
+    }
+
+    template<typename T1>
+    friend segment<double> intersection(const segment<T1> &r, const segment &s)
+    {
+        assert(intersect(r, s));
+        if(r == s or !r)
+            return r;
+        else if(!s)
+            return s;
+        else if(concurrent(s, r)){ // actually (line) intersection code.
+            auto rs = s.a - r.a, rv = r.b - r.a, sv = s.b - s.a;
+            double k = sqrt((double)squared_norm(rs^sv)/squared_norm(rv^sv));
+            auto p = r.a + k*orientation(rs, sv, rv^sv)*rv;
+            return {p, p};
+        }
+        return {s.count(r.a)? r.a : r.b, r.count(s.a)? s.a : s.b};
+    }
+
     // Point-segment distance - O(1).
     template<typename T1>
     friend double distance(const point<T1> &p, const segment &s)
