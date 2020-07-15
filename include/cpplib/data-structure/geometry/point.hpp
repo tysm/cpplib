@@ -247,7 +247,7 @@ struct point {
     template<typename T1, typename T2>
     friend auto triple(const point &u, const point<T1> &v, const point<T2> &w) -> typename common_type<T, T1, T2>::type
     {
-        return u*(v^w);
+        return (u^v)*w;
     }
 
     // Vector squared norm - O(1).
@@ -300,13 +300,23 @@ struct point {
         return angle(a-b, c-b); // angle between b->a and b->c.
     }
 
-    // Angle counterclockwise orientation between two vectors - O(1).
+    // Relative orientation of two vectors based on a third vector - O(1).
+    template<typename T1, typename T2>
+    friend int orientation(const point &u, const point<T1> &v, const point<T2> &w)
+    {
+        //  1 means counterclockwise.
+        //  0 means (u, v, w) are coplanar.
+        // -1 means clockwise.
+        return sign(triple(u, v, w));
+    }
+
+    // Relative orientation of two vectors based on x, y, z axis - O(1).
     template<typename T1>
     friend tuple<int, int, int> orientation(const point &u, const point<T1> &v)
     {
         auto aux = u^v;
         //  1 means counterclockwise.
-        //  0 means the target component is collinear.
+        //  0 means (u, v, axis) are coplanar.
         // -1 means clockwise.
         // (yTOz, zTOx, xTOy) == (x-axis, y-axis, z-axis).
         return make_tuple(sign(aux.x), sign(aux.y), sign(aux.z));
