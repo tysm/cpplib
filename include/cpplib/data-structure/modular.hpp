@@ -148,7 +148,7 @@ struct modular {
 
     friend string to_string(const modular &a)
     {
-        return to_string(a);
+        return to_string(a.value);
     }
 
     friend ostream &operator<<(ostream &lhs, const modular &rhs)
