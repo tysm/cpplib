@@ -90,6 +90,19 @@ public:
     }
 
     /**
+     * Modular Catalan Number.
+     *
+     * Computes the n-th catalan number mod MOD.
+     *
+     * Time Complexity: O(1).
+     * Space Complexity: O(1).
+     */
+    mint catalan(const uint n) const
+    {
+        return C(2*n, n)*inv(n + 1);
+    }
+
+    /**
      * Modular Multiplicative Inverse.
      *
      * Returns the modular multiplicative inverse
