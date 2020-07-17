@@ -84,7 +84,7 @@ public:
      * Time Complexity: O(log(n)).
      * Space Complexity: O(log(n)).
      */
-    static mint fib(const uint n)
+    mint fib(const uint n) const
     {
         return _fib(n).first;
     }
@@ -135,7 +135,7 @@ private:
      * Time Complexity: O(log(n)).
      * Space Complexity: O(log(n)).
      */
-    static pair<mint, mint> _fib(const uint n)
+    pair<mint, mint> _fib(const uint n) const
     {
         if(n == 0)
             return {0, 1};
