@@ -9,6 +9,9 @@ struct point {
 
     point(){}
 
+    point(const T x, const T y) :
+        x(x), y(y) {}
+
     point(const T x, const T y, const T z) :
         x(x), y(y), z(z) {}
 
@@ -300,6 +303,13 @@ struct point {
     friend double angle(const point &a, const point<T1> &b, const point<T2> &c)
     {
         return angle(a-b, c-b); // angle between b->a and b->c.
+    }
+
+    // Bisector of two vectors - O(1).
+    template<typename T1>
+    friend point<double> bisector(const point &u, const point<T1> &v)
+    {
+        return u*norm(v) + v*norm(u);
     }
 
     // Relative orientation of two vectors based on a third vector - O(1).
