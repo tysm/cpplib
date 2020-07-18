@@ -29,7 +29,7 @@ struct segment {
         if(is_degenerate())
             return p == a;
         auto pa = a - p, pb = b - p;
-        return parallel(pa, pb) and pa*pb <= 0;
+        return parallel(pa, pb) and pa*pb <= EPS;
     }
 
     // Segment equal to - O(1).
@@ -119,9 +119,9 @@ struct segment {
     friend double distance(const point<T1> &p, const segment &s)
     {
         auto ab = s.b - s.a, ap = p - s.a, bp = p - s.b;
-        if(ap*ab <= 0)
+        if(ap*ab <= EPS)
             return distance(p, s.a);
-        else if(bp*ab >= 0)
+        else if(bp*ab >= -EPS)
             return distance(p, s.b);
         return sqrt((double)squared_norm(ap^ab)/squared_norm(ab)); // same as distance(p, line(s.a, ab)).
     }
@@ -131,9 +131,9 @@ struct segment {
     friend point<double> closest(const point<T1> &p, const segment &s)
     {
         auto ab = s.b - s.a, ap = p - s.a, bp = p - s.b;
-        if(ap*ab <= 0)
+        if(ap*ab <= EPS)
             return s.a;
-        else if(bp*ab >= 0)
+        else if(bp*ab >= -EPS)
             return s.b;
         return s.a + ab*((double)(ap*ab)/squared_norm(ab)); // same as projection(p, line(s.a, ab)).
     }
