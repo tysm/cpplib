@@ -35,7 +35,7 @@ struct point {
     // Negative vector - O(1).
     point operator-() const
     {
-        return point(-x, -y, -z);
+        return {-x, -y, -z};
     }
 
     // Vector addiction assignment - O(1).
@@ -343,7 +343,7 @@ struct point {
         double x = u.x*dot*(1 - co) + v.x*co + (u.y*v.z - u.z*v.y)*si;
         double y = u.y*dot*(1 - co) + v.y*co + (u.z*v.x - u.x*v.z)*si;
         double z = u.z*dot*(1 - co) + v.z*co + (u.x*v.y - u.y*v.x)*si;
-        return point<double>(x, y, z);
+        return {x, y, z};
     }
 
     // String conversion - O(1).
