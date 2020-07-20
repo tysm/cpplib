@@ -22,7 +22,7 @@ struct point {
     // Null vector check - O(1).
     bool is_null() const
     {
-        return abs(x) <= EPS and abs(y) <= EPS and abs(z) <= EPS;
+        return abs(x) < EPS and abs(y) < EPS and abs(z) < EPS;
     }
 
     // Unit vector - O(1).
@@ -182,7 +182,7 @@ struct point {
     template<typename T1>
     friend bool operator==(const point &lhs, const point<T1> &rhs)
     {
-        return abs(lhs.x - rhs.x) <= EPS and abs(lhs.y - rhs.y) <= EPS and abs(lhs.z - rhs.z) <= EPS;
+        return abs(lhs.x - rhs.x) < EPS and abs(lhs.y - rhs.y) < EPS and abs(lhs.z - rhs.z) < EPS;
     }
 
     // Vector not equal to - O(1).
@@ -196,7 +196,12 @@ struct point {
     template<typename T1>
     friend bool operator<(const point &lhs, const point<T1> &rhs)
     {
-        return tie(lhs.x, lhs.y, lhs.z) < tie(rhs.x, rhs.y, rhs.z);
+        if(abs(lhs.x - rhs.x) < EPS){ // lhs.x == rhs.x.
+            if(abs(lhs.y - rhs.y) < EPS) // lhs.y == rhs.y.
+                return lhs.z < rhs.z and abs(lhs.z - rhs.z) >= EPS; // lhs.z < rhs.z and !(lhs.z == rhs.z).
+            return lhs.y < rhs.y; // lhs.y < rhs.y and !(lhs.y == rhs.y).
+        }
+        return lhs.x < rhs.x; // lhs.x < rhs.x and !(lhs.x == rhs.x).
     }
 
     // Vector greater than - O(1).
@@ -210,14 +215,14 @@ struct point {
     template<typename T1>
     friend bool operator<=(const point &lhs, const point<T1> &rhs)
     {
-        return lhs < rhs or lhs == rhs;
+        return !(lhs > rhs);
     }
 
     // Vector greater than or equal to - O(1).
     template<typename T1>
     friend bool operator>=(const point &lhs, const point<T1> &rhs)
     {
-        return lhs > rhs or lhs == rhs;
+        return !(lhs < rhs);
     }
 
     // Vector parallelism check - O(1).
@@ -231,14 +236,14 @@ struct point {
     template<typename T1, typename T2>
     friend bool coplanar(const point &u, const point<T1> &v, const point<T2> &w)
     {
-        return abs(triple(u, v, w)) <= EPS;
+        return abs(triple(u, v, w)) < EPS;
     }
 
     // Vector perpendicularity check - O(1).
     template<typename T1>
     friend bool perpendicular(const point &u, const point<T1> &v)
     {
-        return abs(u*v) <= EPS;
+        return abs(u*v) < EPS;
     }
 
     // Point collinearity check - O(1).
@@ -338,7 +343,7 @@ struct point {
     template<typename T1>
     friend point<double> rotate(const point &v, const point<T1> &u, double r)
     {
-        assert(abs(norm(u) - 1) <= EPS);
+        assert(abs(norm(u) - 1) < EPS);
         double dot = v*u, co = cos(r), si = sin(r);
         double x = u.x*dot*(1 - co) + v.x*co + (u.y*v.z - u.z*v.y)*si;
         double y = u.y*dot*(1 - co) + v.y*co + (u.z*v.x - u.x*v.z)*si;
