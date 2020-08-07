@@ -1,6 +1,6 @@
 #pragma once
-#include <cpplib/stdinc.hpp>
 #include <cpplib/data-structure/modular.hpp>
+#include <cpplib/stdinc.hpp>
 
 /**
  * Modular Combinatorics.
@@ -27,8 +27,7 @@ public:
     using mint = modular<MOD>;
 
     ModC(const uint max_value = N) :
-        max_value(max_value)
-    {
+        max_value(max_value) {
         assert(0 < max_value and max_value < MOD);
         _fact = range_factorial(max_value);
         _inv = range_inverse(max_value);
@@ -42,10 +41,9 @@ public:
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    mint C(const uint n, const uint k) const
-    {
+    mint C(const uint n, const uint k) const {
         assert(k <= n and n <= max_value);
-        return fact(n)*inv(fact(k)*fact(n - k));
+        return fact(n) * inv(fact(k) * fact(n - k));
     }
 
     /**
@@ -56,10 +54,9 @@ public:
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    mint P(const uint n, const uint k) const
-    {
+    mint P(const uint n, const uint k) const {
         assert(k <= n and n <= max_value);
-        return fact(n)*inv(fact(n - k));
+        return fact(n) * inv(fact(n - k));
     }
 
     /**
@@ -70,8 +67,7 @@ public:
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    mint fact(const uint n) const
-    {
+    mint fact(const uint n) const {
         assert(n <= max_value);
         return _fact[n];
     }
@@ -84,8 +80,7 @@ public:
      * Time Complexity: O(log(n)).
      * Space Complexity: O(log(n)).
      */
-    mint fib(const uint n) const
-    {
+    mint fib(const uint n) const {
         return _fib(n).first;
     }
 
@@ -97,9 +92,9 @@ public:
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    mint catalan(const uint n) const
-    {
-        return C(2*n, n)*inv(n + 1);
+    mint catalan(const uint n) const {
+        assert(2 * n <= max_value);
+        return C(2 * n, n) * inv(n + 1);
     }
 
     /**
@@ -114,10 +109,9 @@ public:
      * Time Complexity: O((a <= max_value? 1 : log(a))).
      * Space Complexity: O(1).
      */
-    mint inv(const mint &a) const
-    {
+    mint inv(const mint &a) const {
         assert(a.value > 0);
-        return a.value <= max_value? _inv[a.value] : inverse(a);
+        return a.value <= max_value ? _inv[a.value] : inverse(a);
     }
 
 private:
@@ -130,12 +124,11 @@ private:
      * Time Complexity: O(n).
      * Space Complexity: O(n).
      */
-    vector<mint> range_factorial(const uint n) const
-    {
+    vector<mint> range_factorial(const uint n) const {
         vector<mint> fact(n + 1);
         fact[0] = 1;
         for(uint i = 1; i <= n; ++i)
-            fact[i] = fact[i-1]*i;
+            fact[i] = fact[i - 1] * i;
         return fact;
     }
 
@@ -148,12 +141,11 @@ private:
      * Time Complexity: O(log(n)).
      * Space Complexity: O(log(n)).
      */
-    pair<mint, mint> _fib(const uint n) const
-    {
+    pair<mint, mint> _fib(const uint n) const {
         if(n == 0)
             return {0, 1};
         pair<mint, mint> p = _fib(n >> 1);
-        mint c = p.first*(2*p.second - p.first), d = p.first*p.first + p.second*p.second;
+        mint c = p.first * (2 * p.second - p.first), d = p.first * p.first + p.second * p.second;
         if(n & 1)
             return {d, c + d};
         return {c, d};
@@ -172,13 +164,12 @@ private:
      * Time Complexity: O(n).
      * Space Complexity: O(n).
      */
-    vector<mint> range_inverse(const mint &n) const
-    {
+    vector<mint> range_inverse(const mint &n) const {
         assert(n.value > 0);
         vector<mint> inv(n.value + 1);
         inv[1] = 1;
         for(uint i = 2; i <= n.value; ++i)
-            inv[i] = -inv[MOD%i]*(MOD/i);
+            inv[i] = -inv[MOD % i] * (MOD / i);
         return inv;
     }
 

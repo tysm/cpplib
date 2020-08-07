@@ -15,15 +15,14 @@ class Sieve
 {
 public:
     Sieve(const uint sieve_u) :
-        sieve_u(sieve_u), prime((sieve_u+1)/2, true)
-    {
+        sieve_u(sieve_u), prime((sieve_u + 1) / 2, true) {
         prime[0] = false;
-        for(uint i = 3; i*i <= sieve_u; i += 2){
-            if(!prime[i/2])
+        for(uint i = 3; i * i <= sieve_u; i += 2) {
+            if(!prime[i / 2])
                 continue;
-            for(uint j = i*i; j <= sieve_u; j += i){
+            for(uint j = i * i; j <= sieve_u; j += i) {
                 if(j & 1)
-                    prime[j/2] = false;
+                    prime[j / 2] = false;
             }
         }
     }
@@ -34,13 +33,12 @@ public:
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    bool is_prime(const uint x) const
-    {
+    bool is_prime(const uint x) const {
         assert(x <= sieve_u);
-        return x & 1? prime[x/2] : x == 2;
+        return x & 1 ? prime[x / 2] : x == 2;
     }
 
 private:
-    uint sieve_u; // sieve upper bound.
-    vector<bool> prime; // is_prime as boolean array.
+    uint sieve_u;        // sieve upper bound.
+    vector<bool> prime;  // is_prime as boolean array.
 };
