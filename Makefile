@@ -12,6 +12,6 @@ format:
 		| xargs clang-format -i
 
 test:
-	$(shell) -c 'cd test; ./libtest.sh'
+	$(SHELL) -c 'cd test; ./libtest.sh'
 
 .PHONY: clean format test
