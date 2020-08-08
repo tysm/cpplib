@@ -2,6 +2,7 @@ clean:
 	$(RM) cpplib.pdf
 	$(RM) .latex/cpplib.aux
 	$(RM) .latex/cpplib.out
+	$(RM) .latex/cpplib.log
 	$(RM) .latex/cpplib.pdf
 	$(RM) .latex/cpplib.tex
 	$(RM) .latex/cpplib.toc
