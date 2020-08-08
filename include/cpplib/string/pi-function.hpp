@@ -12,13 +12,13 @@
  * Space Complexity: O(n).
  * Where n is the size of the string.
  */
-vi prefix_function(const string &s){
+vector<int> prefix_function(const string &s) {
     int n = s.size();
-    vi pi(n);
-    for(int i=1; i<n; ++i){
-        int j = pi[i-1];
+    vector<int> pi(n);
+    for(int i = 1; i < n; ++i) {
+        int j = pi[i - 1];
         while(j > 0 and s[i] != s[j])
-            j = pi[j-1];
+            j = pi[j - 1];
         if(s[i] == s[j])
             j++;
         pi[i] = j;

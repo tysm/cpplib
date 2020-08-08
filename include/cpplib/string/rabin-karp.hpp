@@ -1,6 +1,6 @@
 #pragma once
-#include <cpplib/stdinc.hpp>
 #include <cpplib/data-structure/rolling-hash.hpp>
+#include <cpplib/stdinc.hpp>
 #include <cpplib/utility/random.hpp>
 
 /**
@@ -20,18 +20,18 @@
  * Space Complexity: O(n + m).
  * Where n is the size of the pattern and m is the size of the text.
  */
-vi rabin(const string &s, const string &t, const char offset = 'a'){
+vector<int> rabin(const string &s, const string &t, const char offset = 'a') {
     int n = s.size(), m = t.size();
     if(n > m)
-        return vi();
+        return vector<int>();
 
-    uint base = randuint16(1);
+    uint base = randuint16(31);
     RollingHash hs(s, base, offset), ht(t, base, offset);
 
-    vi ans;
-    for(int i=0; i<=m-n; ++i){
-        if(hs.hash() == ht.query(i, i+n-1))
-            ans.pb(i);
+    vector<int> ans;
+    for(int i = 0; i <= m - n; ++i) {
+        if(hs.hash() == ht.query(i, i + n - 1))
+            ans.emplace_back(i);
     }
     return ans;
 }

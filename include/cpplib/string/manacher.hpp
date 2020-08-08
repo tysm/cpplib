@@ -12,32 +12,32 @@
  * Space Complexity: O(n).
  * Where n is the size of the string.
  */
-ii manacher(const string &s){
+pair<int, int> manacher(const string &s) {
     int n = s.size();
-    ii ans = {0, 0};
-    vi dp(n);
-    for(int i=0, l=0, r=0; i<n; ++i){
-        int k = (i > r? 1 : min(dp[l + r - i] + 1, r - i + 1));
+    pair<int, int> ans = {0, 0};
+    vector<int> dp(n);
+    for(int i = 0, l = 0, r = 0; i < n; ++i) {
+        int k = (i > r ? 1 : min(dp[l + r - i] + 1, r - i + 1));
         while(i - k >= 0 and i + k < n and s[i - k] == s[i + k])
             k++;
         dp[i] = --k;
-        if(i + k > r){
+        if(i + k > r) {
             l = i - k;
             r = i + k;
-            if(r - l > ans.ss - ans.ff)
+            if(r - l > ans.second - ans.first)
                 ans = {l, r};
         }
     }
     dp.assign(n, 0);
-    for(int i=0, l=0, r=0; i<n; ++i){
-        int k = (i > r? 0 : min(dp[l + r - i + 1] + 1, r - i + 1));
+    for(int i = 0, l = 0, r = 0; i < n; ++i) {
+        int k = (i > r ? 0 : min(dp[l + r - i + 1] + 1, r - i + 1));
         while(i - k - 1 >= 0 and i + k < n and s[i - k - 1] == s[i + k])
             k++;
         dp[i] = --k;
-        if(i + k > r){
+        if(i + k > r) {
             l = i - k - 1;
             r = i + k;
-            if(r - l > ans.ss - ans.ff)
+            if(r - l > ans.second - ans.first)
                 ans = {l, r};
         }
     }
