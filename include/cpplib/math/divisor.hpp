@@ -54,7 +54,7 @@ uint count_divisors(uint x) {
  * Time Complexity: O(log(x)).
  * Space Complexity: O(1).
  */
-uint count_divisors(const vector<pair<uint, uint>> &factors) {
+uint count_divisors(const vector<pair<uint, uint> > &factors) {
     uint res = 1;
     for(auto f: factors)
         res *= f.second + 1;

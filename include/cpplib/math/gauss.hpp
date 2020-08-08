@@ -1,7 +1,7 @@
 #pragma once
 #include <cpplib/stdinc.hpp>
 
-void fft(vector<complex<double>> &a, const bool invert = false) {
+void fft(vector<complex<double> > &a, const bool invert = false) {
     // n must me a power of 2.
     uint n = a.size();
     for(uint i = 1, j = 0; i < n; ++i) {

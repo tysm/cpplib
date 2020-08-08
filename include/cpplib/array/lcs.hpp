@@ -3,7 +3,7 @@
 
 vector<int> lcs(const vector<int> &a, const vector<int> &b) {
     int n = a.size(), m = b.size();
-    vector<vector<int>> dis(n + 1, vector<int>(m + 1));
+    vector<vector<int> > dis(n + 1, vector<int>(m + 1));
     for(int i = 0; i <= n; ++i) {
         for(int j = 0; j <= m; ++j) {
             if(!i or !j)

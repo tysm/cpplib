@@ -14,7 +14,7 @@
  * Space Complexity: O(n).
  * Where n is the size of the array.
  */
-pair<int, pair<int, int>> kadane(const vector<int> &arr, const int low = -LINF, const int high = LINF) {
+pair<int, pair<int, int> > kadane(const vector<int> &arr, const int low = -LINF, const int high = LINF) {
     pair<int, int> bounds(-1, -1);
     int ans = 0, acc = 0, prevl = -1;
     for(int r = 0; r < arr.size(); ++r) {

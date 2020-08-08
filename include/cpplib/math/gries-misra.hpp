@@ -72,9 +72,9 @@ public:
      * Time Complexity: O(log(x)).
      * Space Complexity: O(log(x)).
      */
-    vector<pair<uint, uint>> factorization(uint x) const {
+    vector<pair<uint, uint> > factorization(uint x) const {
         assert(0 < x and x <= sieve_u);
-        vector<pair<uint, uint>> factors;
+        vector<pair<uint, uint> > factors;
         for(; x > 1; x /= spf[x]) {
             uint p = spf[x];
             if(factors.empty() or factors.back().first != p)
