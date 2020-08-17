@@ -4,31 +4,8 @@ import os
 import shutil
 import subprocess
 
+import yaml
 
-def dfs(abspath, path, texfile, indent = 0):
-    for filename in sorted(os.listdir(abspath)):
-        absfilepath = os.path.join(abspath, filename)
-        if os.path.isdir(absfilepath) or not filename.endswith(".hpp"):
-            continue
-
-        filepath = os.path.join(path, filename)
-        filename = filename.split(".")[0].title().replace("-", " ")
-
-        texfile.write(f'{" " * indent}\\{"section" if indent == 0 else "subsection"}{{{filename}}}{{\n')
-        texfile.write(f'{" " * indent}  \\includecode{{\"{filepath}\"}}\n')
-        texfile.write(f'{" " * indent}}}\n\n')
-
-    for dirname in sorted(os.listdir(abspath)):
-        absdirpath = os.path.join(abspath, dirname)
-        if not os.path.isdir(absdirpath):
-            continue
-
-        dirpath = os.path.join(path, dirname)
-        dirname = dirname.title().replace("-", " ")
-
-        texfile.write(f'{" " * indent}\\{"section" if indent == 0 else "subsection"}{{{dirname}}}{{\n\n')
-        dfs(absdirpath, dirpath, texfile, indent + 2)
-        texfile.write(f'{" " * indent}}}\n\n')
 
 def main():
     lib_dir = os.path.dirname(os.path.abspath(__file__))
@@ -45,7 +22,30 @@ def main():
     with open(cpplibtex, "a") as texfile:
         texfile.write("\n")
 
-        dfs(cpplib_dir, "", texfile)
+        with open(os.path.join(lib_dir, "cpplib.yaml")) as specfile:
+            config = yaml.safe_load(specfile)
+        print(config)
+
+        stdinc = config["CPPLIB"]["Standard Include"]["file"]
+        texfile.write("\\section{Standard Include}{\n")
+        texfile.write(f'  \\includecode{{\"{stdinc}\"}}\n')
+        texfile.write("}\n\n")
+        del config["CPPLIB"]["Standard Include"]
+
+        for subject, content in sorted(config["CPPLIB"].items()):
+            texfile.write(f"\\section{{{subject}}}{{\n")
+
+            dirpath = content["dir"]
+            for task, info in sorted(content["items"].items()):
+                filepath = os.path.join(dirpath, info["file"])
+
+                if "tags" in info:
+                    task += " (" + ", ".join(info["tags"]) + ")"
+
+                texfile.write(f"  \\subsection{{{task}}}{{\n")
+                texfile.write(f'    \\includecode{{\"{filepath}\"}}\n')
+                texfile.write(f"  }}\n")
+            texfile.write("}\n\n")
 
         with open(os.path.join(latex_dir, "cpplib-suffix.tex"), "r") as endfile:
             shutil.copyfileobj(endfile, texfile)

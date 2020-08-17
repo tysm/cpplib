@@ -1,7 +1,8 @@
 #include <cpplib/stdinc.hpp>
 #include <cpplib/string/manacher.hpp>
 
-int32_t main(){
+int32_t main()
+{
     // https://cses.fi/problemset/task/1111
     desync();
     string s;

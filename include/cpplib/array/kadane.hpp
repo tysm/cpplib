@@ -14,18 +14,19 @@
  * Space Complexity: O(n).
  * Where n is the size of the array.
  */
-pair<int, ii> kadane(const vi &arr, const int low = -INF, const int high = INF){
-    ii bounds(-1, -1);
+pair<int, pair<int, int> > kadane(const vector<int> &arr, const int low = -LINF, const int high = LINF)
+{
+    pair<int, int> bounds(-1, -1);
     int ans = 0, acc = 0, prevl = -1;
-    for(int r=0; r<arr.size(); ++r){
+    for(int r = 0; r < arr.size(); ++r) {
         acc += arr[r];
-        if(acc < 0 or arr[r] < low or arr[r] > high){
+        if(acc < 0 or arr[r] < low or arr[r] > high) {
             acc = 0;
             prevl = r;
         }
-        else if(acc > ans){
+        else if(acc > ans) {
             ans = acc;
-            bounds = {prevl+1, r};
+            bounds = {prevl + 1, r};
         }
     }
     return {ans, move(bounds)};
