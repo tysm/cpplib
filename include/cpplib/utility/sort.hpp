@@ -15,8 +15,9 @@
  * Where n is the vector size and m is the greatest integer in the vector.
  */
 template<typename T>
-void count_sort(vector<T> &v, const bool non_decreasing = true) {
-    uint n = v.size(), m = *max_element(v.begin(), v.end());
+void count_sort(vector<T> &v, const bool non_decreasing = true)
+{
+    uint n = v.size(), m = *max_element(all(v));
     vector<uint> cnt(m + 1);
     for(uint i: v) {
         assert((T)i >= 0);

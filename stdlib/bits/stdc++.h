@@ -1,1 +1,1 @@
-system_include <bits/stdc++.h>
+system_include<bits / stdc++.h>

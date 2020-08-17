@@ -10,7 +10,8 @@
  * Time Complexity: O(sqrt(x)).
  * Space Complexity: O(log(x)).
  */
-vector<pair<uint, uint> > factorization(uint x) {
+vector<pair<uint, uint> > factorization(uint x)
+{
     assert(x > 0);
     vector<pair<uint, uint> > factors;
     for(uint p: {2, 3, 5}) {
@@ -48,7 +49,8 @@ vector<pair<uint, uint> > factorization(uint x) {
  * Time Complexity: O(cbrt(x) + pow(log(x), 3)).
  * Space Complexity: O(1).
  */
-uint count_prime_factors(uint x) {
+uint count_prime_factors(uint x)
+{
     assert(x > 0);
     uint res = 0;
     for(uint p: {2, 3, 5}) {
@@ -82,7 +84,8 @@ uint count_prime_factors(uint x) {
  * Time Complexity: O(log(x)).
  * Space Complexity: O(1).
  */
-uint count_prime_factors(const vector<pair<uint, uint> > &factors) {
+uint count_prime_factors(const vector<pair<uint, uint> > &factors)
+{
     uint res = 0;
     for(auto f: factors)
         res += f.second;

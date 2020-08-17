@@ -11,7 +11,8 @@
  * Time Complexity: O(k).
  * Space Complexity: O(1).
  */
-uint C(const uint n, const uint k) {
+uint C(const uint n, const uint k)
+{
     assert(k <= n);
     double res = 1;
     for(uint i = 1; i <= k; ++i)
@@ -27,7 +28,8 @@ uint C(const uint n, const uint k) {
  * Time Complexity: O(n).
  * Space Complexity: O(1).
  */
-uint P(const uint n, const uint k) {
+uint P(const uint n, const uint k)
+{
     assert(k <= n);
     uint res = 1;
     for(uint i = n; i > n - k; --i)
@@ -44,11 +46,12 @@ uint P(const uint n, const uint k) {
  * Time Complexity: O(log(n)).
  * Space Complexity: O(log(n)).
  */
-static pair<uint, uint> _fib(const uint n) {
+static pair<uint, uint> _fib(const uint n)
+{
     if(n == 0)
         return {0, 1};
     pair<uint, uint> p = _fib(n >> 1);
-    uint c = p.ff * (2 * p.ss - p.ff), d = p.ff * p.ff + p.ss * p.ss;
+    uint c = p.first * (2 * p.second - p.first), d = p.first * p.first + p.second * p.second;
     if(n & 1)
         return {d, c + d};
     return {c, d};
@@ -62,6 +65,7 @@ static pair<uint, uint> _fib(const uint n) {
  * Time Complexity: O(log(n)).
  * Space Complexity: O(log(n)).
  */
-uint fib(const uint n) {
+uint fib(const uint n)
+{
     return _fib(n).first;
 }

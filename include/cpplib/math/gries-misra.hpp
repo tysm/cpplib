@@ -16,7 +16,8 @@ class Sieve
 {
 public:
     Sieve(const uint sieve_u) :
-        sieve_u(sieve_u), spf(sieve_u + 1) {
+        sieve_u(sieve_u), spf(sieve_u + 1)
+    {
         for(uint i = 2; i <= sieve_u; ++i) {
             if(!spf[i]) {
                 spf[i] = i;
@@ -38,7 +39,8 @@ public:
      * Space Complexity: O(n).
      * Where n is the size of the segment range (i.e. r - l + 1).
      */
-    void segment(const uint l, const uint r) {
+    void segment(const uint l, const uint r)
+    {
         assert(l <= r and ceil(sqrt(r)) <= sieve_u);
         tie(segment_l, segment_u) = make_tuple(l, r);
 
@@ -72,7 +74,8 @@ public:
      * Time Complexity: O(log(x)).
      * Space Complexity: O(log(x)).
      */
-    vector<pair<uint, uint> > factorization(uint x) const {
+    vector<pair<uint, uint> > factorization(uint x) const
+    {
         assert(0 < x and x <= sieve_u);
         vector<pair<uint, uint> > factors;
         for(; x > 1; x /= spf[x]) {
@@ -94,7 +97,8 @@ public:
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    bool is_prime(const uint x) const {
+    bool is_prime(const uint x) const
+    {
         assert(x <= sieve_u or segment_l <= x and x <= segment_u);
         if(x <= sieve_u)
             return x <= 1 ? false : spf[x] == x;
@@ -111,7 +115,8 @@ public:
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    uint smallest_prime_factor(const uint x) const {
+    uint smallest_prime_factor(const uint x) const
+    {
         assert(1 < x and (x <= sieve_u or segment_l <= x and x <= segment_u));
         return x <= sieve_u ? spf[x] : segment_spf[x - segment_l];
     }
@@ -124,7 +129,8 @@ public:
      * Space Complexity: O(n).
      * Where n is the sieve upper bound.
      */
-    vector<uint> prime_numbers() const {
+    vector<uint> prime_numbers() const
+    {
         return primes;
     }
 
@@ -136,7 +142,8 @@ public:
      * Space Complexity: O(n).
      * Where n is the size of the segment range (i.e. segment_u - segment_l + 1).
      */
-    vector<uint> segment_prime_numbers() const {
+    vector<uint> segment_prime_numbers() const
+    {
         return segment_primes;
     }
 

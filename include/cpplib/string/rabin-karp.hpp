@@ -1,5 +1,5 @@
 #pragma once
-#include <cpplib/data-structure/rolling-hash.hpp>
+#include <cpplib/adt/rolling-hash.hpp>
 #include <cpplib/stdinc.hpp>
 #include <cpplib/utility/random.hpp>
 
@@ -20,7 +20,8 @@
  * Space Complexity: O(n + m).
  * Where n is the size of the pattern and m is the size of the text.
  */
-vector<int> rabin(const string &s, const string &t, const char offset = 'a') {
+vector<int> rabin(const string &s, const string &t, const char offset = 'a')
+{
     int n = s.size(), m = t.size();
     if(n > m)
         return vector<int>();

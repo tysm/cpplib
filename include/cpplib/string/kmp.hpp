@@ -12,7 +12,8 @@
  * Space Complexity: O(n + m).
  * Where n is the size of the pattern and m is the size of the text.
  */
-vector<int> kmp(const string &s, const string &t) {
+vector<int> kmp(const string &s, const string &t)
+{
     int n = s.size(), m = t.size();
     vector<int> pi = prefix_function(s + '#'), ans;
     for(int i = 0, j = 0; i < m; ++i) {

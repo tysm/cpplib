@@ -13,7 +13,8 @@
  * Time Complexity: O(log(min(abs(a), abs(b)))).
  * Space Complexity: O(1).
  */
-tuple<int, int> diophantine(const int a, const int b, const int c) {
+tuple<int, int> diophantine(const int a, const int b, const int c)
+{
     int g, x, y;
     tie(g, x, y) = extended_gcd(abs(a), abs(b));
     assert(c % g == 0);  // LDE condition.
@@ -51,7 +52,8 @@ tuple<int, int> diophantine(const int a, const int b, const int c) {
  * Space Complexity: O(n).
  * Where n is the number of coefficients and a is the greatest among them.
  */
-vector<int> diophantine(const vector<int> &values, int c) {
+vector<int> diophantine(const vector<int> &values, int c)
+{
     int n = values.size();
     vector<int> g(n);
     g[n - 1] = abs(values[n - 1]);

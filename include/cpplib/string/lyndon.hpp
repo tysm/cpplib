@@ -12,7 +12,8 @@
  * Space Complexity: O(n).
  * Where n is the size of the string.
  */
-vector<vector<int> > lyndon_factorization(const string &s) {
+vector<vector<int> > lyndon_factorization(const string &s)
+{
     int n = s.size(), i = 0;
     vector<vector<int> > factors;
     while(i < n) {

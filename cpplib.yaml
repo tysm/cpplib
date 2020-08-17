@@ -1,0 +1,147 @@
+---
+CPPLIB:
+    Standard Include:
+        file: stdinc.hpp
+    Advanced Data Structure:
+        dir: adt
+        items:
+            Binary Trie:
+                file: btrie.hpp
+            Disjoint Set Union:
+                file: dsu.hpp
+                tags: [Union Find]
+            Hash Int:
+                file: hashint.hpp
+            Heap:
+                file: heap.hpp
+            Line:
+                file: line.hpp
+                tags: [Geometry]
+            Matrix:
+                file: matrix.hpp
+            Modular:
+                file: modular.hpp
+            Order Statistic Tree:
+                file: ost.hpp
+                tags: [Ordered Set/Map]
+            Point:
+                file: point.hpp
+                tags: [Geometry]
+            Ray:
+                file: ray.hpp
+                tags: [Geometry]
+            Rolling Hash:
+                file: rolling-hash.hpp
+            Segment:
+                file: segment.hpp
+                tags: [Geometry]
+            Segment Tree:
+                file: segtreeb.hpp
+            Segment Tree 2D:
+                file: segtree2db.hpp
+            Segment Tree S:
+                file: segtreesb.hpp
+            Trie:
+                file: trie.hpp
+                tags: [Digital/Prefix Tree]
+    Array:
+        dir: array
+        items:
+            Kadane:
+                file: kadane.hpp
+                tags: [Maximum Contiguous Subarray Sum]
+            Longest Common Subsequence:
+                file: lcs.hpp
+            Longest Increasing Subsequence:
+                file: lis.hpp
+    Geometry:
+        dir: geo
+        items:
+            Smallest Enclosing Circle/Sphere:
+                file: see.hpp
+    Graph:
+        dir: graph
+        items:
+            Erdos Gallai:
+                file: erdos-gallai.hpp
+                tags: [Graph Realization]
+            Floyd Warshall:
+                file: floyd-warshall.hpp
+                tags: [Shortest Path]
+            Kruskal:
+                file: kruskal.hpp
+                tags: [Spanning Tree]
+            Lowest Common Ancestor:
+                file: lca.hpp
+            Morris Traversal:
+                file: morris.hpp
+    Math:
+        dir: math
+        items:
+            Combinatorics:
+                file: combinatorics.hpp
+            Divisor:
+                file: divisor.hpp
+            Fast Exponentiation:
+                file: exponentiation.hpp
+            Fast Fourier Transform:
+                file: gauss.hpp
+            GCD and LCM:
+                file: euclid.hpp
+            Linear Diophantine Equation:
+                file: diophantus.hpp
+            Miller-Rabin Deterministic Primality Test:
+                file: miller-rabin.hpp
+            Modular Combinatorics:
+                file: modc.hpp
+            Modular Divisor:
+                file: moddiv.hpp
+            Modular Operation:
+                file: modop.hpp
+            Modular Progression:
+                file: modprog.hpp
+            Progression:
+                file: progression.hpp
+            Sieve of Eratosthenes:
+                file: eratosthenes.hpp
+                tags: [Prime Number]
+            Sieve of Gries and Misra:
+                file: gries-misra.hpp
+                tags: [Prime Number]
+            Wheel:
+                file: wheel.hpp
+                tags: [Prime Number]
+    String:
+        dir: string
+        items:
+            Edit Distance:
+                file: distance.hpp
+                tags: [Levenshtein, Damerau Levenshtein]
+            Knuth Morris Pratt:
+                file: kmp.hpp
+                tags: [String Matching]
+            Lyndon Factorization:
+                file: lyndon.hpp
+            Manacher:
+                file: manacher.hpp
+                tags: [Longest Palindromic Substring]
+            Prefix Function:
+                file: pi-function.hpp
+            Rabin Karp:
+                file: rabin-karp.hpp
+                tags: [String Matching]
+            Z-function:
+                file: z-function.hpp
+    Utility:
+        dir: utility
+        items:
+            Double:
+                file: double.hpp
+            Random:
+                file: random.hpp
+            Signum:
+                file: signum.hpp
+            Sort:
+                file: sort.hpp
+                tags: [Count Sort]
+...

@@ -12,7 +12,8 @@
  * Space Complexity: O(n).
  * Where n is the size of the string.
  */
-pair<int, int> manacher(const string &s) {
+pair<int, int> manacher(const string &s)
+{
     int n = s.size();
     pair<int, int> ans = {0, 0};
     vector<int> dp(n);

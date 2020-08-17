@@ -28,10 +28,10 @@ BraceWrapping:
   AfterClass:      true
   AfterControlStatement: Never
   AfterEnum:       true
-  AfterFunction:   false
+  AfterFunction:   true
   AfterNamespace:  true
-  AfterObjCDeclaration: false
-  AfterStruct:     false
+  AfterObjCDeclaration: true
+  AfterStruct:     true
   AfterUnion:      true
   AfterExternBlock: true
   BeforeCatch:     true

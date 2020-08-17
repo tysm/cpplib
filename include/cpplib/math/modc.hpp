@@ -1,5 +1,5 @@
 #pragma once
-#include <cpplib/data-structure/modular.hpp>
+#include <cpplib/adt/modular.hpp>
 #include <cpplib/stdinc.hpp>
 
 /**
@@ -9,7 +9,7 @@
  * such as C, P, factorials and fibonacci
  * computation.
  *
- * Note: MOD must be prime.
+ * Note: M must be prime.
  *
  * Note: if __uint128_t is not present, *
  * may cause overflow in modular operations.
@@ -18,17 +18,18 @@
  * Space Complexity: O(n).
  * Where n is the greatest precomputed value.
  */
-template<uint MOD = M>
+template<uint M = MOD>
 class ModC
 {
 public:
-    static_assert(MOD > 0, "MOD must be prime, thus greater than 0.");
+    static_assert(M > 0, "M must be prime, thus greater than 0.");
 
-    using mint = modular<MOD>;
+    using mint = modular<M>;
 
-    ModC(const uint max_value = N) :
-        max_value(max_value) {
-        assert(0 < max_value and max_value < MOD);
+    ModC(const uint max_value = MAXN) :
+        max_value(max_value)
+    {
+        assert(0 < max_value and max_value < M);
         _fact = range_factorial(max_value);
         _inv = range_inverse(max_value);
     }
@@ -36,12 +37,13 @@ public:
     /**
      * Modular Combination.
      *
-     * Returns C(n, k)%MOD.
+     * Returns C(n, k)%M.
      *
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    mint C(const uint n, const uint k) const {
+    mint C(const uint n, const uint k) const
+    {
         assert(k <= n and n <= max_value);
         return fact(n) * inv(fact(k) * fact(n - k));
     }
@@ -49,12 +51,13 @@ public:
     /**
      * Modular Permutation.
      *
-     * Returns P(n, k)%MOD.
+     * Returns P(n, k)%M.
      *
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    mint P(const uint n, const uint k) const {
+    mint P(const uint n, const uint k) const
+    {
         assert(k <= n and n <= max_value);
         return fact(n) * inv(fact(n - k));
     }
@@ -62,12 +65,13 @@ public:
     /**
      * Modular Factorial.
      *
-     * Returns n!%MOD.
+     * Returns n!%M.
      *
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    mint fact(const uint n) const {
+    mint fact(const uint n) const
+    {
         assert(n <= max_value);
         return _fact[n];
     }
@@ -75,24 +79,26 @@ public:
     /**
      * Modular Fibonacci Number.
      *
-     * Computes the n-th fibonacci number mod MOD.
+     * Computes the n-th fibonacci number mod M.
      *
      * Time Complexity: O(log(n)).
      * Space Complexity: O(log(n)).
      */
-    mint fib(const uint n) const {
+    mint fib(const uint n) const
+    {
         return _fib(n).first;
     }
 
     /**
      * Modular Catalan Number.
      *
-     * Computes the n-th catalan number mod MOD.
+     * Computes the n-th catalan number mod M.
      *
      * Time Complexity: O(1).
      * Space Complexity: O(1).
      */
-    mint catalan(const uint n) const {
+    mint catalan(const uint n) const
+    {
         assert(2 * n <= max_value);
         return C(2 * n, n) * inv(n + 1);
     }
@@ -101,15 +107,16 @@ public:
      * Modular Multiplicative Inverse.
      *
      * Returns the modular multiplicative inverse
-     * of a with mod MOD.
+     * of a with mod M.
      *
      * Note: this specific algorithm requires a
-     * prime MOD value.
+     * prime M value.
      *
      * Time Complexity: O((a <= max_value? 1 : log(a))).
      * Space Complexity: O(1).
      */
-    mint inv(const mint &a) const {
+    mint inv(const mint &a) const
+    {
         assert(a.value > 0);
         return a.value <= max_value ? _inv[a.value] : inverse(a);
     }
@@ -119,12 +126,13 @@ private:
      * Range Modular Factorial.
      *
      * Computes the factorial for each natural <=
-     * n, mod MOD.
+     * n, mod M.
      *
      * Time Complexity: O(n).
      * Space Complexity: O(n).
      */
-    vector<mint> range_factorial(const uint n) const {
+    vector<mint> range_factorial(const uint n) const
+    {
         vector<mint> fact(n + 1);
         fact[0] = 1;
         for(uint i = 1; i <= n; ++i)
@@ -136,12 +144,13 @@ private:
      * Modular Fibonacci Number.
      *
      * Computes the n-th and n+1-th
-     * fibonacci numbers mod MOD.
+     * fibonacci numbers mod M.
      *
      * Time Complexity: O(log(n)).
      * Space Complexity: O(log(n)).
      */
-    pair<mint, mint> _fib(const uint n) const {
+    pair<mint, mint> _fib(const uint n) const
+    {
         if(n == 0)
             return {0, 1};
         pair<mint, mint> p = _fib(n >> 1);
@@ -156,20 +165,21 @@ private:
      *
      * Computes the modular multiplicative
      * inverse for each positive integer <= n
-     * with mod MOD.
+     * with mod M.
      *
      * Note: this specific algorithm requires a
-     * prime MOD value.
+     * prime M value.
      *
      * Time Complexity: O(n).
      * Space Complexity: O(n).
      */
-    vector<mint> range_inverse(const mint &n) const {
+    vector<mint> range_inverse(const mint &n) const
+    {
         assert(n.value > 0);
         vector<mint> inv(n.value + 1);
         inv[1] = 1;
         for(uint i = 2; i <= n.value; ++i)
-            inv[i] = -inv[MOD % i] * (MOD / i);
+            inv[i] = -inv[M % i] * (M / i);
         return inv;
     }
 

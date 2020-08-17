@@ -1,7 +1,8 @@
 #pragma once
 #include <cpplib/stdinc.hpp>
 
-vector<vector<int> > distance(const string &a, const string &b, bool transposition = false) {
+vector<vector<int> > distance(const string &a, const string &b, bool transposition = false)
+{
     int n = a.size(), m = b.size();
     vector<vector<int> > dis(n + 1, vector<int>(m + 1));
     for(int i = 0; i <= n; ++i)

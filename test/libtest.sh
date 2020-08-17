@@ -16,13 +16,20 @@ tempfile="$(mktemp)"
 function dfs {
     echo "Testing $1..."
     for sample in *.cpp; do
-        [[ exit_code ]] || break
         [[ -f $sample ]] || continue
 
-        $CXX $CXXFLAGS $CPPFLAGS $sample -o "${sample%.*}.out"
+        printf "Compiling ${sample%.*}... "
+        if $CXX $CXXFLAGS $CPPFLAGS $sample -o "${sample%.*}.out" &> "$tempfile"; then
+            printf "\033[0;32mOK\033[0m\n"
+        else
+            printf "\033[0;31mFAILED\033[0m\n"
+            # cat "$tempfile"
+            exit_code=1
+            continue
+        fi
 
         for stdin_file in ${sample%.*}_*.stdin; do
-            [[ exit_code ]] || break
+            [[ -e $stdin_file ]] || break
 
             stdout_file="${stdin_file%.*}.stdout"
 
@@ -40,13 +47,11 @@ function dfs {
     done
 
     for file in *; do
-        [[ exit_code ]] || break
+        [[ -d $file ]] || continue
 
-        if [[ -d $file ]]; then
-            cd "$file"
-            dfs "$1/$file"
-            cd ..
-        fi
+        cd "$file"
+        dfs "$1/$file"
+        cd ..
     done
 }
 

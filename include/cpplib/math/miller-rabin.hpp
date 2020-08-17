@@ -12,7 +12,8 @@
  * Time Complexity: O(log(mod(b, m))).
  * Space Complexity: O(1).
  */
-static uint modmul(const uint a, const uint b, const uint m = M) {
+static uint modmul(const uint a, const uint b, const uint m = MOD)
+{
     assert(m > 0);
     uint mod_a = a % m, mod_b = b % m;
 #ifdef __SIZEOF_INT128__
@@ -26,6 +27,7 @@ static uint modmul(const uint a, const uint b, const uint m = M) {
             res = (res + acc) % m;
         acc = (acc * 2) % m;
     }
+    return res;
 #endif
 }
 
@@ -40,7 +42,8 @@ static uint modmul(const uint a, const uint b, const uint m = M) {
  * Time Complexity: O(log(e)*log(m)).
  * Space Complexity: O(1).
  */
-static uint modexp(const uint b, uint e, const uint m = M) {
+static uint modexp(const uint b, uint e, const uint m = MOD)
+{
     assert(m > 0);
     uint mod_b = b % m, res = 1;
     for(; e > 0; e >>= 1) {
@@ -63,7 +66,8 @@ static uint modexp(const uint b, uint e, const uint m = M) {
  * Time Complexity: O(pow(log(x), 3)).
  * Space Complexity: O(1).
  */
-bool is_prime(const uint x) {
+bool is_prime(const uint x)
+{
     if(x < 2)
         return false;
 

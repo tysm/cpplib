@@ -1,7 +1,8 @@
 #pragma once
 #include <cpplib/stdinc.hpp>
 
-vector<int> lis(const vector<int> &seq) {
+vector<int> lis(const vector<int> &seq)
+{
     int n = seq.size();
     vector<int> d, idx, p(n, -1);
 
