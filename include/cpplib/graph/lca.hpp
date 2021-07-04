@@ -18,9 +18,12 @@ class LCA
 {
 public:
     LCA(const int n, const vector<vector<int> > &adj, const int root) :
-        tree_size(n), root(root), height(n, -1),
+        tree_size(n), root(root), height(n, -1), _log2(n + 1, 0),
         up(n, vector<int>((int)ceil(log2(n)), -1))
     {
+        for(int i = 2; i <= n; ++i)
+            _log2[i] = _log2[i / 2] + 1;
+
         height[root] = 0;
         preprocess(adj, -1, root);
     }
@@ -41,7 +44,7 @@ public:
         if(height[a] > height[b])
             swap(a, b);
         while(height[b] > height[a])
-            b = up[b][(int)log2(height[b] - height[a])];
+            b = up[b][_log2[height[b] - height[a]]];
         if(a == b)
             return a;
         for(int i = up[a].size() - 1; i >= 0; i--) {
@@ -49,6 +52,7 @@ public:
                 a = up[a][i];
                 b = up[b][i];
             }
+            assert(min(a, b) >= 0);
         }
         return up[a][0];
     }
@@ -79,7 +83,7 @@ public:
         assert(0 < i and i <= height[u]);
         int h = height[u] - i;
         while(height[u] > h)
-            u = up[u][(int)log2(height[u] - h)];
+            u = up[u][_log2[height[u] - h]];
         return u;
     }
 
@@ -101,6 +105,6 @@ private:
     }
 
     int tree_size, root;
-    vector<int> height;
+    vector<int> height, _log2;
     vector<vector<int> > up;
 };
