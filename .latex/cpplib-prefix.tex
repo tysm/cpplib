@@ -11,6 +11,7 @@
 \usepackage{listings}
 \usepackage{amsmath}
 \usepackage{hyperref}
+\usepackage{float}
 
 \hypersetup{
   colorlinks,
@@ -95,6 +96,12 @@ literate=
 }
 \renewcommand{\subsubsection}[2]{
   \ifstrequal{#2}{}{\Csection[#1 *]{#1} #2}{\Csection{#1} #2} %
+}
+
+\newcommand*{\figuretitle}[1]{%
+  {\centering%   <--------  will only affect the title because of the grouping (by the
+  #1%              braces before \centering and behind \medskip). If you remove
+  \par\medskip}%            these braces the whole body of a {figure} env will be centered.
 }
 
 \title{C++ Competitive Programming Library \\ \large ***DO NOT DISCLOSE OR DISTRIBUTE***}

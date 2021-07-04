@@ -28,7 +28,7 @@ def main():
 
         stdinc = config["CPPLIB"]["Standard Include"]["file"]
         texfile.write("\\section{Standard Include}{\n")
-        texfile.write(f'  \\includecode{{\"{stdinc}\"}}\n')
+        texfile.write(f'  \\includecode{{"{stdinc}"}}\n')
         texfile.write("}\n\n")
         del config["CPPLIB"]["Standard Include"]
 
@@ -43,20 +43,31 @@ def main():
                     task += " (" + ", ".join(info["tags"]) + ")"
 
                 texfile.write(f"  \\subsection{{{task}}}{{\n")
-                texfile.write(f'    \\includecode{{\"{filepath}\"}}\n')
-                texfile.write(f"  }}\n")
+                texfile.write(f'    \\includecode{{"{filepath}"}}\n')
+                if "images" in info:
+                    for imgtask, imginfo in sorted(info["images"].items()):
+                        imgpath = os.path.join("codes", dirpath, imginfo["file"])
+                        texfile.write("\n")
+                        texfile.write("    \\begin{figure}[H]\n")
+                        texfile.write("      \\centering\n")
+                        texfile.write(f"      \\figuretitle{{{imgtask}}}")
+                        texfile.write(f'      \\includegraphics[scale=0.7]{{"{imgpath}"}}\n')
+                        texfile.write("    \\end{figure}\n")
+                texfile.write("  }\n")
             texfile.write("}\n\n")
 
         with open(os.path.join(latex_dir, "cpplib-suffix.tex"), "r") as endfile:
             shutil.copyfileobj(endfile, texfile)
 
     os.symlink(cpplib_dir, os.path.join(latex_dir, "codes"), True)
-    os.chdir(latex_dir)
-    subprocess.run(["pdflatex", "cpplib.tex"])
-    #: running twice to generate the table of contents.
-    subprocess.run(["pdflatex", "cpplib.tex"])
-    os.chdir(os.getcwd())
-    os.unlink(os.path.join(latex_dir, "codes"))
+    try:
+        os.chdir(latex_dir)
+        subprocess.run(["pdflatex", "cpplib.tex"])
+        #: running twice to generate the table of contents.
+        subprocess.run(["pdflatex", "cpplib.tex"])
+        os.chdir(os.getcwd())
+    finally:
+        os.unlink(os.path.join(latex_dir, "codes"))
 
     shutil.copy(os.path.join(latex_dir, "cpplib.pdf"), lib_dir)
 

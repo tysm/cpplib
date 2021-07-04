@@ -7,6 +7,14 @@ CPPLIB:
         items:
             Binary Trie:
                 file: btrie.hpp
+            Circle Functions:
+                file: circle.hpp
+                images:
+                    Circle-Circle Intersection Area:
+                        file: circle-circle-intersection-area.jpg
+                    Tangents From External Point:
+                        file: tangents-from-external-point.png
+                tags: [2D]
             Disjoint Set Union:
                 file: dsu.hpp
                 tags: [Union Find]
@@ -16,7 +24,7 @@ CPPLIB:
                 file: heap.hpp
             Line:
                 file: line.hpp
-                tags: [Geometry]
+                tags: [Geometry, 3D]
             Matrix:
                 file: matrix.hpp
             Modular:
@@ -26,15 +34,15 @@ CPPLIB:
                 tags: [Ordered Set/Map]
             Point:
                 file: point.hpp
-                tags: [Geometry]
+                tags: [Geometry, 3D]
             Ray:
                 file: ray.hpp
-                tags: [Geometry]
+                tags: [Geometry, 3D]
             Rolling Hash:
                 file: rolling-hash.hpp
             Segment:
                 file: segment.hpp
-                tags: [Geometry]
+                tags: [Geometry, 3D]
             Segment Tree:
                 file: segtreeb.hpp
             Segment Tree 2D:
@@ -57,17 +65,29 @@ CPPLIB:
     Geometry:
         dir: geo
         items:
+            Integer Vector Normalization:
+                file: norm.hpp
+                tags: [2D]
+            Polar Sort:
+                file: sort.hpp
+                tags: [3D]
             Smallest Enclosing Circle/Sphere:
                 file: see.hpp
+                tags: [3D]
     Graph:
         dir: graph
         items:
+            0-1 Mininum Spanning Tree:
+                file: 0-1-mst.hpp
+                tags: [Large Undirected Graph Connected Componnents]
             Erdos Gallai:
                 file: erdos-gallai.hpp
                 tags: [Graph Realization]
             Floyd Warshall:
                 file: floyd-warshall.hpp
                 tags: [Shortest Path]
+            Heavy Light Decomposition:
+                file: hld.hpp
             Kruskal:
                 file: kruskal.hpp
                 tags: [Spanning Tree]
@@ -75,6 +95,9 @@ CPPLIB:
                 file: lca.hpp
             Morris Traversal:
                 file: morris.hpp
+            Number of Distinct Vertices with Distance <= X:
+                file: node-pair-dist-leq-x.hpp
+                tags: [DSU on Tree]
     Math:
         dir: math
         items:

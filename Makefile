@@ -12,8 +12,8 @@ format:
 	find -name '*.cpp' -o -name '*.hpp' -o -name '*.c' -o -name '*.h' \
 		| xargs clang-format-10 -i
 
-pdf:
-	$(SHELL) -c './cpplibtex.py'
+pdf: clean
+	$(SHELL) -c './cpplibtex'
 
 test:
 	$(SHELL) -c 'cd test; ./libtest.sh'
