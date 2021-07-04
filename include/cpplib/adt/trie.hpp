@@ -84,9 +84,12 @@ public:
         }
     };
 
-    Trie() {}
+    Trie(const bool unique = false) :
+        unique(unique)
+    {}
 
-    Trie(const vector<string> &content)
+    Trie(const vector<string> &content, const bool unique = false) :
+        unique(unique)
     {
         for(const string &s: content)
             insert(s);
@@ -101,6 +104,9 @@ public:
      */
     void insert(const string &s)
     {
+        if(unique and count(s))
+            return;
+
         Node *cur = root;
         cur->cnt++;
         for(char c: s) {
@@ -160,10 +166,21 @@ public:
      * Space Complexity: O(1).
      * Where n is the string size.
      */
-    int size(const string &s) const
+    int size(const string &s = "") const
     {
         Node *cur = node_at(s);
         return cur == nullptr ? 0 : cur->cnt;
+    }
+
+    /**
+     * Returns true if the Trie is empty.
+     *
+     * Time Complexity: O(1).
+     * Space Complexity: O(1).
+     */
+    bool empty() const
+    {
+        return size() == 0;
     }
 
     /**
@@ -186,18 +203,7 @@ public:
         return cur;
     }
 
-    /**
-     * Returns the amount of strings in the
-     * Trie.
-     *
-     * Time Complexity: O(1).
-     * Space Complexity: O(1).
-     */
-    int size() const
-    {
-        return root->cnt;
-    }
-
 protected:
     Node *root = new Node();
+    bool unique = false;
 };
