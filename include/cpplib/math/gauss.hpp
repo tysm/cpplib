@@ -33,3 +33,25 @@ void fft(vector<complex<double> > &a, const bool invert = false)
             i /= n;
     }
 }
+
+template<typename T>
+vector<T> multiply(const vector<T> &a, const vector<T> &b)
+{
+    vector<complex<double> > fa(a.begin(), a.end()), fb(b.begin(), b.end());
+    uint n = 1;
+    while(n < a.size() + b.size())
+        n <<= 1;
+    fa.resize(n);
+    fb.resize(n);
+
+    fft(fa);
+    fft(fb);
+    for(uint i = 0; i < n; ++i)
+        fa[i] *= fb[i];
+    fft(fa, true);
+
+    vector<T> res(n);
+    for(uint i = 0; i < n; ++i)
+        res[i] = round(fa[i].real());
+    return res;
+}
