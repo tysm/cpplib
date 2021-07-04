@@ -182,7 +182,7 @@ struct circle
 
         double w = sqrt(a.r * a.r - sqd);  // distance between that point and the intersection points.
 
-        swap(v.x, v.y);  // ccw rotate that vector in 90º degrees.
+        swap(v.x, v.y);  // ccw rotate that vector in 90 degrees.
         v.x = -v.x;
 
         auto dir = v * w / d;
