@@ -36,7 +36,7 @@ struct StaticPolygon
 
         T ans;
         bool ok = false;
-        point<T> v(-p.y, p.x);  // rotate by 90º.
+        point<T> v(-p.y, p.x);  // rotate by 90 degrees.
         for(int k = 0; k < pol.size(); ++k) {
             if(!((bin >> k) & 1))
                 continue;
