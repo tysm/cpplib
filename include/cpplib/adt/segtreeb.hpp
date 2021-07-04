@@ -18,7 +18,7 @@ struct STNodeB
 
     STNodeB()
     {
-        // meant to create a node with default value.
+        // meant to create a node with neutral value.
     }
 
     STNodeB(const T value) :
@@ -125,8 +125,9 @@ public:
     }
 
     /**
-     * Finds the index of the first element
-     * over the array that matches with value.
+     * Finds the index of the (leftmost? first
+     * : last) element over the array that
+     * matches with value.
      *
      * It returns the size of the array when
      * the value doesn't match with any array
@@ -136,9 +137,29 @@ public:
      * Space Complexity: O(log(n)).
      * Where n is the size of the array.
      */
-    size_t find(const T value)
+    size_t find(const T value, const bool leftmost = true)
     {
-        return find(0, arr_size - 1, 0, value);
+        return find(value, 0, arr_size - 1, leftmost);
+    }
+
+    /**
+     * Finds the index of the (leftmost? first
+     * : last) element in the range [l, r] of the
+     * array that matches with value.
+     *
+     * It returns the size of the array when
+     * the value doesn't match with any array
+     * value in the range [l, r].
+     *
+     * Time Complexity: O(log(n)).
+     * Space Complexity: O(log(n)).
+     * Where n is the size of the array.
+     */
+    size_t find(const T value, const size_t l, const size_t r, const bool leftmost = true)
+    {
+        if(!query(0, arr_size - 1, l, r, 0).match(value))  // not found.
+            return arr_size;
+        return find(0, arr_size - 1, l, r, 0, value, leftmost);
     }
 
     /**
@@ -206,50 +227,75 @@ private:
         return tree[pos] = Node(build(l, mid, 2 * pos + 1, arr), build(mid + 1, r, 2 * pos + 2, arr));
     }
 
-    size_t find(const size_t l, const size_t r, const size_t pos, const T value)
+    size_t find(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos, const T value, const bool leftmost)
     {
         propagate(l, r, pos);
 
-        if(!tree[pos].match(value))
+        if(l >= i and r <= j and !tree[pos].match(value))
             return arr_size;
-        else if(l == r)
+
+        if(l == r)
             return l;
 
         size_t mid = (l + r) / 2;
-        size_t ans = find(l, mid, 2 * pos + 1, value);
-        return ans != arr_size ? ans : find(mid + 1, r, 2 * pos + 2, value);
+        if(j <= mid)  // left.
+            return find(l, mid, i, j, 2 * pos + 1, value, leftmost);
+        else if(i >= mid + 1)  // right.
+            return find(mid + 1, r, i, j, 2 * pos + 2, value, leftmost);
+        else {
+            if(leftmost) {
+                size_t res = find(l, mid, i, j, 2 * pos + 1, value, leftmost);  // left side.
+                if(res != arr_size)
+                    return res;
+                return find(mid + 1, r, i, j, 2 * pos + 2, value, leftmost);  // right side.
+            }
+            else {
+                size_t res = find(mid + 1, r, i, j, 2 * pos + 2, value, leftmost);  // right side.
+                if(res != arr_size)
+                    return res;
+                return find(l, mid, i, j, 2 * pos + 1, value, leftmost);  // left side.
+            }
+        }
     }
 
     Node query(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos)
     {
         propagate(l, r, pos);
 
-        if(l > j or r < i)
-            return Node();
-
         if(l >= i and r <= j)
             return tree[pos];
 
         size_t mid = (l + r) / 2;
-        return Node(query(l, mid, i, j, 2 * pos + 1), query(mid + 1, r, i, j, 2 * pos + 2));
+        if(j <= mid)  // left.
+            return query(l, mid, i, j, 2 * pos + 1);
+        else if(i >= mid + 1)  // right.
+            return query(mid + 1, r, i, j, 2 * pos + 2);
+        else  // both.
+            return Node(query(l, mid, i, j, 2 * pos + 1), query(mid + 1, r, i, j, 2 * pos + 2));
     }
 
-    Node update(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos, const T delta)
+    void update(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos, const T delta)
     {
         propagate(l, r, pos);
 
-        if(l > j or r < i)
-            return tree[pos];
-
         if(l >= i and r <= j) {
             tree[pos].lazy = delta;
-            // it's important to propagate before returning and merge nodes.
-            propagate(l, r, pos);
-            return tree[pos];
+            return;
         }
 
         size_t mid = (l + r) / 2;
-        return tree[pos] = Node(update(l, mid, i, j, 2 * pos + 1, delta), update(mid + 1, r, i, j, 2 * pos + 2, delta));
+        if(j <= mid)  // left.
+            update(l, mid, i, j, 2 * pos + 1, delta);
+        else if(i >= mid + 1)  // right.
+            update(mid + 1, r, i, j, 2 * pos + 2, delta);
+        else {  // both.
+            update(l, mid, i, j, 2 * pos + 1, delta);
+            update(mid + 1, r, i, j, 2 * pos + 2, delta);
+        }
+        // it's important to propagate before merging the child nodes.
+        propagate(l, mid, 2 * pos + 1);
+        propagate(mid + 1, r, 2 * pos + 2);
+        tree[pos] = Node(tree[2 * pos + 1], tree[2 * pos + 2]);
     }
 
     virtual void propagate(const size_t l, const size_t r, const size_t pos)
