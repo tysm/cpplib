@@ -126,3 +126,6 @@ struct matrix
         return res;
     }
 };
+
+template<typename T, size_t N, size_t M = N>
+using mat = matrix<T, N, M>;
