@@ -104,7 +104,7 @@ public:
         Node *root = this->root;
         if(!root->exists('1') or !root->exists('0'))
             return false;
-        uint cnt = 1ULL<<(B-1);
+        uint cnt = 1ULL << (B - 1);
         return root->next('0')->cnt == cnt and root->next('1')->cnt == cnt;
     }
 
@@ -154,21 +154,21 @@ public:
         if(btrie.empty())
             return 0;
 
-        uint ans = 0, cnt = 1ULL<<(B-1);
+        uint ans = 0, cnt = 1ULL << (B - 1);
         Node *cur = btrie.root;
-        for(char c: bitset<B>(x).to_string()){
+        for(char c: bitset<B>(x).to_string()) {
             ans <<= 1;
 
             if(cur == nullptr)
                 continue;  // we can just fill the rest with zeroes.
 
             if(!cur->exists(c) or cur->next(c)->cnt < cnt)
-                cur = (cur->exists(c)? cur->next(c) : nullptr);
-            else{
+                cur = (cur->exists(c) ? cur->next(c) : nullptr);
+            else {
                 ans |= 1;
 
                 char inv = (c == '0' ? '1' : '0');
-                cur = (cur->exists(inv)? cur->next(inv) : nullptr);
+                cur = (cur->exists(inv) ? cur->next(inv) : nullptr);
             }
             cnt >>= 1;
         }
