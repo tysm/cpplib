@@ -4,9 +4,8 @@
 #else
 #    undef int
 #endif
-#ifndef double
+#ifdef double
 #    define DOUBLE_LD
-#else
 #    undef double
 #endif
 #include <bits/stdc++.h>
@@ -44,11 +43,14 @@ using vvtt = vector<vtt>;
 #define ep emplace
 #define eb emplace_back
 
-#define all(x)  x.begin(), x.end()
-#define rall(x) x.rbegin(), x.rend()
+#define sqrt(x) sqrtl(x)
 
-#define PI   acos(-1)
-#define EPS  1e-9
+#define all(x)         x.begin(), x.end()
+#define rall(x)        x.rbegin(), x.rend()
+#define rep(x, st, nd) for(int x = st; (nd >= st ? x < nd : x > nd); (nd >= st ? ++x : --x))
+
+#define PI   acosl(-1)
+#define EPS  1e-9L
 #define INF  ((int)2e9 + 1)
 #define LINF ((int)2e18 + 1)
 #define MAXN ((int)2e6 + 1)
@@ -56,7 +58,23 @@ using vvtt = vector<vtt>;
 
 #define desync() (ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL))
 #define endl     "\n"
-#define debug(x) (cerr << #x << " = " << (x) << endl)
+
+void debug_it()
+{
+    cerr << endl;
+}
+template<typename Head, typename... Tail>
+void debug_it(Head H, Tail... T)
+{
+    cerr << ' ' << H;
+    debug_it(T...);
+}
+
+#ifdef TYSM_DEBUG
+#    define debug(...) (cerr << #    __VA_ARGS__ << " =", debug_it(__VA_ARGS__))
+#else
+#    define debug(...)
+#endif
 
 template<typename T>
 ostream &operator<<(ostream &lhs, const vector<T> &rhs)
@@ -81,5 +99,14 @@ ostream &operator<<(ostream &lhs, const array<T, N> &rhs)
             lhs << ' ';
         lhs << rhs[i];
     }
+    return lhs;
+}
+
+template<typename T1, typename T2>
+ostream &operator<<(ostream &lhs, const pair<T1, T2> &rhs)
+{
+    if(is_floating_point<T1>::value or is_floating_point<T2>::value)
+        lhs << fixed << setprecision(10);
+    lhs << rhs.first << ' ' << rhs.second;
     return lhs;
 }
