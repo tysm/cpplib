@@ -7,23 +7,25 @@ enum class STKind
     RMaxQ,
     RMinQ,
     RSumQ,
+    RAndQ,
     RXorQ,
 };
 
 const STKind RMaxQ = STKind::RMaxQ;
 const STKind RMinQ = STKind::RMinQ;
 const STKind RSumQ = STKind::RSumQ;
+const STKind RAndQ = STKind::RAndQ;
 const STKind RXorQ = STKind::RXorQ;
 
 /**
- * Returns the default value according to
+ * Returns the neutral value according to
  * the SegmentTreeKind.
  *
  * Time Complexity: O(1).
  * Space Complexity: O(1).
  */
 template<typename T>
-T default_value(STKind k)
+T neutral_value(STKind k)
 {
     switch(k) {
         case RMaxQ:
@@ -32,6 +34,8 @@ T default_value(STKind k)
             return INF;
         case RSumQ:
             return 0;
+        case RAndQ:
+            return -1;
         case RXorQ:
             return 0;
         default:
@@ -56,6 +60,8 @@ T merge_values(STKind k, const T lhs, const T rhs)
             return min(lhs, rhs);
         case RSumQ:
             return lhs + rhs;
+        case RAndQ:
+            return lhs & rhs;
         case RXorQ:
             return lhs ^ rhs;
         default:
@@ -82,7 +88,7 @@ struct STNode : STNodeB<T>
     using super_type = STNodeB<T>;
 
     STNode() :
-        super_type(default_value<T>(K)) {}
+        super_type(neutral_value<T>(K)) {}
 
     STNode(const T value) :
         super_type(value) {}
@@ -110,6 +116,8 @@ struct STNode : STNodeB<T>
             case RMinQ:
                 return this->value <= value;
                 // return this->value < value;
+            case RAndQ:
+                return this->value == value;
             case RSumQ:
             case RXorQ:
             default:
@@ -134,12 +142,44 @@ struct STNode : STNodeB<T>
             case RSumQ:
                 this->value += range * this->lazy;
                 break;
+            case RAndQ:
+                this->value |= this->lazy;
+                break;
             case RXorQ:
+                if(range & 1)
+                    this->value ^= this->lazy;
                 break;
             default:
                 assert(false);
         }
         this->lazy = 0;
+    }
+
+    /**
+     * Updates the current node's lazy
+     * according to the node
+     * implementation.
+     *
+     * Time Complexity: O(1).
+     * Space Complexity: O(1).
+     */
+    void update_lazy(const T delta)
+    {
+        switch(K) {
+            case RMaxQ:
+            case RMinQ:
+            case RSumQ:
+                this->lazy += delta;
+                break;
+            case RAndQ:
+                this->lazy |= delta;
+                break;
+            case RXorQ:
+                this->lazy ^= delta;
+                break;
+            default:
+                assert(false);
+        }
     }
 };
 
