@@ -18,7 +18,7 @@ struct STNodeS : STNodeSB<T>
     using super_type = STNodeSB<T>;
 
     STNodeS() :
-        super_type(default_value<T>(K)) {}
+        super_type(neutral_value<T>(K)) {}
 
     STNodeS(const T value) :
         super_type(value) {}

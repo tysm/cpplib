@@ -102,22 +102,28 @@ public:
 private:
     using super_type = SegTreeB<NodeS, T>;
 
-    NodeS set(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos, const T value)
+    void set(const size_t l, const size_t r, const size_t i, const size_t j, const size_t pos, const T value)
     {
         propagate(l, r, pos);
 
-        if(l > j or r < i)
-            return this->tree[pos];
-
         if(l >= i and r <= j) {
             this->tree[pos].set = {value, true};
-            // it's important to propagate before returning and merge nodes.
-            propagate(l, r, pos);
-            return this->tree[pos];
+            return;
         }
 
         size_t mid = (l + r) / 2;
-        return this->tree[pos] = NodeS(set(l, mid, i, j, 2 * pos + 1, value), set(mid + 1, r, i, j, 2 * pos + 2, value));
+        if(j <= mid)  // left.
+            set(l, mid, i, j, 2 * pos + 1, value);
+        else if(i >= mid + 1)  // right.
+            set(mid + 1, r, i, j, 2 * pos + 2, value);
+        else {  // both.
+            set(l, mid, i, j, 2 * pos + 1, value);
+            set(mid + 1, r, i, j, 2 * pos + 2, value);
+        }
+        // it's important to propagate before merging the child nodes.
+        propagate(l, mid, 2 * pos + 1);
+        propagate(mid + 1, r, 2 * pos + 2);
+        this->tree[pos] = NodeS(this->tree[2 * pos + 1], this->tree[2 * pos + 2]);
     }
 
     void propagate(const size_t l, const size_t r, const size_t pos)
