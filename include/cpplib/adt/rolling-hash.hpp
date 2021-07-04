@@ -20,7 +20,8 @@
 class RollingHash
 {
 public:
-    RollingHash() = delete;
+    RollingHash() :
+        RollingHash(0) {}
 
     RollingHash(const int base, const int offset = 0, const pair<int, int> &mods = {1e9 + 7, 1e9 + 9}) :
         offset(offset), bases(mod(base, mods.first), mod(base, mods.second)), mods(mods)
