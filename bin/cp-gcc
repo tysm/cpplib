@@ -8,4 +8,4 @@ shift
 }
 
 CXX=${CXX:-g++}
-exec "$(dirname "${BASH_SOURCE[0]#./}")/cp-expand" "$input" | $CXX -x c++ - $@
+exec "$(dirname "${BASH_SOURCE[0]#./}")/cp-expand" "-DTYSM_DEBUG" "$input" | $CXX -x c++ - $@
