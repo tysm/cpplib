@@ -1,6 +1,9 @@
 #pragma once
 #include <cpplib/stdinc.hpp>
 
+random_device ndgen;    // non-deterministic random generator.
+mt19937 dgen(ndgen());  // deterministic random generator.
+
 /**
  * Random Integer.
  *
@@ -12,8 +15,6 @@
  */
 int randint(const int l, const int r)
 {
-    random_device ndgen;    // non-deterministic random generator.
-    mt19937 dgen(ndgen());  // deterministic random generator.
     uniform_int_distribution<int> distribution(l, r);
     return distribution(dgen);
 }
