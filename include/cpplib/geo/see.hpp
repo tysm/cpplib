@@ -1,34 +1,31 @@
 #pragma once
+#include <cpplib/adt/circle.hpp>
 #include <cpplib/adt/point.hpp>
+#include <cpplib/adt/triangle.hpp>
 #include <cpplib/stdinc.hpp>
 
+// Smallest Enclosing Circle/Sphere - O(n).
 template<typename T>
-tuple<point<double>, double> see(const vector<point<T> > &points, uint iterations = 30000)
+circle<double> see(vector<point<T> > points)
 {
-    uint n = points.size();
+    circle<double> circ(point<double>(0, 0), 0);
 
-    point<double> c;
-    for(uint i = 0; i < n; ++i)
-        c += points[i];
-    c /= n;
-
-    for(double p = 0.1; iterations; p *= 0.999, --iterations) {
-        uint f = n;
-        double r = 0;
-        for(uint i = 0; i < n; ++i) {
-            double d = squared_norm(points[i] - c);
-            if(d > r) {
-                f = i;
-                r = d;
+    random_shuffle(all(points));
+    for(int i = 0; i < points.size(); i++) {
+        if(count(circ, points[i]))
+            continue;
+        circ = circle<double>(points[i], 0);
+        for(int j = 0; j < i; j++) {
+            if(count(circ, points[j]))
+                continue;
+            circ = circle<double>((points[i] + points[j]) * 0.5L, distance(points[i], points[j]) * 0.5L);
+            for(int k = 0; k < j; k++) {
+                if(count(circ, points[k]))
+                    continue;
+                auto c = triangle<T>(points[i], points[j], points[k]).circumcenter();
+                circ = circle<double>(c, distance(c, points[k]));
             }
         }
-        if(f == n)
-            break;
-        c += (points[f] - c) * p;
     }
-
-    double r = 0;
-    for(uint i = 0; i < n; ++i)
-        r = max(r, squared_norm(points[i] - c));
-    return {c, sqrt(r)};
+    return circ;
 }
