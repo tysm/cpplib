@@ -300,9 +300,9 @@ struct point
     friend double angle(const point &u, const point<T1> &v)
     {
         if(u.is_null() or v.is_null())
-            return acos(0);
+            return acosl(0);
         auto aux = u * v / norm(u) / norm(v);
-        return aux > 1 ? acos(1) : (aux < -1 ? acos(-1) : acos(aux));
+        return aux > 1 ? 0 : (aux < -1 ? PI : acosl(aux));
     }
 
     // Angle between three points - O(1).
@@ -310,6 +310,15 @@ struct point
     friend double angle(const point &a, const point<T1> &b, const point<T2> &c)
     {
         return angle(a - b, c - b);  // angle between b->a and b->c.
+    }
+
+    // Polar angle of a 2D vector - O(1).
+    friend double polar_angle(const point &v)
+    {
+        double ang = angle(v, point<int>(1, 0));
+        if(v.y > -EPS)  // 1st and 2nd quadrant.
+            return ang;
+        return 2 * PI - ang;  // 3rd and 4th quadrant.
     }
 
     // Bisector of two vectors - O(1).
@@ -341,7 +350,7 @@ struct point
         return {sign(aux.x), sign(aux.y), sign(aux.z)};
     }
 
-    // Vector rotation - O(1).
+    // Vector ccw rotation - O(1).
     template<typename T1>
     friend point<double> rotate(const point &v, const point<T1> &u, double r)
     {
@@ -365,3 +374,23 @@ struct point
         return lhs << to_string(rhs);
     }
 };
+
+const point<int> O(0, 0, 0), OX(1, 0, 0), OY(0, 1, 0), OZ(0, 0, 1);
+
+template<typename T1, typename T2>
+int zori(const point<T1> &u, const point<T2> &v)
+{
+    return get<2>(orientation(u, v));
+}
+
+template<typename T1, typename T2>
+bool ccw(const point<T1> &u, const point<T2> &v)
+{
+    return sign((u ^ v).z) == 1;
+}
+
+template<typename T1, typename T2>
+bool cw(const point<T1> &u, const point<T2> &v)
+{
+    return sign((u ^ v).z) == -1;
+}
