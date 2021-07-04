@@ -203,3 +203,9 @@ tuple<T, T, T> line2d_coefficients(const line<T> &l)
     auto p = l.p, q = l.p + l.v;
     return {q.y - p.y, p.x - q.x, p.y * q.x - p.x * q.y};
 }
+
+template<typename T1, typename T2>
+int side(const point<T1> &p, const line<T2> &l)
+{
+    return zori(l.v, p - l.p);  // 2D.
+}
