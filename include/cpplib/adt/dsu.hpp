@@ -15,7 +15,7 @@ class DSU
 {
 public:
     DSU(const int set_size) :
-        root(set_size), sz(set_size, 1), set_size(set_size)
+        root(set_size), sz(set_size, 1), set_size(set_size), cnt(set_size)
     {
         iota(all(root), 0);
     }
@@ -63,6 +63,8 @@ public:
 
         root[b] = a;
         sz[a] += sz[b];
+
+        cnt--;
         return true;
     }
 
@@ -81,6 +83,17 @@ public:
     }
 
     /**
+     * Returns the number of disjoint sets.
+     *
+     * Time Complexity: O(1).
+     * Space Complexity: O(1).
+     */
+    int size() const
+    {
+        return cnt;
+    }
+
+    /**
      * Returns the size of the set containing x.
      *
      * Time Complexity: O(log(n)).
@@ -95,5 +108,5 @@ public:
 
 private:
     vector<int> root, sz;
-    int set_size;
+    int set_size, cnt;
 };
