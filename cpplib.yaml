@@ -7,7 +7,7 @@ CPPLIB:
         items:
             Binary Trie:
                 file: btrie.hpp
-            Circle Functions:
+            Circle:
                 file: circle.hpp
                 images:
                     Circle-Circle Intersection Area:
@@ -38,6 +38,9 @@ CPPLIB:
             Ray:
                 file: ray.hpp
                 tags: [Geometry, 3D]
+            Range Min Query Structure:
+                file: rmq.hpp
+                tags: [RMQ]
             Rolling Hash:
                 file: rolling-hash.hpp
             Segment:
@@ -45,10 +48,15 @@ CPPLIB:
                 tags: [Geometry, 3D]
             Segment Tree:
                 file: segtreeb.hpp
+                tags: [Base]
             Segment Tree 2D:
                 file: segtree2db.hpp
+                tags: [Base]
             Segment Tree S:
                 file: segtreesb.hpp
+                tags: [Base]
+            Triangle:
+                file: triangle.hpp
             Trie:
                 file: trie.hpp
                 tags: [Digital/Prefix Tree]
@@ -65,6 +73,13 @@ CPPLIB:
     Geometry:
         dir: geo
         items:
+            Convex Hull:
+                file: cvhull.hpp
+            Convex Hull Trick:
+                file: chtrick.hpp
+                tags: [f(x) = a*x + b]
+            Closest Pair:
+                file: clstpair.hpp
             Integer Vector Normalization:
                 file: norm.hpp
                 tags: [2D]
@@ -74,12 +89,17 @@ CPPLIB:
             Smallest Enclosing Circle/Sphere:
                 file: see.hpp
                 tags: [3D]
+            Static Polygon:
+                file: spt.hpp
+                tags: [f(x, y) = a*x + b*y]
     Graph:
         dir: graph
         items:
-            0-1 Mininum Spanning Tree:
+            0-1 Minimum Spanning Tree:
                 file: 0-1-mst.hpp
                 tags: [Large Undirected Graph Connected Componnents]
+            2-SAT:
+                file: 2-sat.hpp
             Erdos Gallai:
                 file: erdos-gallai.hpp
                 tags: [Graph Realization]
@@ -98,11 +118,18 @@ CPPLIB:
             Number of Distinct Vertices with Distance <= X:
                 file: node-pair-dist-leq-x.hpp
                 tags: [DSU on Tree]
+            Strongly Connected Components:
+                file: scc.hpp
+            Tree Diameter:
+                file: treedmtr.hpp
     Math:
         dir: math
         items:
             Combinatorics:
                 file: combinatorics.hpp
+            Decimal:
+                file: dec.py
+                tags: [Python]
             Divisor:
                 file: divisor.hpp
             Fast Exponentiation:
