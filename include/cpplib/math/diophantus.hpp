@@ -22,6 +22,11 @@ tuple<int, int> diophantine(const int a, const int b, const int c)
     x *= c / g;
     y *= c / g;
 
+    if(a < 0)
+        x = -x;
+    if(b < 0)
+        y = -y;
+
     int k = min(abs(x / (b / g)), abs(y / (a / g)));
     if(abs(y) > abs(x)) {
         x += k * (b / g) * (y > 0 ? 1 : -1);
@@ -31,11 +36,6 @@ tuple<int, int> diophantine(const int a, const int b, const int c)
         x -= k * (b / g) * (x > 0 ? 1 : -1);
         y += k * (a / g) * (x > 0 ? 1 : -1);
     }
-
-    if(a < 0)
-        x = -x;
-    if(b < 0)
-        y = -y;
     return make_tuple(x, y);
 }
 
