@@ -4,5 +4,5 @@
 template<typename T>
 int sign(const T n)
 {
-    return n == 0 ? 0 : (n < 0 ? -1 : 1);
+    return abs(n) < EPS ? 0 : (n < 0 ? -1 : 1);
 }
